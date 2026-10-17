@@ -32,3 +32,7 @@ A tabela IBGE/SIDRA 9514 traz idade simples por residência. O coletor usa `c2/0
 
 ## Oferta escolar da IDE SEDUC
 `etapas_modalidade`, `porte_escola`, `localizacao` e outros campos descritivos são de fonte geoespacial oficial com referência cartográfica INEP 2023. Etapas podem se sobrepor, portanto contagens por etapa não são somáveis para número único de escolas. A camada contém valores `num_matriculas` e `num_turmas` em escolas estaduais, mas o período próprio dessas quantidades não está documentado; a visualização individual inclui ressalva e não converte esses registros em totais municipais.
+
+## Política de conciliação 2025
+População de referência: 2025 Censo Escolar por localização do estabelecimento, rede administrativa, município 4304606, não residentes nem estudantes únicos. O conjunto SEDUC/RS contém 196 escolas e 68.490 matrículas em Canoas, 82 escolas e 30.597 matrículas municipais. O mapa geográfico 2023 contém 178 pontos e não pode ser somado ou comparado como mesma cobertura.
+PDDE Info: consultas unitárias por código INEP e ano; usar apenas colunas Valor Pago Total e Data do Pagamento, ignorar linhas Subtotal, conferir com TOTAL GERAL. Ausência de resposta não significa zero. Valor agregado publicado apenas para respondentes, não total municipal censitário. Não publicar contas, agências, saldos bancários ou identificadores pessoais.

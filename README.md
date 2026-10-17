@@ -79,3 +79,9 @@ O coletor `scripts/ibge_age.py` consulta a API SIDRA oficial por município IBGE
 - **IBGE/SIDRA (2022):** população residente de 0–3, 4–5, 6–14, 15–17, 18–24 e 0–17, sem projeções artificiais. `public/data/ibge_age.json`, `scripts/ibge_age.py`.
 - **SEDUC/RS (base cartográfica 2023):** oferta escolar, tipo de localização, porte e características das unidades, com filtros cruzados. Campos de matrículas e turmas do geosserviço estadual sem competência explícita não compõem somas municipais.
 - **Em análise:** fontes FNDE/PAB para valores PNAE efetivamente transferidos, PNATE, SIOPE e PDDE; INEP Data para matrícula 2025 e IDEB/SAEB por escola.
+
+## Versão 0.5 — Censo 2025 por rede e PDDE 2025 por escola
+O Censo Escolar de 2025 passou a integrar indicadores oficiais agregados municipais derivados do INEP por planilhas SEDUC/RS: **196 escolas, 68.490 matrículas**, das quais **82 municipais e 30.597 matrículas municipais**. Séries históricas 2010–2025 de matrículas e percentuais de infraestrutura por rede. O cadastro territorial do mapa tem referência 2023 (178 pontos), não o mesmo universo.
+Também foi integrada a consulta pública PDDE Info por código INEP 2025: 83 escolas municipais do cadastro 2023 consultadas, 82 com pagamentos confirmados e uma sem resultado; pagamentos válidos somam **R$ 3.769.394,00** somente nas escolas cobertas. Cada ficha mostra os programas, valores pagos e datas, sem dados bancários.
+Arquivos públicos: public/data/rs_censo_municipal.json e public/data/pdde_schools.json. Coletores: scripts/rs_censo.py e scripts/fnde_pdde.py. Workflows: refresh-rs-censo.yml e refresh-pdde.yml.
+Microdados individuais de matrículas e docentes por escola, IDEB individual e SAEB individual ainda pendem da extração nacional segura do INEP, cujo servidor permanece com falhas TCP/TLS no GitHub runner.

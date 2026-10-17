@@ -1,3 +1,9 @@
+## 0.5.0 — 17/10/2026
+- Séries Censo Escolar por município/rede/etapa 2010–2025 (fonte INEP via SEDUC/RS): 196 escolas e 68.490 matrículas em 2025; rede municipal 82 escolas e 30.597 matrículas.
+- Fonte oficial FNDE PDDE Info por código INEP com programas, datas e valores efetivamente pagos: 82 escolas municipais respondentes positivos, R$ 3.769.394,00; uma escola consultada sem resposta oficial.
+- Workflows independentes, testes de reconciliação e distinção entre cadastro geográfico 2023 e totais municipais 2025.
+- Ainda pendentes matrículas/infraestrutura/IDEB por escola e SAEB por escola vindos do INEP 2025.
+
 ## 0.4.0 — 17/10/2026 — PNAE, demografia e oferta territorial
 - Corrigidos cartões financeiros em celulares: grid de uma coluna, tipografia flexível e teste automático de overflow incluindo PNAE.
 - PNAE 2024: planilha oficial FNDE recuperada por HTTPS com integridade SHA-256; cinco ações de Canoas e previsão total R$ 5.895.260,80. Indicadores rotulados como **previstos**, não transferidos.

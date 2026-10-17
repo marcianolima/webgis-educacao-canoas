@@ -51,3 +51,9 @@ A consulta `SEDUC/Escolas_no_RS/MapServer/0` retorna `etapas_modalidade`, `porte
 | PDDE por escola | `https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar` | Consulta por ano e código INEP existente, integração automatizada e identificação de valor efetivamente pago pendentes |
 | INEP Data · Catálogo de Escolas | `https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/catalogo-de-escolas/` | Alternativa oficial com filtros e exportação por município/escola, sem endpoint de exportação autenticado ou estável identificado |
 | INEP Data · Estatísticas Censo Escolar | `https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/estatisticas-censo-escolar` | Painéis municipais e históricos disponíveis, interface de BI sem contrato para ETL automático comprovado |
+
+## Recuperações verificadas em 17/10/2026
+- SEDUC/RS (derivado INEP): matrículas/escolas de Canoas 2010–2025 por rede e etapa: https://dados.rs.gov.br/dataset/af11aa7d-0016-4b49-b73b-655f543334f7/resource/9c23921d-bde4-48ed-bbb9-2fe5b5393636/download/dados_acesso_matriculas.xlsx
+- Infraestrutura municipal por rede (% de escolas com recurso): https://dados.rs.gov.br/dataset/5ab85ab2-2f01-44b8-bae0-53b24e74e574/resource/949999fd-9492-44fb-9c8b-128d6a301ba2/download/dados_infraestrutura.xlsx
+- PDDE Info por código INEP e ano: https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar?ano=2025&co_escola=43170102&consultar=Consultar . Extração somente das colunas Valor Pago Total / Data do Pagamento, conferência por TOTAL GERAL, sem CNPJ, agência, conta ou saldos bancários. 82 escolas municipais com pagamentos positivos do catálogo geográfico 2023, R$ 3.769.394,00 nessas respostas.
+- O Censo 2025 estadual por município e rede (196 escolas) difere do mapa 2023 (178 pontos), e não permite atribuir matrículas a cada estabelecimento. Não inferir indicadores escolares por bairro ou escola na ausência de microdados por INEP.

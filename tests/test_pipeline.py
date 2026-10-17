@@ -104,3 +104,25 @@ class SnapshotTests(unittest.TestCase):
 
 if __name__=="__main__":
     unittest.main()
+
+class SeducGeometryTests(unittest.TestCase):
+    def test_2023_spatial_catalog_never_claims_school_universe(self):
+        from seduc_geo import combine
+        a=[{"inep":"12345678","name":"Escola Oficial","network":"Municipal",
+            "latitude":-29.95,"longitude":-51.18,"address":"Rua Pública"}]
+        cat, diag=combine({"year":None,"schools":[]},a)
+        self.assertEqual(cat["year"],2023)
+        self.assertEqual(len(cat["schools"]),1)
+        self.assertIsNone(cat["schools"][0]["enrollments"])
+        self.assertEqual(diag["mode"],"2023-map-only")
+    def test_join_by_inep_without_overwriting_new_coordinates(self):
+        from seduc_geo import combine
+        data={"year":2025,"schools":[{"inep":"12345678","latitude":-29.92,"longitude":-51.16},
+                                      {"inep":"22222222","latitude":None,"longitude":None}]}
+        geo=[{"inep":"12345678","latitude":-29.95,"longitude":-51.18},
+             {"inep":"22222222","latitude":-29.96,"longitude":-51.19}]
+        cat,diag=combine(data,geo)
+        self.assertEqual(cat["schools"][0]["latitude"],-29.92)
+        self.assertEqual(cat["schools"][1]["latitude"],-29.96)
+        self.assertEqual(diag["supplementedCoordinates"],1)
+

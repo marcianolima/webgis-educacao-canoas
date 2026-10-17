@@ -19,6 +19,7 @@ O coletor `scripts/inep_censo.py` está implementado para baixar e validar o pac
 - `src/style.css`: identidade visual e temas claro/escuro.
 - `public/data/`: snapshots municipais e dados cadastrais escolares públicos.
 - `scripts/inep_censo.py`: processamento seletivo do ZIP anual sem armazenar microdados.
+- `scripts/seduc_geo.py`: consulta ArcGIS REST SEDUC/RS (escolas 2023) por código INEP; preserva escola 2025 e fonte de coordenadas, ou constrói cadastro parcial georreferenciado de 2023 quando INEP ainda não validado.
 - `tests/test_pipeline.py`: testes de chaves, coordenadas, agregados, privacidade e nulos.
 - `.github/workflows/deploy.yml`: testes, coleta inicial/monitoramento mensal e GitHub Pages.
 - `docs/FONTES.md`: matriz de fontes, granularidade, condições e limitações.
@@ -36,7 +37,7 @@ npm run dev
 npm run build
 ```
 
-Para coletar o INEP manualmente, quando houver rede e espaço temporário disponíveis: `python scripts/inep_censo.py`. O GitHub Actions também executa quando houver fonte INEP pendente na primeira publicação e mensalmente para checagem. Uma nova edição anual exige atualizar explicitamente o ano, a URL e o dicionário antes da publicação.
+Para coletar o INEP manualmente, quando houver rede e espaço temporário disponíveis: `python scripts/inep_censo.py`. O GitHub Actions também executa quando houver fonte INEP pendente na primeira publicação e mensalmente para checagem, e tenta integrar a camada SEDUC/RS de 2023 em coletor independente. Uma nova edição anual exige atualizar explicitamente o ano, a URL e o dicionário antes da publicação.
 
 ## Implantação e limitações
 

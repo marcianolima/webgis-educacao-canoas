@@ -4,6 +4,7 @@
 - **Frontend:** Vite 6, TypeScript, CSS modular próprio, MapLibre GL JS 4 e Apache ECharts 5. Publicação estática no GitHub Pages, caminho base `/webgis-educacao-canoas/`.
 - **Dados públicos:** `public/data/summary.json` (indicadores municipais, status e proveniência); `schools.json` (cadastro individual público por INEP, inclusive sem coordenadas); `schools.geojson` (somente escolas com latitude/longitude conferidas); `inep_provenance.json` (quando coletado: integridade, nomes das colunas, cobertura, hash).
 - **ETL:** Python 3.12, bibliotecas padrão, arquivo bruto ZIP temporário e CSV decodificado por stream; limite comprimido e descompactado; validação de cobertura e esquema antes de substituir arquivos.
+- **Geolocalização complementar:** `scripts/seduc_geo.py` consulta MapServer oficial da SEDUC/RS, geometria de referência **INEP 2023**, por cod_ibge_mun e código INEP. Preenche apenas coordenadas ausentes de escolas do Censo 2025. Se ainda não há Censo 2025 validado, pode oferecer cadastro parcial 2023 georreferenciado; sem anunciar total oficial de escolas ou matrículas para 2025.
 - **Identificadores:** município IBGE 4304606, CO_MUNICIPIO INEP normalmente 430460; escola por código INEP de 8 algarismos.
 - **CI/CD:** GitHub Actions, job `validate`, coleta condicional `collect`, job `deploy` com build TypeScript e inspeção dos arquivos dist.
 

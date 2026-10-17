@@ -17,7 +17,7 @@
 
 **Governança de esquema:** o coletor mantém no arquivo `inep_provenance.json` a lista de colunas observadas e ausentes, além do SHA-256 do pacote, do nome do CSV, do número nacional de linhas e da quantidade de escolas no município. Campo obrigatório faltante bloqueia o lote inteiro; campo opcional faltante aparece como nulo.
 
-**Qualidade temporal:** nenhuma série histórica será criada pela simples soma de microdados de anos diferentes; cada edição exigirá seu próprio dicionário e período. Situações de zero somente podem vir de campos declarados com zero. Indicadores municipais não são transformados em pontuações escolares.
+**Categorias de matrículas:** creche e pré-escola estão contidas na educação infantil; educação especial é recorte transversal e pode se sobrepor a outras etapas. Não somar todos os campos de etapa para recompor a matrícula básica, usando sempre `QT_MAT_BAS` como total oficial.\n\n**Qualidade temporal:** nenhuma série histórica será criada pela simples soma de microdados de anos diferentes; cada edição exigirá seu próprio dicionário e período. Situações de zero somente podem vir de campos declarados com zero. Indicadores municipais não são transformados em pontuações escolares.
 
 **LGPD:** dados expostos limitados a cadastro institucional, infraestrutura, localização oficial e agregados escolares. Não publicar nomes de docentes ou estudantes, CPFs, NIS, matrículas individuais, endereços residenciais, atributos sensíveis ou recortes passíveis de reidentificação. Quando futuras fontes apresentarem pequenas contagens sensíveis, aplicar supressão e explicar a regra.
 

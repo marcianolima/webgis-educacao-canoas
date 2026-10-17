@@ -99,7 +99,10 @@ class SnapshotTests(unittest.TestCase):
     def test_enrollment_reconciliation(self):
         e=self.s["education"]
         if e["totalEnrollments"] is not None:
-            self.assertEqual(e["totalEnrollments"],sum(x["enrollments"] for x in self.c["schools"]))
+            active=[x for x in self.c["schools"] if x["status"]=="Em atividade"]
+            self.assertTrue(active)
+            self.assertTrue(all(x["enrollments"] is not None for x in active))
+            self.assertEqual(e["totalEnrollments"],sum(x["enrollments"] for x in active))
             self.assertEqual(e["totalEnrollments"],sum(e["enrollmentsByNetwork"].values()))
 
 if __name__=="__main__":

@@ -27,10 +27,13 @@ MAX_EXTRACTED = int(os.environ.get("INEP_MAX_CSV_MB", "3500")) * 1024 * 1024
 NETWORKS = {"1": "Federal", "2": "Estadual", "3": "Municipal", "4": "Privada"}
 STAGES = {
     "Educação infantil": "QT_MAT_INF",
+    "Creche": "QT_MAT_CRE",
+    "Pré-escola": "QT_MAT_PRE",
     "Ensino fundamental": "QT_MAT_FUND",
     "Ensino médio": "QT_MAT_MED",
     "EJA": "QT_MAT_EJA",
     "Educação profissional": "QT_MAT_PROF",
+    "Educação especial (transversal)": "QT_MAT_ESP",
 }
 INFRASTRUCTURE = {
     "Internet": "IN_INTERNET",

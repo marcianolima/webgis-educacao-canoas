@@ -31,6 +31,22 @@ for(const [device, width, height] of [
    await expect(page.getByRole('heading',{name:'Financiamento público da educação'})).toBeVisible();
    await expect(page.getByText('Empenhado em 2025')).toBeVisible();
    await expect(page.locator('#finance-chart')).toBeVisible();
+   // Regressão: cifras longas não podem ultrapassar as caixas nem a viewport móvel.
+   const overflow=await page.locator('.finance-kpis .kpi-value').evaluateAll(els=>
+    els.map(el=>{
+      const box=el.getBoundingClientRect();
+      const parent=el.closest('.kpi')?.getBoundingClientRect();
+      return {value:el.textContent||'',withinCard:!!parent && box.left>=parent.left-1 && box.right<=parent.right+1,
+        scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,viewport:window.innerWidth};
+    })
+   );
+   expect(overflow.length).toBe(4);
+   for(const m of overflow){
+     expect(m.withinCard,m.value+' saiu do cartão').toBeTruthy();
+     expect(m.scrollWidth,m.value+' excedeu o container').toBeLessThanOrEqual(m.clientWidth+1);
+   }
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1);
+
    await page.screenshot({path:testInfo.outputPath(device+'-financas.png'),fullPage:true});
    await nav.locator('[data-page="sources"]').click();
    await expect(page.getByText('Organizações e plataformas de apoio')).toBeVisible();

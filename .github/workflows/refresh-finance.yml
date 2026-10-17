@@ -1,0 +1,54 @@
+name: WebGIS Educação | Atualizar financiamento SICONFI
+on:
+  push:
+    paths:
+      - 'scripts/finance_siconfi.py'
+      - '.github/workflows/refresh-finance.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '15 9 12 * *'
+permissions:
+  contents: write
+concurrency:
+  group: finance-educacao-canoas
+  cancel-in-progress: false
+jobs:
+  finance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Coletar série anual primária SICONFI DCA
+        run: python scripts/finance_siconfi.py
+      - name: Validar os snapshots e os metadados
+        run: python -m unittest discover -s tests -v
+      - name: Conferir valores e natureza dos campos
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('public/data/finance.json').read_text())
+          assert d['municipalityCode']==4304606
+          assert len(d['series'])>0
+          for row in d['series']:
+              assert row['education']['committed']>0
+              assert row['year']>=2019
+          last=next(x for x in d['series'] if x['year']==2025)
+          print('2025 empenhado, liquidado, pago:',last['education'])
+          assert abs(last['education']['committed']-525098080.19)<1, 'Reconciliação cruzada DCA 2025 não confere'
+          PY
+      - name: Persistir agregados financeiros públicos
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/finance.json public/data/summary.json
+          if ! git diff --staged --quiet; then
+            git commit -m 'data: série oficial de despesas em educação SICONFI DCA'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

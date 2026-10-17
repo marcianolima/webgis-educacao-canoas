@@ -1,0 +1,27 @@
+name: Explorar SICONFI oficial da educação
+on:
+  push:
+    paths: ['.github/workflows/probe-finance.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspecionar dados oficiais DCA por função educação
+        run: |
+          python - <<'PY'
+          import urllib.parse, urllib.request, json
+          base='https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/dca'
+          query=urllib.parse.urlencode(dict(an_exercicio=2025,id_ente=4304606,no_anexo='DCA-Anexo I-E'))
+          req=urllib.request.Request(base+'?'+query,headers={'User-Agent':'webgis-educacao-canoas/0.3'})
+          with urllib.request.urlopen(req,timeout=35) as r:
+              obj=json.loads(r.read(1100000))
+          print('FIELDS',list(obj),'RECORDS',len(obj.get('items',[])))
+          for item in obj.get('items',[]):
+              if 'EDUC' in json.dumps(item,ensure_ascii=False).upper():
+                  print('EDU',json.dumps(item,ensure_ascii=False)[:1600])
+          print('SAMPLE',json.dumps(obj.get('items',[])[:2],ensure_ascii=False)[:2200])
+          PY

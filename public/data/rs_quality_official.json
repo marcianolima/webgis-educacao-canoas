@@ -1,0 +1,372 @@
+{
+  "schemaVersion": 1,
+  "municipalityCode": "4304606",
+  "updatedAt": "2026-10-17T18:32:36.048886+00:00",
+  "sourceAgency": "INEP (séries publicadas pela SEDUC/RS)",
+  "sourceURLs": {
+    "ideb": "https://dados.rs.gov.br/dataset/b8445a37-5a9e-4308-9709-1ac1895fb933/resource/0e99e881-3f5a-46f8-854d-b97eecd55314/download/dados_ideb.xlsx",
+    "saeb": "https://dados.rs.gov.br/dataset/09d4faf9-79c4-40ce-9978-842eb40640cc/resource/6ae692a8-ca3e-46f6-ad46-51abdf4e6726/download/dados_saeb.xlsx"
+  },
+  "sourceSHA256": {
+    "ideb": "2009af293e8478ad9eded04ea6472865e8a92648c7ca7445b4c5732d45d17b96",
+    "saeb": "8fd10d83017d3fe2c567f7401d6aaad698ffc7de2ae5aca10d2328996db0828d"
+  },
+  "idebByNetwork": {
+    "Municipal": [
+      {
+        "year": 2005,
+        "AI.ideb": 3.8,
+        "AI.n_escolas": 40.0,
+        "AF.ideb": 3.6,
+        "AF.n_escolas": 14.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2007,
+        "AI.ideb": 4.1,
+        "AI.n_escolas": 41.0,
+        "AF.ideb": 3.5,
+        "AF.n_escolas": 19.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2009,
+        "AI.ideb": 4.4,
+        "AI.n_escolas": 41.0,
+        "AF.ideb": 3.5,
+        "AF.n_escolas": 19.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2011,
+        "AI.ideb": 4.8,
+        "AI.n_escolas": 41.0,
+        "AF.ideb": 3.9,
+        "AF.n_escolas": 23.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2013,
+        "AI.ideb": 4.9,
+        "AI.n_escolas": 40.0,
+        "AF.ideb": 3.9,
+        "AF.n_escolas": 21.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2015,
+        "AI.ideb": 5.0,
+        "AI.n_escolas": 42.0,
+        "AF.ideb": 4.0,
+        "AF.n_escolas": 38.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2017,
+        "AI.ideb": 5.1,
+        "AI.n_escolas": 31.0,
+        "AF.ideb": 4.0,
+        "AF.n_escolas": 29.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2019,
+        "AI.ideb": 5.3,
+        "AI.n_escolas": 23.0,
+        "AF.ideb": 4.3,
+        "AF.n_escolas": 22.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2021,
+        "AI.ideb": 5.4,
+        "AI.n_escolas": 17.0,
+        "AF.ideb": 4.8,
+        "AF.n_escolas": 11.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2023,
+        "AI.ideb": 5.4,
+        "AI.n_escolas": 41.0,
+        "AF.ideb": 4.7,
+        "AF.n_escolas": 39.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2025,
+        "AI.ideb": 5.3,
+        "AI.n_escolas": 40.0,
+        "AF.ideb": 4.6,
+        "AF.n_escolas": 40.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      }
+    ],
+    "Estadual": [
+      {
+        "year": 2005,
+        "AI.ideb": 3.7,
+        "AI.n_escolas": 26.0,
+        "AF.ideb": 3.0,
+        "AF.n_escolas": 24.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2007,
+        "AI.ideb": 4.4,
+        "AI.n_escolas": 34.0,
+        "AF.ideb": 3.1,
+        "AF.n_escolas": 35.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2009,
+        "AI.ideb": 4.8,
+        "AI.n_escolas": 31.0,
+        "AF.ideb": 3.4,
+        "AF.n_escolas": 32.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2011,
+        "AI.ideb": 4.9,
+        "AI.n_escolas": 22.0,
+        "AF.ideb": 3.3,
+        "AF.n_escolas": 27.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2013,
+        "AI.ideb": 5.3,
+        "AI.n_escolas": 27.0,
+        "AF.ideb": 3.4,
+        "AF.n_escolas": 31.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2015,
+        "AI.ideb": 5.2,
+        "AI.n_escolas": 27.0,
+        "AF.ideb": 3.6,
+        "AF.n_escolas": 22.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2017,
+        "AI.ideb": 5.3,
+        "AI.n_escolas": 23.0,
+        "AF.ideb": 4.0,
+        "AF.n_escolas": 15.0,
+        "EM.ideb": 2.7,
+        "EM.n_escolas": 2.0
+      },
+      {
+        "year": 2019,
+        "AI.ideb": 5.3,
+        "AI.n_escolas": 13.0,
+        "AF.ideb": 3.9,
+        "AF.n_escolas": 13.0,
+        "EM.ideb": 3.4,
+        "EM.n_escolas": 2.0
+      },
+      {
+        "year": 2021,
+        "AI.ideb": 5.7,
+        "AI.n_escolas": 8.0,
+        "AF.ideb": 4.9,
+        "AF.n_escolas": 4.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2023,
+        "AI.ideb": 5.5,
+        "AI.n_escolas": 23.0,
+        "AF.ideb": 4.7,
+        "AF.n_escolas": 20.0,
+        "EM.ideb": 3.9,
+        "EM.n_escolas": 9.0
+      },
+      {
+        "year": 2025,
+        "AI.ideb": 6.1,
+        "AI.n_escolas": 26.0,
+        "AF.ideb": 5.4,
+        "AF.n_escolas": 25.0,
+        "EM.ideb": 4.5,
+        "EM.n_escolas": 13.0
+      }
+    ],
+    "Todas": [
+      {
+        "year": 2005,
+        "AI.ideb": 3.82,
+        "AI.n_escolas": 66.0,
+        "AF.ideb": 3.34,
+        "AF.n_escolas": 38.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2007,
+        "AI.ideb": 4.34,
+        "AI.n_escolas": 75.0,
+        "AF.ideb": 3.26,
+        "AF.n_escolas": 54.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2009,
+        "AI.ideb": 4.58,
+        "AI.n_escolas": 72.0,
+        "AF.ideb": 3.5,
+        "AF.n_escolas": 51.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2011,
+        "AI.ideb": 4.91,
+        "AI.n_escolas": 63.0,
+        "AF.ideb": 3.6,
+        "AF.n_escolas": 50.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2013,
+        "AI.ideb": 5.14,
+        "AI.n_escolas": 67.0,
+        "AF.ideb": 3.56,
+        "AF.n_escolas": 52.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2015,
+        "AI.ideb": 5.21,
+        "AI.n_escolas": 69.0,
+        "AF.ideb": 3.86,
+        "AF.n_escolas": 60.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2017,
+        "AI.ideb": 5.44,
+        "AI.n_escolas": 54.0,
+        "AF.ideb": 4.1,
+        "AF.n_escolas": 44.0,
+        "EM.ideb": 4.17,
+        "EM.n_escolas": 3.0
+      },
+      {
+        "year": 2019,
+        "AI.ideb": 5.57,
+        "AI.n_escolas": 36.0,
+        "AF.ideb": 4.31,
+        "AF.n_escolas": 35.0,
+        "EM.ideb": 3.55,
+        "EM.n_escolas": 2.0
+      },
+      {
+        "year": 2021,
+        "AI.ideb": 5.72,
+        "AI.n_escolas": 25.0,
+        "AF.ideb": 4.93,
+        "AF.n_escolas": 15.0,
+        "EM.ideb": null,
+        "EM.n_escolas": null
+      },
+      {
+        "year": 2023,
+        "AI.ideb": 5.56,
+        "AI.n_escolas": 64.0,
+        "AF.ideb": 4.81,
+        "AF.n_escolas": 59.0,
+        "EM.ideb": 4.19,
+        "EM.n_escolas": 9.0
+      },
+      {
+        "year": 2025,
+        "AI.ideb": 5.72,
+        "AI.n_escolas": 66.0,
+        "AF.ideb": 4.96,
+        "AF.n_escolas": 65.0,
+        "EM.ideb": 4.45,
+        "EM.n_escolas": 13.0
+      }
+    ]
+  },
+  "saebStateByMunicipality": [
+    {
+      "year": 2017,
+      "5EF.media_lp": 216.3,
+      "5EF.media_mt": 221.2,
+      "9EF.media_lp": 265.8,
+      "9EF.media_mt": 267.7,
+      "EM.media_lp": null,
+      "EM.media_mt": null
+    },
+    {
+      "year": 2019,
+      "5EF.media_lp": 225.1,
+      "5EF.media_mt": 233.0,
+      "9EF.media_lp": 269.5,
+      "9EF.media_mt": 267.2,
+      "EM.media_lp": 276.5,
+      "EM.media_mt": 266.1
+    },
+    {
+      "year": 2021,
+      "5EF.media_lp": 215.4,
+      "5EF.media_mt": 216.1,
+      "9EF.media_lp": 261.2,
+      "9EF.media_mt": 250.2,
+      "EM.media_lp": null,
+      "EM.media_mt": null
+    },
+    {
+      "year": 2023,
+      "5EF.media_lp": 209.1,
+      "5EF.media_mt": 215.5,
+      "9EF.media_lp": 266.2,
+      "9EF.media_mt": 255.5,
+      "EM.media_lp": 285.3,
+      "EM.media_mt": 278.2
+    },
+    {
+      "year": 2025,
+      "5EF.media_lp": 218.1,
+      "5EF.media_mt": 227.8,
+      "9EF.media_lp": 273.3,
+      "9EF.media_mt": 265.6,
+      "EM.media_lp": 289.1,
+      "EM.media_mt": 276.2
+    }
+  ],
+  "limitations": [
+    "IDEB Municipal/Estadual/Todas por município: agregados por rede e etapa, não nota de cada escola.",
+    "SAEB Estadual Mun: proficiências da rede estadual no município; nunca renomear como rede municipal.",
+    "SAEB Todas Mun da fonte estadual não publica resultados 2025 em Canoas; dados municipais específicos ainda carecem da planilha original do INEP.",
+    "IDEB para todas as redes pode incluir apenas escolas com IDEB disponível; n_escolas distinto do total de escolas Censo."
+  ]
+}

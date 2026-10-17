@@ -39,5 +39,5 @@ jobs:
                 try:content=raw.decode(enc);break
                 except UnicodeError:continue
                print("CSV_FIRST",key,repr(content.splitlines()[:4])[:3400],flush=True)
-          except Exception as e:print("ZIP_ERROR",key,repr(e),flush=True)
+           except Exception as e:print("ZIP_ERROR",key,repr(e),flush=True)
           '@ | python -

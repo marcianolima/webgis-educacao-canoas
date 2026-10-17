@@ -55,7 +55,11 @@ def extract(kind:str,data:bytes):
  result={}
  for network in NETWORKS:
   name=f"{PREFIX[kind]} {network} Mun"
-  if name not in book.sheetnames:raise ValueError("Aba ausente "+name)
+  if name not in book.sheetnames:
+   if kind=="socioeconomic" and network in ("Privada",):
+    result[network]=[]
+    continue
+   raise ValueError("Aba ausente "+name)
   ws=book[name]; iterator=iter(ws.values)
   columns=[str(c or "").strip() for c in next(iterator)]
   for req in ("Ano","Codigo IBGE","Municipio"):

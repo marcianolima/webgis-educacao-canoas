@@ -1,0 +1,16 @@
+name: Inspecionar IDEB SAEB oficiais do RS por municipio
+on:
+  push:
+    paths: ['scripts/probe_rs_quality.py','.github/workflows/probe-rs-quality.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --disable-pip-version-check openpyxl==3.1.5
+      - run: python scripts/probe_rs_quality.py

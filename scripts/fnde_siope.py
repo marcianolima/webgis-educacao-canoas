@@ -44,7 +44,10 @@ def extract(blob):
     declaration=line["dat_decl"].strip()
     if not declaration:raise ValueError("SIOPE: declaração sem data")
     try:timestamp=datetime.datetime.fromisoformat(declaration.replace("Z","+00:00"))
-    except ValueError:raise ValueError("SIOPE data de declaração inválida")
+    except ValueError:
+     print("SIOPE_LAYOUT_DEBUG",year,"fieldnames",len(reader.fieldnames or []),"row_keys",len(line),
+           "dat_decl",repr(declaration),"sample",{key:line.get(key) for key in ("num_ano","num_peri","num_reci","cod_muni","dat_decl","val_desp_empe","vl_desp_empe_edu")},flush=True)
+     raise ValueError("SIOPE data de declaração inválida; é necessário revisar esquema da fonte")
     metrics={k:money(line[k]) for k in FIELDS}
     if not all(metrics[k] is not None for k in ("vl_desp_empe_edu","vl_desp_liqu_edu")):
      raise ValueError("SIOPE: sem valores educacionais")

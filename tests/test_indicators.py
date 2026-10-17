@@ -1,0 +1,48 @@
+import json
+import unittest
+from pathlib import Path
+
+DATA=Path(__file__).resolve().parents[1]/"public"/"data"
+class AdditionalDataTests(unittest.TestCase):
+ def test_quality_scope_years(self):
+  q=json.loads((DATA/"quality.json").read_text())
+  self.assertEqual(q["municipality"],"4304606")
+  series=q["ideb"]["series"]
+  years=[r["year"] for r in series]
+  self.assertEqual(years,sorted(set(years)))
+  self.assertEqual(years[-1],2025)
+  self.assertEqual(q["status"],"secondary_corroborated")
+  for row in series:
+   for metric in ("initialMunicipal","finalMunicipal","highState"):
+    value=row[metric]
+    if value is not None:
+     self.assertGreaterEqual(value,0)
+     self.assertLessEqual(value,10)
+  self.assertEqual(series[-1]["initialMunicipal"],5.3)
+  self.assertEqual(series[-1]["finalMunicipal"],4.6)
+ def test_quality_no_school_imputation(self):
+  q=json.loads((DATA/"quality.json").read_text())
+  self.assertEqual(q["schoolIndicators"],[])
+  self.assertEqual(q["saeb"]["status"],"secondary_single_source")
+ def test_siconfi_annual_no_double_count(self):
+  f=json.loads((DATA/"finance.json").read_text())
+  self.assertEqual(f["municipalityCode"],4304606)
+  self.assertEqual(f["annex"],"DCA-Anexo I-E")
+  years=[r["year"] for r in f["series"]]
+  self.assertEqual(years,sorted(set(years)))
+  self.assertIn(2025,years)
+  for row in f["series"]:
+   e=row["education"]
+   self.assertGreater(e["committed"],0)
+   for sub in row["subfunctions"].values():
+    for key in ("committed","liquidated","paid"):
+     v=sub.get(key)
+     if v is not None:
+      self.assertLessEqual(v,e[key])
+  latest=next(row for row in f["series"] if row["year"]==2025)
+  self.assertAlmostEqual(latest["education"]["committed"],525098080.19,places=2)
+  self.assertAlmostEqual(latest["education"]["liquidated"],478477062.27,places=2)
+  self.assertAlmostEqual(latest["education"]["paid"],395913248.00,places=2)
+ def test_missing_not_zero(self):
+  f=json.loads((DATA/"finance.json").read_text())
+  self.assertTrue(any(s["subfunctions"]["specialEducation"]["committed"] is None for s in f["series"]))

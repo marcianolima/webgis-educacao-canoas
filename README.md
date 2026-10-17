@@ -1,4 +1,4 @@
-# WebGIS Educação Canoas — versão funcional 0.2.0
+# WebGIS Educação Canoas — versão funcional 0.3.0
 
 **Aplicação pública:** https://marcianolima.github.io/webgis-educacao-canoas/  
 **Repositório:** https://github.com/marcianolima/webgis-educacao-canoas  
@@ -53,3 +53,11 @@ Requisitos: Node.js 22 e Python 3.12 ou superior. Para validar o Censo manualmen
 - `CHANGELOG.md` — histórico e versão.
 
 Os dados cadastrais escolares provêm de fontes públicas e são apresentados como base de consulta territorial exploratória; o sistema não substitui as publicações oficiais do INEP, FNDE, IBGE ou da Secretaria Municipal da Educação. O WebGIS Saúde não foi alterado.
+
+## Ampliação de indicadores — v0.3
+- **Financiamento municipal primário:** DCA/SICONFI da função 12 (Educação), série 2019–2025; valores nominais empenhados, liquidados e pagos; subfunções separadas (não aditivas). Scripts: `scripts/finance_siconfi.py` e `.github/workflows/refresh-finance.yml`.
+- **IDEB 2005–2025 de Canoas por etapa:** duas fontes secundárias independentes reproduzem os dados atribuídos ao INEP; identificados claramente como *corroborados em fontes secundárias*, não extração original. O IDEB individual de cada escola ainda não foi coletado.
+- **SAEB 2025:** valores municipais provenientes de uma fonte secundária, identificados como *aguardando conferência adicional*; não vinculados a escolas.
+- **Pesquisa de ONGs:** `docs/FONTES_COMPLEMENTARES.md` e sessão de Fontes no site detalham fontes validadas de contexto, critérios e condições de acesso.
+- **Testes:** Playwright em Chromium simulado nos tamanhos desktop, tablet e celular; capturas de tela e rastreamento de falhas ficam nos artefatos do workflow. Não é homologação com aparelhos físicos.
+- **Censo Escolar 2025:** endpoint do ZIP e dicionário de tabelas identificados; conectividade TLS oficial `download.inep.gov.br` instável/indisponível no GitHub runner. Não desativamos a segurança nem publicamos contagens inventadas.

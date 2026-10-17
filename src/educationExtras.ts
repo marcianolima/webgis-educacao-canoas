@@ -108,3 +108,16 @@ export function mountEducationChart(page:'quality'|'finance',isDark:boolean):ech
  });
  return chart;
 }
+
+export function trustedEducationSources(){
+ const sources=[
+  ['Todos Pela Educação','Anuário Brasileiro da Educação Básica 2026, recorte RS','Contextualização estadual e nacional, com metodologia INEP; não confundir com indicadores de Canoas.','https://anuario.todospelaeducacao.org.br/2026/estados-rs.html'],
+  ['UNICEF / Undime','Busca Ativa Escolar','Metodologia de combate à exclusão e abandono; dados individuais e plataforma de casos não são públicos.','https://www.unicef.org/brazil/innocenti/busca-ativa-escolar'],
+  ['Fundação Abrinq','Observatório da Criança e do Adolescente','Indicadores territoriais de infância e adolescência, com acesso a metadados e fontes originais; extração municipal pendente.','https://observatoriocrianca.org.br/'],
+  ['Fundação Maria Cecilia Souto Vidigal','Primeira Infância em Dados','Mais de 40 indicadores municipais: creches, pré-escola e primeira infância; download condicionado a cadastro não automatizado.','https://fundacaomariacecilia.org.br/o-que-fazemos/portal-primeira-infancia-em-dados/'],
+  ['Instituto Unibanco','Observatório de Educação','Análises integradas de fluxo, desempenho e desigualdades, com foco especial no ensino médio.','https://observatoriodeeducacao.institutounibanco.org.br/educacao-em-numeros/analises-integradas'],
+  ['QEdu / ecossistema Fundação Lemann','Painéis com dados oficiais reorganizados','Referência de conferência cruzada de escolas, IDEB e infraestrutura; não substituir INEP ou atribuir granularidade não comprovada.','https://qedu.org.br/']
+ ];
+ return '<div class="section">'+panel('Organizações e plataformas de apoio','Fontes complementares confiáveis; apenas catalogadas, sem importar informações de crianças ou números não conciliados',
+ '<div class="grid" style="gap:12px">'+sources.map(([name,title,note,url])=>'<div class="source"><b>'+esc(name)+' — '+esc(title)+'</b><p>'+esc(note)+'</p>'+link(url,'Visitar fonte e metodologia')+'</div>').join('')+'</div>')+'</div>';
+}

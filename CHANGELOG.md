@@ -1,3 +1,12 @@
+## 0.3.0 — 17/10/2026 — Qualidade, SICONFI e fontes complementares
+- Fonte primária Tesouro Nacional SICONFI, DCA Anexo I-E, função Educação: séries anuais verificadas 2019–2025; estágios empenhada/liquidada/paga e subfunções sem dupla contagem.
+- IDEB municipal por etapa 2005–2025, valores corroborados em portais secundários que referenciam o INEP; proveniência e limitações em destaque.
+- SAEB 2025 na rede municipal, proficiências secundárias com nível de evidência diferenciado.
+- Painel municipal e páginas específicas agora mostram indicadores e gráficos com tabelas acessíveis e unidades/anos identificados.
+- Fontes adicionais catalogadas: Todos Pela Educação, UNICEF/Undime, Fundação Abrinq, Fundação Maria Cecilia Souto Vidigal, Instituto Unibanco, QEdu.
+- Playwright emulação de layouts desktop/tablet/celular e capturas de tela no GitHub Actions. Não equivale a teste em dispositivos físicos.
+- Bloqueio de download direto do INEP persiste; não contornar TLS.
+
 # Histórico de alterações
 
 ## 0.2.0 — 17/10/2026 — Site publicado e testado

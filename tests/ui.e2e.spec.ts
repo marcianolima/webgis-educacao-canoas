@@ -14,6 +14,29 @@ for(const [device, width, height] of [
    const municipal=page.getByText('Escolas georreferenciadas',{exact:true});
    await expect(municipal).toBeVisible();
    const nav=width<940?page.locator('.mobile-menu'):page.locator('.sidebar');
+   if(width<940){
+     // Regressão: qualquer aba (inclusive a última) permanece selecionada,
+     // destacada e posicionada à esquerda do menu de rolagem horizontal.
+     const cases=['sources','finance','quality','schools','municipal'];
+     for(const section of cases){
+       await nav.locator('[data-page="'+section+'"]').click();
+       const current=nav.locator('[data-page="'+section+'"]');
+       await expect(current).toHaveClass(/active/);
+       await expect(current).toHaveAttribute('aria-current','page');
+       const geometry=await nav.evaluate(el=>{
+         const selected=el.querySelector<HTMLElement>('.nav-btn.active')!;
+         const leftPadding=parseFloat(getComputedStyle(el).paddingLeft)||0;
+         const menuBox=el.getBoundingClientRect();
+         const buttonBox=selected.getBoundingClientRect();
+         return {alignment:buttonBox.left-menuBox.left-leftPadding,
+           scrollLeft:el.scrollLeft,
+           visible:buttonBox.right<=menuBox.right+1};
+       });
+       expect(Math.abs(geometry.alignment),section+' não ficou à esquerda').toBeLessThanOrEqual(2);
+       expect(geometry.visible,section+' ficou fora do menu').toBeTruthy();
+       if(section==='sources')expect(geometry.scrollLeft).toBeGreaterThan(50);
+     }
+   }
    await nav.locator('[data-page="schools"]').click();
    await expect(page.getByRole('heading',{name:'Escolas e território'})).toBeVisible();
    await expect(page.locator('.school-row').first()).toBeVisible();
@@ -70,6 +93,11 @@ for(const [device, width, height] of [
    await page.screenshot({path:testInfo.outputPath(device+'-financas.png'),fullPage:true});
    await nav.locator('[data-page="sources"]').click();
    await expect(page.getByText('Organizações e plataformas de apoio')).toBeVisible();
+   if(width<940){
+     // Alternar tema refaz o DOM, mas não deve perder o destaque/posição.
+     const lastItem=nav.locator('[data-page="sources"]');
+     await expect(lastItem).toHaveAttribute('aria-current','page');
+   }
    await page.screenshot({path:testInfo.outputPath(device+'-fontes.png'),fullPage:true});
    await page.locator('#theme').click();
    await expect(page.locator('html')).toHaveClass(/dark/);

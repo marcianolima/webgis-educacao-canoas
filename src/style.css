@@ -13,3 +13,38 @@
  .finance-summary .kpi-value{font-size:clamp(18px,5vw,26px);letter-spacing:-.7px}
  .finance-summary .kpi{min-height:110px}
 }
+
+/* Navegação mobile: indicador ativo sempre visível e alinhado à esquerda.
+   O espaço final permite alinhar também a última seção sem cortar o botão. */
+@media (max-width:940px){
+ .mobile-menu{
+  position:sticky;
+  top:0;
+  z-index:30;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:none;
+  overscroll-behavior-x:contain;
+  scroll-behavior:auto;
+  -webkit-overflow-scrolling:touch;
+  box-shadow:0 3px 12px #102d4322;
+ }
+ .mobile-menu::-webkit-scrollbar{display:none}
+ .mobile-menu .nav-btn{
+  flex:0 0 auto;
+  justify-content:flex-start;
+  min-height:40px;
+ }
+ .mobile-menu .nav-btn.active{
+  background:#edb734;
+  color:#102d43;
+  font-weight:850;
+  box-shadow:inset 0 -3px 0 #b57912;
+ }
+ .mobile-menu .nav-btn.active:focus-visible{outline-color:#fff}
+ .mobile-menu::after{
+  content:"";
+  flex:0 0 calc(100% - 28px);
+  pointer-events:none;
+ }
+}

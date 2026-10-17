@@ -1,62 +1,55 @@
-# WebGIS Educação Canoas
+# WebGIS Educação Canoas — versão funcional 0.2.0
 
-Plataforma WebGIS pública de inteligência educacional de Canoas/RS (IBGE **4304606**).
+**Aplicação pública:** https://marcianolima.github.io/webgis-educacao-canoas/  
+**Repositório:** https://github.com/marcianolima/webgis-educacao-canoas  
+**Deploy confirmado:** https://github.com/marcianolima/webgis-educacao-canoas/actions/runs/39038793085
 
-**Acesso previsto:** https://marcianolima.github.io/webgis-educacao-canoas/  
-**GitHub Actions:** https://github.com/marcianolima/webgis-educacao-canoas/actions/workflows/deploy.yml
+Plataforma pública de inteligência territorial educacional para **Canoas/RS**, código IBGE **4304606**. Vite + TypeScript, ECharts, MapLibre e pipeline de dados Python 3.12, publicação GitHub Pages.
 
-## Estado da versão 0.1
+## O que já funciona
 
-Frontend TypeScript + Vite + CSS responsivo, ECharts e MapLibre GL JS. A primeira página é o **Painel Municipal de Educação**, independente de qualquer escola escolhida. As abas incluem cadastro/mapa, matrículas, qualidade, infraestrutura, docentes, educação infantil, financiamento e metodologia; módulos ainda sem dados oficiais validados apresentam seu estado.
+- Página inicial municipal com IBGE: população do Censo 2022 (**347.657**), estimativa 2026 (**359.845**) e escolarização de 6–14 anos (**97,17%**, Censo 2022).
+- Mapa interativo e catálogo georreferenciado de **178 escolas** da IDE/RS SEDUC, referência **2023**. Redes: **83 municipais, 36 estaduais, 1 federal e 58 privadas**. Inclui escolas privadas e públicas, filtros por rede, busca por nome e INEP, clustering e seleção.
+- Ficha cadastral individual por código INEP, endereço quando disponível, rede, posição, seleção compartilhável por `?inep=...`, exportação CSV e tema claro/escuro.
+- Separação rigorosa entre dados municipais e os indicadores de cada escola. Escolas do catálogo 2023 não são anunciadas como universo completo do Censo Escolar 2025.
+- Painéis temáticos e metodologia com estados de indisponibilidade honestos enquanto fontes exigem integração.
+- Deploy estático e verificação real da URL pública após publicação: HTML, JS e snapshots responderam HTTP 200.
+- Testes de integridade, projeção e coordenadas, chaves INEP, ausência de identificadores pessoais e consistência entre JSON/GeoJSON.
 
-Snapshot inicial IBGE verificado: **347.657** habitantes (Censo 2022), **359.845** habitantes (estimativa 2026), escolarização de 6–14 anos **97,17%** (2022). Fonte: https://www.ibge.gov.br/cidades-e-estados/rs/canoas.html. Não são indicadores de matrículas por escola.
+## O que ainda **não** está integrado
 
-O coletor `scripts/inep_censo.py` está implementado para baixar e validar o pacote oficial de microdados do Censo Escolar **2025** durante o GitHub Actions. Une as tabelas **Escola, Matrícula e Docente** pelo identificador INEP, preservando diferenças metodológicas entre matrícula e função docente. **Até o workflow confirmar a extração nacional e a contagem municipal, escolas, matrículas e mapa escolar não devem ser apresentados como integrados.** Coleta incompleta conserva arquivos anteriores. Se o arquivo do INEP não possuir campos opcionais, preserva valores nulos.
+- **Matrículas, docentes, turmas e infraestrutura 2025:** existe ETL para os microdados oficiais do INEP 2025, mas a primeira carga encontrou **reset de conexão e falha de validação de certificado HTTPS** no host `download.inep.gov.br`, conforme logs do runner. Sem bypass de TLS não houve publicação do Censo 2025. O código mantém os campos nulos, sem estimar valores.
+- **IDEB/SAEB, fluxo, rendimento, distorção, FNDE/SIOPE:** fontes catalogadas, indicadores ainda não integrados.
+- Georreferenciamento não foi realizado por inferência textual: posições vêm do serviço oficial SEDUC/RS, baseado no INEP 2023.
 
-## Organização
+## Coleta e implantação — processos isolados
 
-- `src/main.ts`: interface, navegação, filtros, mapa, fichas por código INEP, CSV e gráficos.
-- `src/style.css`: identidade visual e temas claro/escuro.
-- `public/data/`: snapshots municipais e dados cadastrais escolares públicos.
-- `scripts/inep_censo.py`: processamento seletivo do ZIP anual sem armazenar microdados.
-- `scripts/seduc_geo.py`: consulta ArcGIS REST SEDUC/RS (escolas 2023) por código INEP; preserva escola 2025 e fonte de coordenadas, ou constrói cadastro parcial georreferenciado de 2023 quando INEP ainda não validado.
-- `tests/test_pipeline.py`: testes de chaves, coordenadas, agregados, privacidade e nulos.
-- `.github/workflows/deploy.yml`: testes, coleta inicial/monitoramento mensal e GitHub Pages.
-- `docs/FONTES.md`: matriz de fontes, granularidade, condições e limitações.
-- `docs/METODOLOGIA.md`: dicionário, denominadores, confidencialidade e regras.
-- `docs/ARQUITETURA.md`: arquitetura, ETL e procedimentos de operação.
+| Workflow | Papel | Disparo |
+|---|---|---|
+| `.github/workflows/deploy.yml` | Testes Python, typecheck TS, build Vite, inspeção da pasta dist e deploy GitHub Pages com teste HTTP público de ponta a ponta | Push na main ou manual |
+| `.github/workflows/bootstrap-map.yml` | Coleta do MapServer SEDUC, validação de 178 registros e commit dos snapshots | Primeira publicação; manual |
+| `.github/workflows/bootstrap-inep.yml` | Tentativa de primeira carga Censo 2025 e enriquecimento por SEDUC | Primeira publicação; manual |
+| `.github/workflows/update-data.yml` | INEP/SEDUC independentes, preserva snapshots quando fonte falha; mostra avisos de qualidade | Mensal ou manual |
 
-## Desenvolvimento
+O **deploy não depende do sucesso do download externo**. Quando o coletor conseguir publicar novos snapshots válidos, o commit automático em `public/data/` disparará o deploy.
 
-Requer Node 22+ e Python 3.12+.
+## Executar e verificar localmente
 
 ```bash
-npm ci
+npm install
 python -m unittest discover -s tests -v
-npm run dev
 npm run build
+npm run dev
 ```
 
-Para coletar o INEP manualmente, quando houver rede e espaço temporário disponíveis: `python scripts/inep_censo.py`. O GitHub Actions também executa quando houver fonte INEP pendente na primeira publicação e mensalmente para checagem, e tenta integrar a camada SEDUC/RS de 2023 em coletor independente. Uma nova edição anual exige atualizar explicitamente o ano, a URL e o dicionário antes da publicação.
+Requisitos: Node.js 22 e Python 3.12 ou superior. Para validar o Censo manualmente: `python scripts/inep_censo.py` (download do servidor oficial INEP requer TLS confiável, conectividade e espaço temporário).
 
-## Implantação e limitações
+## Documentação
 
-A publicação exige **Settings → Pages → Source: GitHub Actions** caso o fluxo não consiga habilitá-la automaticamente. O deploy verifica todos os JSONs após compilar. A existência do workflow não garante sucesso do download nem da habilitação do Pages: devem ser conferidos os logs e os números efetivos.
+- `docs/ARQUITETURA.md` — contratos e CI/CD;
+- `docs/FONTES.md` — matriz e granularidades;
+- `docs/METODOLOGIA.md` — indicadores e limites;
+- `docs/DIAGNOSTICO_DEPLOY.md` — análise dos erros corrigidos e evidência de publicação;
+- `CHANGELOG.md` — histórico e versão.
 
-O WebGIS Saúde foi consultado somente como referência arquitetural; **nenhum arquivo de seu repositório é modificado por este projeto**.
-
-Esta versão é um instrumento de exploração de dados públicos e não substitui sistemas oficiais da Secretaria Municipal da Educação, INEP ou FNDE. Não inclui dados pessoais de estudantes ou profissionais.
-
-## Correção de implantação — 17/10/2026
-
-A partir desta revisão, o workflow de deploy é **independente de coletar dados externos**.
-Um teste anterior comparava valores da `Tabela_Escola` com matrículas, mas
-a regra do ETL de 2025 separa tabelas escolares e de matrículas por código INEP;
-foi corrigido para testar a ausência corretamente. A publicação não espera
-download do ZIP nacional INEP nem chamadas da IDE SEDUC/RS.
-
-- Deploy: `.github/workflows/deploy.yml`, `push` na `main` ou disparo manual.
-- Atualizações: `.github/workflows/update-data.yml`, execução manual e agendamento mensal.
-- A coleta **não altera indicadores municipais** quando faltam dados verificados.
-- Um site publicado pode ainda exibir indicadores escolares indisponíveis até a primeira extração.
-- Consultar os jobs para confirmar build e publicação; a URL só está operacional após sucesso em `deploy-pages`.
+Os dados cadastrais escolares provêm de fontes públicas e são apresentados como base de consulta territorial exploratória; o sistema não substitui as publicações oficiais do INEP, FNDE, IBGE ou da Secretaria Municipal da Educação. O WebGIS Saúde não foi alterado.

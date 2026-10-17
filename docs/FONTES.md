@@ -18,3 +18,10 @@
 | TCE/RS | TCE-RS | https://tcers.tc.br/ | Ente público | Variável | Variável | Portais públicos | Investigação pendente | Compatibilizar empenho, liquidação e pagamento |
 
 Situação "Identificado" significa que há catálogo/página oficial, **não** que houve download, verificação de colunas ou dados municipais publicados. Os números populacionais do IBGE são os únicos indicadores oficiais carregados no snapshot inicial; as demais integrações precisam ser reconciliadas na execução do workflow.
+
+
+## Coleta e validação da edição de 17/10/2026
+
+- **SEDUC/RS / IDE/RS, escolas (2023):** consulta ArcGIS REST validada em 17/10/2026, resultando em 178 registros de Canoas e 178 geometrias, separadas por rede: 83 municipais, 36 estaduais, 1 federal e 58 privadas. Códigos INEP únicos e coordenadas verificadas dentro dos limites municipais plausíveis.
+- **INEP 2025:** endereço oficial do ZIP identificado (`https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip`). A tentativa efetiva no Actions de 17/10/2026 apresentou reset de conexão e `SSL: CERTIFICATE_VERIFY_FAILED`; microdados 2025 **não integrados**. Não desabilitar verificação de certificado sem mecanismo comprovável de autenticidade.
+- **GitHub Pages:** publicação estática validada com HTTP 200 para HTML, JS, summary.json, schools.json e schools.geojson, contendo o catálogo de 178 escolas da SEDUC 2023.

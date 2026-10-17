@@ -84,7 +84,7 @@
       "reference": "2025",
       "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip",
       "updatedAt": "2026-10-17T18:36:43.644190+00:00",
-      "note": "196 escolas em atividade (total de registros: 204), 214192 linhas nacionais; matrículas: 196/204 escolas com valor; 0 georreferenciadas. Colunas não encontradas: NO_BAIRRO, NO_ENDERECO, NU_ENDERECO, NU_LATITUDE, NU_LONGITUDE."
+      "note": "196 escolas em atividade (total de registros: 204), 214192 linhas nacionais; matrículas: 196/204 escolas com valor; 169 georreferenciadas após enriquecimento do geosserviço oficial SEDUC/RS. Colunas não encontradas: NO_BAIRRO, NO_ENDERECO, NU_ENDERECO, NU_LATITUDE, NU_LONGITUDE."
     },
     "ideb": {
       "status": "ok",

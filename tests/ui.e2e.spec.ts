@@ -11,8 +11,10 @@ for(const [device, width, height] of [
    await page.goto('/webgis-educacao-canoas/');
    await expect(page.getByRole('heading',{name:'Educação em Canoas'})).toBeVisible({timeout:20000});
    await expect(page.getByText('347.657',{exact:true})).toBeVisible();
-   const municipal=page.getByText('Escolas georreferenciadas',{exact:true});
+   const municipal=page.getByText('Escolas no Censo Escolar',{exact:true});
    await expect(municipal).toBeVisible();
+   await expect(page.getByText('68.490',{exact:true}).first()).toBeVisible();
+
    const nav=width<940?page.locator('.mobile-menu'):page.locator('.sidebar');
    if(width<940){
      // Regressão: qualquer aba (inclusive a última) permanece selecionada,

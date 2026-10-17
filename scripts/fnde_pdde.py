@@ -20,6 +20,8 @@ def cash(value):
     if not amt.is_finite() or amt<0 or amt>decimal.Decimal("100000000"):raise ValueError("PDDE valor inválido")
     return amt
 def parse(html,inep):
+    if "Request Rejected" in html[:1000] or len(html)<2000:
+        raise RuntimeError("PDDE: resposta bloqueada/HTML incompleto")
     soup=BeautifulSoup(html,"html.parser")
     if not soup.select(".govbr-school-link-title"):
         return {"inep":inep,"year":YEAR,"status":"no-official-result","paidBRL":None,"payments":[]}
@@ -66,7 +68,7 @@ def retrieve(inep):
     last=None
     for attempt in range(3):
         try:
-            req=urllib.request.Request(url,headers={"User-Agent":"WebGIS-Educacao-Canoas/0.5 (consultas públicas municipais)","Accept":"text/html"})
+            req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 WebGIS-Canoas/0.5","Accept":"text/html"})
             with urllib.request.urlopen(req,timeout=35) as resp:
                 if resp.status!=200:raise RuntimeError(f"HTTP {resp.status}")
                 blob=resp.read(450_001)

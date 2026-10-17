@@ -1,0 +1,27 @@
+name: IDEB 2025 | Inspecionar XLSX da escola
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-ideb-xlsx.yml'
+      - 'scripts/inspect_ideb_xlsx.py'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  inspect:
+    runs-on: windows-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --disable-pip-version-check openpyxl==3.1.5
+      - name: Baixar ZIP do IDEB anos iniciais com Schannel
+        shell: pwsh
+        run: |
+          $zip=Join-Path $env:RUNNER_TEMP "ideb_2025.zip"
+          & curl.exe -f -L --connect-timeout 25 --retry 2 --max-time 500 --silent --show-error -o $zip "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_escolas_2025.zip"
+          if($LASTEXITCODE -ne 0){throw "Download oficial IDEB falhou"}
+          "IDEB_ZIP=$zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Ler planilhas e conferir correspondência com Canoas
+        shell: pwsh
+        run: python scripts/inspect_ideb_xlsx.py

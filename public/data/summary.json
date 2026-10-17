@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "municipality": {
+    "name": "Canoas",
+    "uf": "RS",
+    "ibge": "4304606",
+    "populationCensus": 347657,
+    "populationCensusYear": 2022,
+    "populationEstimate": 359845,
+    "populationEstimateYear": 2026,
+    "schooling6to14": 97.17,
+    "schoolingYear": 2022
+  },
+  "education": {
+    "year": null,
+    "totalSchools": null,
+    "activeSchools": null,
+    "totalEnrollments": null,
+    "schoolsByNetwork": {},
+    "enrollmentsByNetwork": {},
+    "infrastructure": {}
+  },
+  "sourceInfo": {
+    "ibge": {
+      "status": "ok",
+      "reference": "Censo Demográfico 2022; estimativa populacional 2026",
+      "url": "https://www.ibge.gov.br/cidades-e-estados/rs/canoas.html",
+      "note": "Escolarização por residência, não matrículas em escolas do município."
+    },
+    "inep": {
+      "status": "pending",
+      "reference": "2025",
+      "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
+      "note": "Aguardando execução e validação do coletor em GitHub Actions."
+    },
+    "ideb": {
+      "status": "pending",
+      "reference": "2005–2025",
+      "url": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025",
+      "note": "Não integrado, sem publicação de valores."
+    },
+    "fnde": {
+      "status": "pending",
+      "reference": null,
+      "url": "https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos",
+      "note": "Aguardando integração com granularidade verificada."
+    }
+  },
+  "generatedAt": "2026-10-17",
+  "note": "Os valores do IBGE são oficiais e independentes dos dados do INEP. Campos escolares nulos significam indisponível, não zero."
+}

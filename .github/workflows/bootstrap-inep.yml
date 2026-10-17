@@ -1,0 +1,66 @@
+name: WebGIS Educação | Inicializar Censo Escolar INEP 2025
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bootstrap-inep.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: inep-initial-load
+  cancel-in-progress: false
+
+jobs:
+  bootstrap-inep:
+    name: Validar INEP e publicar dados escolares de 2025
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download e ETL Censo Escolar 2025
+        timeout-minutes: 39
+        run: python scripts/inep_censo.py
+      - name: Complementar coordenadas usando SEDUC/RS 2023
+        continue-on-error: true
+        timeout-minutes: 7
+        run: python scripts/seduc_geo.py
+      - name: Testar consistência e privacidade
+        run: python -m unittest discover -s tests -v
+      - name: Mostrar integridade e contagens reconciliadas
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('public/data')
+          s=json.loads((p/'summary.json').read_text(encoding='utf8'))
+          c=json.loads((p/'schools.json').read_text(encoding='utf8'))
+          g=json.loads((p/'schools.geojson').read_text(encoding='utf8'))
+          assert c['year']==2025
+          assert s['education']['totalSchools']==len(c['schools'])
+          assert len(c['schools']) >= 30
+          print('Escolas: ',len(c['schools']))
+          print('Matrículas: ',s['education']['totalEnrollments'])
+          print('Escolas com coordenadas: ',len(g['features']))
+          print('Fonte INEP: ',s['sourceInfo']['inep'])
+          with open(__import__('os').environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write(f"INEP 2025: {len(c['schools'])} escolas; {s['education']['totalEnrollments']} matrículas; {len(g['features'])} pontos.\n")
+          PY
+      - name: Publicar snapshots no branch main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: publicar Censo Escolar 2025 validado e coordenadas IDE/RS'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

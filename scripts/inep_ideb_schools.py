@@ -55,15 +55,18 @@ def load(stage,path):
     results=[]
     for year in YEARS:
      key="VL_OBSERVADO_"+str(year)
-     if key not in lookup:raise ValueError("Série histórica incompleta")
+     if key not in lookup:continue  # ensino médio tem série pública mais curta
      ideb=num(row[lookup[key]],0,10)
      if ideb is not None:results.append({"year":year,"ideb":ideb})
+    def get2025(field,lower,upper):
+     index=lookup.get(field)
+     return num(row[index],lower,upper) if index is not None else None
     key5={
-     "ideb":num(row[lookup["VL_OBSERVADO_2025"]],0,10),
-     "portugueseScore":num(row[lookup["VL_NOTA_PORTUGUES_2025"]],0,500),
-     "mathScore":num(row[lookup["VL_NOTA_MATEMATICA_2025"]],0,500),
-     "performanceScore":num(row[lookup["VL_NOTA_MEDIA_2025"]],0,10),
-     "promotionFactor":num(row[lookup["VL_INDICADOR_REND_2025"]],0,1),
+     "ideb":get2025("VL_OBSERVADO_2025",0,10),
+     "portugueseScore":get2025("VL_NOTA_PORTUGUES_2025",0,500),
+     "mathScore":get2025("VL_NOTA_MATEMATICA_2025",0,500),
+     "performanceScore":get2025("VL_NOTA_MEDIA_2025",0,10),
+     "promotionFactor":get2025("VL_INDICADOR_REND_2025",0,1),
     }
     found[code]={"inep":code,"name":str(row[lookup["NO_ESCOLA"]] or "").strip()[:220],
       "network":str(row[lookup["REDE"]] or "").strip(),"stage":stage,

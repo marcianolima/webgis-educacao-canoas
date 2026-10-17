@@ -35,3 +35,7 @@ Situação "Identificado" significa que há catálogo/página oficial, **não** 
 
 ## Campos adicionais do geosserviço SEDUC
 A consulta `SEDUC/Escolas_no_RS/MapServer/0` retorna `etapas_modalidade`, `porte_escola`, `localizacao`, `categoria_esc_privada`, `conveniada`, `num_matriculas` e `num_turmas`. Os últimos dois são preenchidos somente em parte das escolas estaduais, sem período explícito de competência; por isso são contextualizados individualmente, não são somados nos indicadores do Censo 2025. A cobertura geográfica continua limitada às escolas com coordenadas da referência cadastral 2023.
+
+
+## IBGE / SIDRA · perfil etário do Censo 2022
+**Integrado (fonte primária):** `https://apisidra.ibge.gov.br/values/t/9514/n6/4304606/v/93/p/2022/c2/0/c287/all`. A extração retorna residentes por idade e por forma de declaração; o coletor filtra a categoria total de declaração, remove faixas sobrepostas e reconcilia idades simples com os grupos 0–4, 5–9, 10–14, 15–19 e 20–24, além do total geral 347.657. Valores não devem ser usados como número de matrículas ou demanda reprimida. Arquivo `public/data/ibge_age.json`.

@@ -31,6 +31,11 @@ for(const [device, width, height] of [
    await expect(page.getByText('IDEB 2025 — anos iniciais')).toBeVisible();
    await expect(page.locator('#quality-chart')).toBeVisible();
    await page.screenshot({path:testInfo.outputPath(device+'-ideb.png'),fullPage:true});
+   await nav.locator('[data-page="childhood"]').click();
+   await expect(page.getByRole('heading',{name:'Educação infantil e demografia territorial'})).toBeVisible();
+   await expect(page.getByText('Crianças de 0–3 anos')).toBeVisible();
+   await expect(page.locator('#age-chart')).toBeVisible();
+   await page.screenshot({path:testInfo.outputPath(device+'-infancia.png'),fullPage:true});
    await nav.locator('[data-page="finance"]').click();
    await expect(page.getByRole('heading',{name:'Financiamento público da educação'})).toBeVisible();
    await expect(page.getByText('Empenhado em 2025')).toBeVisible();

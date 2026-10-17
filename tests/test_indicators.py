@@ -57,3 +57,18 @@ class PNAETests(unittest.TestCase):
   self.assertAlmostEqual(d["totalPlannedBRL"],5895260.80,places=2)
   self.assertAlmostEqual(sum(x["amountPlannedBRL"] for x in d["actions"]),d["totalPlannedBRL"],places=2)
   self.assertEqual(len({x["code"] for x in d["actions"]}),len(d["actions"]))
+
+class DemographicIBGETests(unittest.TestCase):
+ def test_age_bands_population_and_nonoverlap(self):
+  d=json.loads((DATA/"ibge_age.json").read_text(encoding="utf8"))
+  self.assertEqual(d["municipalityCode"],"4304606")
+  self.assertEqual(d["year"],2022)
+  self.assertEqual(d["totalPopulation"],347657)
+  ages=d["ageSingles"]
+  self.assertEqual(len(ages),25)
+  self.assertEqual(sum(ages[str(a)] for a in range(18)),d["ageGroups"]["0–17 anos"])
+  self.assertEqual(sum(ages[str(a)] for a in range(4)),d["ageGroups"]["0–3 anos"])
+  self.assertEqual(sum(ages[str(a)] for a in (4,5)),d["ageGroups"]["4–5 anos"])
+  self.assertEqual(sum(ages[str(a)] for a in range(6,15)),d["ageGroups"]["6–14 anos"])
+  self.assertEqual(sum(ages[str(a)] for a in range(15,18)),d["ageGroups"]["15–17 anos"])
+  self.assertGreater(d["totalPopulation"],sum(d["ageGroups"][k] for k in ("0–3 anos","4–5 anos","6–14 anos","15–17 anos","18–24 anos")))

@@ -68,3 +68,7 @@ Planilha XLSX oficial FNDE, `scripts/fnde_pnae.py`. A Prefeitura Municipal de Ca
 
 ## Oferta escolar e classificação territorial
 As escolas georreferenciadas da IDE/RS (referência INEP 2023) incluem etapa/modalidade ofertada, faixa de porte, tipo de localização, categoria privada e convênios, quando declarados. Os filtros de rede, etapa, porte e busca textual podem ser combinados. A mesma escola pode oferecer várias etapas, portanto a soma das contagens por etapa pode superar o total de escolas. Campos numéricos estaduais (`num_matriculas`, `num_turmas`) não têm competência explicitada pelo serviço e não entram nos totais do município.
+
+
+## Perfil etário IBGE/SIDRA 9514 — Censo Demográfico 2022
+O coletor `scripts/ibge_age.py` consulta a API SIDRA oficial por município IBGE 4304606, confirma população total de **347.657 residentes** e reconcilia idades simples 0–24 com faixas quinquenais. Publica as faixas 0–3, 4–5, 6–14, 15–17, 18–24 e o agregado 0–17, usadas no módulo Educação Infantil e Painel Municipal. Esses números representam residentes no Censo 2022, não matrículas em escolas nem estimativas de 2026. Atualização anual de verificação do arquivo está em `.github/workflows/refresh-ibge-age.yml`.

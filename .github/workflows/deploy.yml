@@ -43,7 +43,7 @@ jobs:
           page=(dist/'index.html').read_text(encoding='utf-8')
           assert 'WebGIS Educação' in page, 'index.html ausente/incorreto'
           assert '/webgis-educacao-canoas/assets/' in page, 'URLs dos assets sem base GitHub Pages'
-          for name in ('summary.json','schools.json','schools.geojson','quality.json','finance.json','pnae.json','ibge_age.json','fnde_actuals.json','rs_censo_municipal.json','pdde_schools.json','rs_indicators.json'):
+          for name in ('summary.json','schools.json','schools.geojson','quality.json','finance.json','pnae.json','ibge_age.json','fnde_actuals.json','rs_censo_municipal.json','pdde_schools.json','rs_indicators.json','rs_quality_official.json'):
               content=json.loads((dist/'data'/name).read_text(encoding='utf-8'))
               assert content is not None
               print(f'{name}: {(dist/"data"/name).stat().st_size} bytes')
@@ -66,6 +66,9 @@ jobs:
           advanced=json.loads((dist/'data/rs_indicators.json').read_text(encoding='utf-8'))
           assert advanced['municipalityCode']=='4304606'
           assert next(v for v in advanced['schoolFlow']['Municipal'] if v['year']==2025)['aprov_fund']==89.1
+          primary=json.loads((dist/'data/rs_quality_official.json').read_text(encoding='utf-8'))
+          assert primary['municipalityCode']=='4304606'
+          assert next(r for r in primary['idebByNetwork']['Municipal'] if r['year']==2025)['AI.ideb']==5.3
           summary=json.loads((dist/'data/summary.json').read_text(encoding='utf-8'))
           assert summary['municipality']['ibge']=='4304606'
           print('Assets:',len(list((dist/'assets').glob('*.js'))),'JS compilados')
@@ -138,6 +141,8 @@ jobs:
                   geo=json.loads(fetch('data/schools.geojson'))
                   advanced=json.loads(fetch('data/rs_indicators.json'))
                   assert advanced['municipalityCode']=='4304606'
+                  primary=json.loads(fetch('data/rs_quality_official.json'))
+                  assert primary['municipalityCode']=='4304606'
                   rs=json.loads(fetch('data/rs_censo_municipal.json'))
                   pdde=json.loads(fetch('data/pdde_schools.json'))
                   assert rs['municipalityCode']=='4304606' and pdde['schoolsWithPublishedPayments']>=70

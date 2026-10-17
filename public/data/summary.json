@@ -34,10 +34,10 @@
       "note": "Aguardando execução e validação do coletor em GitHub Actions."
     },
     "ideb": {
-      "status": "secondary_corrob",
+      "status": "ok",
       "reference": "2005–2025 · rede municipal",
-      "url": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025",
-      "note": "Séries IDEB de Canoas extraídas e corroboradas em dois portais secundários que indicam INEP como fonte. Planilha oficial ainda não baixada do servidor do INEP."
+      "url": "https://dados.rs.gov.br/dataset/indice-de-desenvolvimento-da-educacao-basica-ideb-rio-grande-do-sul",
+      "note": "IDEB 2005–2025 por município e rede derivado diretamente das séries oficiais INEP publicadas pela SEDUC/RS, com hashes SHA256. Municipal 2025: anos iniciais 5,3 e anos finais 4,6; estadual ensino médio 4,5. Avaliação por escola ainda requer arquivo específico."
     },
     "fnde": {
       "status": "pending",
@@ -106,6 +106,12 @@
       "reference": "Rendimento, adequação docente e ICG 2025; INSE 2023",
       "url": "https://dados.rs.gov.br/dataset/indicadores-educacionais-da-educacao-basica-rio-grande-do-sul",
       "note": "Séries oficiais por município e rede, derivadas do INEP. Rendimento ensino fundamental municipal 2025: aprovação 89,1%, reprovação 9,8%, abandono 1,1%; AFD grupo 1 (fundamental) 73,6%; ICG 2,79. INSE 2023; NÃO vinculados individualmente às escolas."
+    },
+    "saeb_state": {
+      "status": "ok",
+      "reference": "SAEB 2025 · rede estadual em Canoas",
+      "url": "https://dados.rs.gov.br/dataset/proficiencias-do-saeb-rio-grande-do-sul",
+      "note": "Proficiências 2025 de Língua Portuguesa e Matemática por etapa da rede estadual no município. A rede municipal tem indicadores secundários separados aguardando confirmação na planilha INEP."
     }
   },
   "generatedAt": "2026-10-17",

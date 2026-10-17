@@ -1,3 +1,8 @@
+## Fonte primária de IDEB e SAEB por rede — 17/10/2026
+- Série 2005–2025 oficial do IDEB para redes municipal/estadual em Canoas substituiu a dependência de sites secundários. IDEB municipal 2025: 5,3 anos iniciais, 4,6 anos finais.
+- SAEB 2025 rede estadual em Canoas validado com planilha da SEDUC/RS; rede municipal ainda não consta como recorte dessa planilha.
+- Portal qualidade apresenta proveniência e diferenciação municipal/estadual. 
+
 ## Ampliação pré-1.0 — 17/10/2026
 - Rendimento escolar 2010–2025: aprovação, reprovação e abandono por rede/etapa, com séries e gráficos.
 - Formação docente AFD 2013–2025 por rede e etapas; grupo 1 no ensino fundamental municipal de 2025: 73,6%.

@@ -60,6 +60,7 @@ for(const [device, width, height] of [
    await nav.locator('[data-page="quality"]').click();
    await expect(page.getByRole('heading',{name:'Qualidade e aprendizagem'})).toBeVisible();
    await expect(page.getByText('IDEB 2025 — anos iniciais')).toBeVisible();
+   await expect(page.getByText('SAEB 2025 · rede ESTADUAL em Canoas')).toBeVisible();
    await expect(page.locator('#quality-chart')).toBeVisible();
    await expect(page.locator('#school-flow-chart')).toBeVisible();
    await expect(page.getByText('Nível socioeconômico (INSE) · referência 2023')).toBeVisible();

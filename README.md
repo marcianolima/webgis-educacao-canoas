@@ -88,3 +88,8 @@ Microdados individuais de matrículas e docentes por escola, IDEB individual e S
 
 ## Novos painéis oficiais do INEP/SEDUC-RS
 A página Qualidade inclui taxas de aprovação, reprovação e abandono por rede/etapa (2025) e série histórica do ensino fundamental. O módulo Profissionais apresenta a adequação da formação docente AFD por etapa e rede (grupos 1–5) e séries. Adicionou-se a complexidade de gestão ICG e o INSE com última referência **2023**. Fontes auditáveis e SHA-256 no `public/data/rs_indicators.json`; pipeline `refresh-rs-indicators.yml`.
+
+## IDEB e SAEB oficiais via dados abertos da SEDUC/RS
+- IDEB 2005–2025, municipal/estadual/todas: fonte INEP processada na planilha oficial [dados_ideb.xlsx](https://dados.rs.gov.br/dataset/indice-de-desenvolvimento-da-educacao-basica-ideb-rio-grande-do-sul). Em Canoas 2025, rede municipal **5,3 anos iniciais** e **4,6 anos finais**; rede estadual ensino médio **4,5**. Não aplicar essas notas a cada estabelecimento individualmente.
+- SAEB da rede **estadual** em Canoas, LP e Matemática por etapa, 2017–2025, dados_saeb.xlsx da SEDUC/RS. Não reinterpretar como SAEB da rede municipal. A fonte não apresenta SAEB municipal 2025 em sua planilha e o outro dado segue marcado como secundário.
+- Dados `rs_quality_official.json`, integração `scripts/rs_quality_official.py` e workflow `refresh-rs-quality.yml`, com SHA256 de cada XLSX.

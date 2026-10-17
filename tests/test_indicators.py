@@ -138,3 +138,20 @@ class OfficialAdvancedIndicatorsTests(unittest.TestCase):
   last=next(x for x in v if x["year"]==2023)
   self.assertEqual(last["nivel"],"Nível V")
   self.assertAlmostEqual(last["inse"],5.32,places=2)
+
+class PrimaryEducationQualityTests(unittest.TestCase):
+ def test_inep_seduc_ideb_primary_2025(self):
+  d=json.loads((DATA/"rs_quality_official.json").read_text(encoding="utf8"))
+  self.assertEqual(d["municipalityCode"],"4304606")
+  by=d["idebByNetwork"]
+  self.assertEqual(next(x for x in by["Municipal"] if x["year"]==2025)["AI.ideb"],5.3)
+  self.assertEqual(next(x for x in by["Municipal"] if x["year"]==2025)["AF.ideb"],4.6)
+  self.assertEqual(next(x for x in by["Estadual"] if x["year"]==2025)["EM.ideb"],4.5)
+  self.assertEqual(next(x for x in by["Todas"] if x["year"]==2025)["AI.ideb"],5.72)
+ def test_saeb_estado_not_municipal(self):
+  d=json.loads((DATA/"rs_quality_official.json").read_text(encoding="utf8"))
+  self.assertIn("saebStateByMunicipality",d)
+  x=next(x for x in d["saebStateByMunicipality"] if x["year"]==2025)
+  self.assertEqual(x["5EF.media_lp"],218.1)
+  self.assertEqual(x["9EF.media_lp"],273.3)
+  self.assertNotIn("saebMunicipal",d)

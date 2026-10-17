@@ -7,6 +7,21 @@ type FinanceYear={year:number;education:{committed:number|null;liquidated:number
 type Finance={source:string;unit:string;series:FinanceYear[];definition:string;annex:string;updatedAt:string};
 type Pnae={year:number;municipalityCode:number;fundingStatus:"planned";totalPlannedBRL:number;source:string;definition:string;actions:{code:string;name:string;studentsForAction:number;amountPlannedBRL:number}[]};
 let quality:Quality|null=null;
+type RSOfficial={municipalityCode:string;sourceAgency:string;sourceURLs:{ideb:string;saeb:string};idebByNetwork:Record<string,{year:number;[key:string]:number|null}[]>;saebStateByMunicipality:{year:number;[key:string]:number|null}[]};
+let officialRS:RSOfficial|null=null;
+export function setOfficialQuality(value:unknown){
+ const v=value as RSOfficial|undefined;
+ if(v?.municipalityCode!=='4304606'||!v.idebByNetwork?.Municipal?.some(x=>x.year===2025))return;
+ officialRS=v;
+ if(!quality)return;
+ quality.ideb.series=v.idebByNetwork.Municipal.map(x=>({
+  year:x.year,
+  initialMunicipal:x['AI.ideb']??null,
+  finalMunicipal:x['AF.ideb']??null,
+  highState:v.idebByNetwork.Estadual.find(r=>r.year===x.year)?.['EM.ideb']??null,
+ }));
+}
+
 let finance:Finance|null=null;
 let pnae:Pnae|null=null;
 type PNAETransfer={year:number;studentsConsidered:number;schoolsServed:number;reportedTransferredBRL:number|null};
@@ -54,7 +69,9 @@ export function qualityEducationPage(){
  const rows=quality.ideb.series;
  const last=rows.find(r=>r.year===2025);
  return '<div class="heading-row"><div><h2>Qualidade e aprendizagem</h2><p class="lead">IDEB por etapa e rede, com evolução histórica. Sem atribuir resultados municipais às escolas.</p></div><span class="tag">IDEB 2005–2025</span></div>'+
- '<div class="notice" role="status"><b>Proveniência e grau de confiança:</b> notas municipais compiladas e conferidas entre dois portais independentes que referenciam o INEP. Ainda não foram auditadas contra os arquivos originais do INEP 2025, indisponíveis no coletor. Resultados de escolas individuais continuam indisponíveis.</div>'+
+ (officialRS?
+ '<div class="notice info" role="status"><b>Fonte primária conciliada:</b> IDEB por rede e município, série 2005–2025 elaborada pela SEDUC/RS a partir dos resultados oficiais do INEP; referência de 2025 validada. Resultados individuais por escola só aparecem quando divulgados em arquivo próprio.</div>':
+ '<div class="notice" role="status"><b>IDEB municipal em conferência:</b> por enquanto, valores de fontes secundárias; aguarda processamento das planilhas oficiais.</div>')+
  '<div class="grid kpis">'+kpi('IDEB 2025 — anos iniciais',num(last?.initialMunicipal),'Rede municipal · índice de 0 a 10')+
  kpi('IDEB 2025 — anos finais',num(last?.finalMunicipal),'Rede municipal · índice de 0 a 10')+
  kpi('IDEB 2025 — ensino médio',num(last?.highState),'Rede estadual · não municipal')+
@@ -68,6 +85,15 @@ export function qualityEducationPage(){
  '<div class="table-wrap"><table class="table"><thead><tr><th>Etapa</th><th>Língua Portuguesa</th><th>Matemática</th></tr></thead><tbody>'+
  quality.saeb.stages.map(s=>'<tr><td>'+esc(s.stage)+'</td><td>'+num(s.portuguese)+'</td><td>'+num(s.math)+'</td></tr>').join('')+
  '</tbody></table></div><p class="lead">A escala SAEB não equivale à escala IDEB. Proficiências escolares dependem de critérios de divulgação do INEP.</p>')+'</div>'+
+ (officialRS?'<div class="section">'+panel('SAEB 2025 · rede ESTADUAL em Canoas','Média de proficiência da rede estadual nos estabelecimentos do município; não equivale à nota da rede municipal',
+ '<div class="table-wrap"><table class="table"><thead><tr><th>Etapa</th><th>Língua Portuguesa</th><th>Matemática</th></tr></thead><tbody>'+
+ ([
+  ['5º ano EF','5EF'],['9º ano EF','9EF'],['Ensino Médio','EM']
+ ] as [string,string][]).map(([name,k])=>{
+  const r=officialRS?.saebStateByMunicipality.find(s=>s.year===2025);
+  return '<tr><td>'+name+'</td><td>'+num(r?.[k+'.media_lp'])+'</td><td>'+num(r?.[k+'.media_mt'])+'</td></tr>';
+ }).join('')+'</tbody></table></div>'+
+ '<p class="lead">'+link(officialRS.sourceURLs.saeb,'SEDUC/RS · planilha SAEB por rede e município')+'</p>')+'</div>':'')+
  '<div class="section">'+panel('Fontes e interpretação','Conferência por mais de uma publicação, sem substituir o dado primário',
  '<div class="grid" style="gap:10px">'+link(quality.ideb.sourcePrimary,'INEP — resultados originais IDEB 2025')+
  quality.ideb.secondarySources.map((u,i)=>link(u,'Fonte secundária '+(i+1))).join('')+

@@ -1,0 +1,601 @@
+{
+  "schemaVersion": 1,
+  "year": 2025,
+  "municipalityCode": "4304606",
+  "catalogYear": 2023,
+  "scope": "Escolas da rede MUNICIPAL presentes no catálogo geográfico SEDUC/RS 2023",
+  "source": "https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar",
+  "sourceType": "PDDE Info · consulta pública por código INEP e exercício",
+  "updatedAt": "2026-10-17T15:27:48.259632+00:00",
+  "schoolsChecked": 83,
+  "schoolsResponded": 83,
+  "schoolsWithPublishedPayments": 0,
+  "schoolsWithNoOfficialResult": 83,
+  "schoolsWithFetchErrors": 0,
+  "totalPaidRespondedBRL": 0.0,
+  "coverageNote": "Somente escolas do catálogo municipal 2023. Total soma APENAS as respostas válidas; ausência/erro não são zeros. Não é total do PDDE de Canoas para todas as redes ou escolas ativas em 2025.",
+  "byInep": {
+    "43005764": {
+      "inep": "43005764",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43005829": {
+      "inep": "43005829",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43007520": {
+      "inep": "43007520",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43009930": {
+      "inep": "43009930",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43009948": {
+      "inep": "43009948",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43012442": {
+      "inep": "43012442",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43012450": {
+      "inep": "43012450",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43012477": {
+      "inep": "43012477",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43012566": {
+      "inep": "43012566",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43012574": {
+      "inep": "43012574",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037836": {
+      "inep": "43037836",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037844": {
+      "inep": "43037844",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037852": {
+      "inep": "43037852",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037860": {
+      "inep": "43037860",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037879": {
+      "inep": "43037879",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037887": {
+      "inep": "43037887",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037895": {
+      "inep": "43037895",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037909": {
+      "inep": "43037909",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037917": {
+      "inep": "43037917",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037925": {
+      "inep": "43037925",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037933": {
+      "inep": "43037933",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037941": {
+      "inep": "43037941",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037950": {
+      "inep": "43037950",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037968": {
+      "inep": "43037968",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037976": {
+      "inep": "43037976",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037984": {
+      "inep": "43037984",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43037992": {
+      "inep": "43037992",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038000": {
+      "inep": "43038000",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038018": {
+      "inep": "43038018",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038026": {
+      "inep": "43038026",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038476": {
+      "inep": "43038476",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038484": {
+      "inep": "43038484",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038492": {
+      "inep": "43038492",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038506": {
+      "inep": "43038506",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038522": {
+      "inep": "43038522",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038549": {
+      "inep": "43038549",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038557": {
+      "inep": "43038557",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038565": {
+      "inep": "43038565",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038590": {
+      "inep": "43038590",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038620": {
+      "inep": "43038620",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038638": {
+      "inep": "43038638",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038670": {
+      "inep": "43038670",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038689": {
+      "inep": "43038689",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038697": {
+      "inep": "43038697",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038700": {
+      "inep": "43038700",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43038751": {
+      "inep": "43038751",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43081290": {
+      "inep": "43081290",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43081320": {
+      "inep": "43081320",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43130020": {
+      "inep": "43130020",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43130054": {
+      "inep": "43130054",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43170102": {
+      "inep": "43170102",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43174558": {
+      "inep": "43174558",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43176968": {
+      "inep": "43176968",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184189": {
+      "inep": "43184189",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184197": {
+      "inep": "43184197",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184200": {
+      "inep": "43184200",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184219": {
+      "inep": "43184219",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184227": {
+      "inep": "43184227",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184235": {
+      "inep": "43184235",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184243": {
+      "inep": "43184243",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184260": {
+      "inep": "43184260",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184278": {
+      "inep": "43184278",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184286": {
+      "inep": "43184286",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184294": {
+      "inep": "43184294",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184332": {
+      "inep": "43184332",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184340": {
+      "inep": "43184340",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184359": {
+      "inep": "43184359",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184367": {
+      "inep": "43184367",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184375": {
+      "inep": "43184375",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184391": {
+      "inep": "43184391",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184413": {
+      "inep": "43184413",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184421": {
+      "inep": "43184421",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184456": {
+      "inep": "43184456",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184464": {
+      "inep": "43184464",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43191070": {
+      "inep": "43191070",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43200796": {
+      "inep": "43200796",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43204384": {
+      "inep": "43204384",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43210740": {
+      "inep": "43210740",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43216641": {
+      "inep": "43216641",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43295177": {
+      "inep": "43295177",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43296114": {
+      "inep": "43296114",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43300090": {
+      "inep": "43300090",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43367240": {
+      "inep": "43367240",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    }
+  },
+  "errors": {}
+}

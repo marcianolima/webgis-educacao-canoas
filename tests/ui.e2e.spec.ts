@@ -30,10 +30,10 @@ for(const [device, width, height] of [
    // Os painéis não podem inferir indicadores municipais como dados escolares.
 
    await nav.locator('[data-page="enrollments"]').click();
-   await expect(page.getByRole('heading',{name:'Rede escolar e matrículas'})).toBeVisible();
+   await expect(page.locator('main h2').filter({hasText:'Rede escolar e matrículas'})).toBeVisible();
    await expect(page.locator('#rs-enrollments-chart')).toBeVisible();
    await nav.locator('[data-page="infrastructure"]').click();
-   await expect(page.getByRole('heading',{name:'Infraestrutura escolar'})).toBeVisible();
+   await expect(page.locator('main h2').filter({hasText:'Infraestrutura escolar'})).toBeVisible();
    await nav.locator('[data-page="quality"]').click();
    await expect(page.getByRole('heading',{name:'Qualidade e aprendizagem'})).toBeVisible();
    await expect(page.getByText('IDEB 2025 — anos iniciais')).toBeVisible();

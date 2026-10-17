@@ -1,140 +1,70 @@
-name: Educação Canoas · validar, atualizar e publicar
+name: WebGIS Educação | Testar e publicar Pages
+
 on:
   push:
     branches: [main]
-    paths-ignore: ['**/*.md']
   workflow_dispatch:
-  schedule:
-    - cron: '20 9 1 * *' # verificação mensal de fonte anual, UTC
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: webgis-educacao-main
+  group: pages-webgis-educacao
   cancel-in-progress: false
 
 jobs:
-  validate:
+  verify:
+    name: Testes e build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Validar modelos, regras e snapshots existentes
+      - name: Testar integridade dos dados e coletores
         run: python -m unittest discover -s tests -v
-
-  collect:
-    needs: validate
-    runs-on: ubuntu-latest
-    timeout-minutes: 55
-    steps:
-      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          ref: main
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Decidir necessidade de coleta inicial ou programada
-        id: decide
-        env:
-          EVENT: ${{ github.event_name }}
+          node-version: '22'
+      - name: Instalar dependências
+        run: npm install --no-audit --no-fund
+      - name: Verificar TypeScript e gerar dist
+        run: npm run build
+      - name: Validar artefatos e rotas do Pages
         run: |
           python - <<'PY'
-          import json,os
           from pathlib import Path
-          s=json.loads(Path('public/data/summary.json').read_text(encoding='utf8'))
-          collect=os.environ['EVENT'] != 'push' or s['sourceInfo']['inep']['status'] not in ('ok','partial')
-          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-              f.write('run='+str(collect).lower()+'\n')
-          print('Coletar Censo Escolar:',collect)
+          import json
+          import re
+          dist=Path('dist')
+          page=(dist/'index.html').read_text(encoding='utf-8')
+          assert 'WebGIS Educação' in page, 'index.html ausente/incorreto'
+          assert '/webgis-educacao-canoas/assets/' in page, 'URLs dos assets sem base GitHub Pages'
+          for name in ('summary.json','schools.json','schools.geojson'):
+              content=json.loads((dist/'data'/name).read_text(encoding='utf-8'))
+              assert content is not None
+              print(f'{name}: {(dist/"data"/name).stat().st_size} bytes')
+          summary=json.loads((dist/'data/summary.json').read_text(encoding='utf-8'))
+          assert summary['municipality']['ibge']=='4304606'
+          print('Assets:',len(list((dist/'assets').glob('*.js'))),'JS compilados')
+          assert list((dist/'assets').glob('*.js'))
           PY
-      - name: Coletar microdados escolares INEP de 2025
-        if: steps.decide.outputs.run == 'true'
-        id: inep
-        continue-on-error: true
-        timeout-minutes: 43
-        env:
-          INEP_MAX_ZIP_MB: '850'
-          INEP_MAX_CSV_MB: '3500'
-        run: python scripts/inep_censo.py
-      - name: Georreferenciar via IDE SEDUC/RS — referência 2023
-        if: steps.decide.outputs.run == 'true'
-        id: seduc
-        continue-on-error: true
-        timeout-minutes: 8
-        run: python scripts/seduc_geo.py
-      - name: Validar publicação após coleta
-        run: python -m unittest discover -s tests -v
-      - name: Registrar estado e qualidade da fonte
-        env:
-          RESULT: ${{ steps.inep.outcome }}
-          GEO_RESULT: ${{ steps.seduc.outcome }}
-        run: |
-          python - <<'PY'
-          import json,os
-          from pathlib import Path
-          s=json.loads(Path('public/data/summary.json').read_text(encoding='utf8'))
-          e=s['education'];a=s['sourceInfo']['inep']
-          lines=['### WebGIS Educação · Canoas','','INEP: '+os.environ['RESULT'],'SEDUC: '+os.environ['GEO_RESULT'],'',
-                 'Status: '+str(a['status']), 'Ano: '+str(e['year']),
-                 'Escolas: '+str(e['totalSchools']),'Matrículas: '+str(e['totalEnrollments']),
-                 'Observações: '+str(a['note'])]
-          print('\n'.join(lines))
-          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write('\n'.join(lines)+'\n')
-          if os.environ['RESULT']=='failure':
-              print('::warning::INEP indisponível ou cobertura inválida. Dados publicados anteriormente preservados.')
-          PY
-      - name: Persistir somente os dados públicos reconciliados
-        if: steps.decide.outputs.run == 'true' && (steps.inep.outcome == 'success' || steps.seduc.outcome == 'success')
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add public/data/
-          if ! git diff --staged --quiet; then
-            git commit -m 'data: atualizar snapshots oficiais INEP/SEDUC'
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
   deploy:
-    needs: [validate, collect]
-    if: always() && needs.validate.result == 'success' && needs.collect.result == 'success'
+    name: Publicar site
+    needs: verify
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: npm install --no-audit --no-fund
-      - run: npm run build
-      - name: Inspecionar arquivos publicados
-        run: |
-          test -f dist/index.html
-          test -s dist/data/summary.json
-          test -s dist/data/schools.json
-          test -s dist/data/schools.geojson
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          p=Path('dist/data')
-          for name in ('summary.json','schools.json','schools.geojson'):
-              j=json.loads((p/name).read_text(encoding='utf8'))
-              print(name,'válido',len((p/name).read_bytes()),'bytes')
-          PY
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
       - uses: actions/deploy-pages@v4
         id: deployment

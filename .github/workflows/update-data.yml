@@ -1,0 +1,73 @@
+name: WebGIS Educação | Atualizar dados oficiais
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 9 1 * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-webgis-educacao
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Coleta e reconciliação
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Baixar e reconciliar o Censo Escolar 2025
+        id: inep
+        continue-on-error: true
+        timeout-minutes: 39
+        run: python scripts/inep_censo.py
+      - name: Consultar escolas IDE/RS e georreferenciar por INEP
+        id: seduc
+        continue-on-error: true
+        timeout-minutes: 8
+        run: python scripts/seduc_geo.py
+      - name: Testar snapshots produzidos
+        run: python -m unittest discover -s tests -v
+      - name: Registrar execução e eventual falha
+        env:
+          INEP_RESULT: ${{ steps.inep.outcome }}
+          SEDUC_RESULT: ${{ steps.seduc.outcome }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          data=Path('public/data')
+          s=json.loads((data/'summary.json').read_text(encoding='utf-8'))
+          c=json.loads((data/'schools.json').read_text(encoding='utf-8'))
+          lines=[
+            '## Coleta WebGIS Educação Canoas',
+            '- INEP: '+os.environ['INEP_RESULT'],
+            '- SEDUC: '+os.environ['SEDUC_RESULT'],
+            '- Total de escolas no catálogo: '+str(len(c['schools'])),
+            '- Ano do catálogo: '+str(c['year']),
+            '- INEP: '+str(s['sourceInfo']['inep']['status']),
+          ]
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a',encoding='utf-8') as f:f.write('\n'.join(lines)+'\n')
+          print('\n'.join(lines))
+          for key in ('INEP_RESULT','SEDUC_RESULT'):
+              if os.environ[key]!='success':
+                  print('::warning::'+key+' sem atualização validada. Snapshot anterior conservado.')
+          PY
+      - name: Commit somente dos dados públicos válidos
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: atualizar snapshots educacionais oficiais'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

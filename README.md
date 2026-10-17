@@ -46,3 +46,17 @@ A publicação exige **Settings → Pages → Source: GitHub Actions** caso o fl
 O WebGIS Saúde foi consultado somente como referência arquitetural; **nenhum arquivo de seu repositório é modificado por este projeto**.
 
 Esta versão é um instrumento de exploração de dados públicos e não substitui sistemas oficiais da Secretaria Municipal da Educação, INEP ou FNDE. Não inclui dados pessoais de estudantes ou profissionais.
+
+## Correção de implantação — 17/10/2026
+
+A partir desta revisão, o workflow de deploy é **independente de coletar dados externos**.
+Um teste anterior comparava valores da `Tabela_Escola` com matrículas, mas
+a regra do ETL de 2025 separa tabelas escolares e de matrículas por código INEP;
+foi corrigido para testar a ausência corretamente. A publicação não espera
+download do ZIP nacional INEP nem chamadas da IDE SEDUC/RS.
+
+- Deploy: `.github/workflows/deploy.yml`, `push` na `main` ou disparo manual.
+- Atualizações: `.github/workflows/update-data.yml`, execução manual e agendamento mensal.
+- A coleta **não altera indicadores municipais** quando faltam dados verificados.
+- Um site publicado pode ainda exibir indicadores escolares indisponíveis até a primeira extração.
+- Consultar os jobs para confirmar build e publicação; a URL só está operacional após sucesso em `deploy-pages`.

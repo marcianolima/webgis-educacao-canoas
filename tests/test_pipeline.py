@@ -29,7 +29,8 @@ class TransformTests(unittest.TestCase):
              "QT_MAT_BAS":"240","NU_LATITUDE":"-29,95",
              "NU_LONGITUDE":"-51,18","IN_INTERNET":"1"}
         d=inep.convert_row(row)
-        self.assertEqual((d["inep"],d["network"],d["enrollments"]),("12345678","Municipal",240))
+        self.assertEqual((d["inep"],d["network"]),("12345678","Municipal"))
+        self.assertIsNone(d["enrollments"])  # matrículas vêm da Tabela_Matricula, não de Tabela_Escola
         self.assertEqual((d["latitude"],d["longitude"]),(-29.95,-51.18))
         self.assertTrue(d["infrastructure"]["Internet"])
         self.assertIsNone(d["infrastructure"]["Biblioteca"])
@@ -41,6 +42,14 @@ class TransformTests(unittest.TestCase):
         d=inep.convert_row(row)
         self.assertIsNone(d["latitude"])
         self.assertIsNone(d["longitude"])
+
+    def test_school_stage_totals_await_other_table(self):
+        row={"CO_ENTIDADE":"12345678","TP_DEPENDENCIA":"3",
+             "TP_SITUACAO_FUNCIONAMENTO":"1","NO_ENTIDADE":"Escola",
+             "QT_MAT_BAS":"9999","QT_MAT_INF":"9999"}
+        school=inep.convert_row(row)
+        self.assertIsNone(school["enrollments"])
+        self.assertTrue(all(v is None for v in school["stages"].values()))
 
     def test_municipal_code_both_formats(self):
         self.assertEqual(inep.CANOAS,{"430460","4304606"})

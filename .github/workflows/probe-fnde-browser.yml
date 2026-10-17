@@ -1,0 +1,17 @@
+name: Testar exportação pública FNDE
+on:
+  push:
+    paths: ['scripts/probe_fnde_browser.mjs','.github/workflows/probe-fnde-browser.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/probe_fnde_browser.mjs

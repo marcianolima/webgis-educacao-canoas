@@ -1,0 +1,43 @@
+name: INEP IDEB 2025 | Inspecionar arquivos por escola
+on:
+  push:
+    paths: ['.github/workflows/probe-ideb-windows.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  inspect:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Download XLSX/ZIP IDEB oficiais com TLS Windows
+        shell: pwsh
+        run: |
+          @'
+          import subprocess,pathlib,zipfile,csv,io,os
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])
+          sources={
+           "fund_ai":"https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_escolas_2025.zip",
+           "fund_af":"https://download.inep.gov.br/ideb/resultados/divulgacao_anos_finais_escolas_2025.zip",
+           "medio":"https://download.inep.gov.br/ideb/resultados/divulgacao_ensino_medio_escolas_2025.zip",
+          }
+          for key,url in sources.items():
+           path=root/(key+".zip")
+           command=["curl.exe","-f","-L","--connect-timeout","20","--max-time","200","--retry","2","--silent","--show-error","-o",str(path),url]
+           p=subprocess.run(command,capture_output=True,text=True)
+           if p.returncode:print("DOWNLOAD_ERROR",key,p.returncode,p.stderr[:300],flush=True);continue
+           print("ZIP",key,path.stat().st_size,flush=True)
+           try:
+            with zipfile.ZipFile(path) as archive:
+             for z in archive.infolist():
+              print("MEMBER",key,z.filename,z.file_size,flush=True)
+              if z.filename.lower().endswith((".csv",".txt")) and z.file_size<100_000_000:
+               with archive.open(z) as f:raw=f.read(6000)
+               for enc in ("utf-8-sig","cp1252"):
+                try:content=raw.decode(enc);break
+                except UnicodeError:continue
+               print("CSV_FIRST",key,repr(content.splitlines()[:4])[:3400],flush=True)
+          except Exception as e:print("ZIP_ERROR",key,repr(e),flush=True)
+          '@ | python -

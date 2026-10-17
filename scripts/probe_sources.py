@@ -31,10 +31,10 @@ for name,url in SOURCES.items():
   body,status,final,ctype=load(url)
   p=Links();p.feed(body)
   print("STATUS",status,"FINAL",final,"content_type",ctype,"links",len(p.links))
-  selected=[(t,u) for t,u in p.links if name.startswith("inep") or name.startswith("ideb") or name.startswith("saeb") or
-             any(q in (t+" "+u).lower() for q in ["2024","2023","pdde","csv"])]
-  for text,url in selected[:65]:
+  selected=[(t,u) for t,u in p.links if
+             "download.inep.gov.br" in u or "apigatewayolinda" in u or
+             "s3.amazonaws.com" in u or "dadosabertos" in u or "ideb.inep.gov.br" in u]
+  for text,url in selected[:45]:
    if name=="inep_censo" and "2025" not in text:continue
-   if name=="ideb_2025" and ("municip" not in text.lower() and "escola" not in text.lower()):continue
-   print("LINK",repr(text[:85]),urllib.parse.urljoin(final,url)[:300])
+   print("LINK",repr(text[:110]),urllib.parse.urljoin(final,url)[:320])
  except Exception as ex: print("ERROR",type(ex).__name__,str(ex)[:400],flush=True)

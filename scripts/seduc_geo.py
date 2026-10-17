@@ -23,7 +23,13 @@ DATA = ROOT / "public" / "data"
 SERVICE = "https://iede.rs.gov.br/server/rest/services/SEDUC/Escolas_no_RS/MapServer/0"
 ENDPOINT = SERVICE + "/query"
 WHERE = "(cod_ibge_mun IN (430460,4304606) OR UPPER(municipio) = 'CANOAS')"
-FIELDS = "codigo_inep,escola,dependencia_adm,municipio,cod_ibge_mun,endereco,latitude,longitude"
+FIELDS = ",".join((
+    "codigo_inep","escola","dependencia_adm","municipio","cod_ibge_mun",
+    "endereco","latitude","longitude","localizacao","localidade_dif",
+    "categoria","categoria_esc_privada","conveniada","etapas_modalidade",
+    "outras_ofertas_educ","porte_escola","ens_medio_tempo_integral",
+    "num_turmas","num_matriculas",
+))
 STAGES = ("Educação infantil", "Ensino fundamental", "Ensino médio", "EJA", "Educação profissional")
 NETWORKS = {"Municipal", "Estadual", "Federal", "Privada"}
 
@@ -92,7 +98,32 @@ def parse_features(payload: dict, expected: int) -> list[dict]:
             continue
         if code in records:
             raise ValueError("SEDUC: Código INEP duplicado: " + code)
+        def optional_count(name):
+            n=a.get(name)
+            if n is None or isinstance(n,bool):return None
+            try:
+                num=int(n)
+                return num if 0<=num<=50000 else None
+            except (ValueError,TypeError):return None
+        def optional_text(name):
+            value=str(a.get(name) or "").strip()
+            return value[:254] if value else None
+        extra={
+            "locationType":optional_text("localizacao"),
+            "differentiatedLocality":optional_text("localidade_dif"),
+            "educationOffer":optional_text("etapas_modalidade"),
+            "otherEducationOffer":optional_text("outras_ofertas_educ"),
+            "schoolSize":optional_text("porte_escola"),
+            "privateSchoolType":optional_text("categoria_esc_privada"),
+            "publicAgreement":optional_text("conveniada"),
+            "stateFullTimeHighSchool":optional_count("ens_medio_tempo_integral"),
+            "stateReportedEnrollment":optional_count("num_matriculas") if network=="Estadual" else None,
+            "stateReportedClasses":optional_count("num_turmas") if network=="Estadual" else None,
+            "source":"SEDUC/RS · IDE/RS cadastro por escola (referência geográfica INEP 2023)",
+            "reportedCountsYear":None,
+        }
         records[code] = {
+            "seducDetails":extra,
             "inep": code, "name": str(a.get("escola") or "Nome não informado").strip(),
             "network": network,
             "address": str(a.get("endereco") or "").strip() or None,
@@ -113,6 +144,7 @@ def combine(existing: dict, source: list[dict]) -> tuple[dict, dict]:
             if school is None:
                 continue
             matches += 1
+            school["seducDetails"]=item.get("seducDetails",{})
             if school.get("latitude") is None or school.get("longitude") is None:
                 school["latitude"], school["longitude"] = item["latitude"], item["longitude"]
                 school["coordinateSource"] = "SEDUC/RS · escolas do RS · INEP 2023"

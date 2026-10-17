@@ -36,3 +36,10 @@ A tabela IBGE/SIDRA 9514 traz idade simples por residência. O coletor usa `c2/0
 ## Política de conciliação 2025
 População de referência: 2025 Censo Escolar por localização do estabelecimento, rede administrativa, município 4304606, não residentes nem estudantes únicos. O conjunto SEDUC/RS contém 196 escolas e 68.490 matrículas em Canoas, 82 escolas e 30.597 matrículas municipais. O mapa geográfico 2023 contém 178 pontos e não pode ser somado ou comparado como mesma cobertura.
 PDDE Info: consultas unitárias por código INEP e ano; usar apenas colunas Valor Pago Total e Data do Pagamento, ignorar linhas Subtotal, conferir com TOTAL GERAL. Ausência de resposta não significa zero. Valor agregado publicado apenas para respondentes, não total municipal censitário. Não publicar contas, agências, saldos bancários ou identificadores pessoais.
+
+
+## Indicadores educacionais de rendimento e docência — 2025
+Rendimento: aprovação, reprovação e abandono são taxas (%) por etapa e rede, somando aproximadamente 100% por etapa quando a informação é divulgada. Exemplo municipal, fundamental 2025: 89,1% + 9,8% + 1,1% = 100%.
+AFD: adequação da formação docente (grupos 1–5) refere-se à proporção de **docências** e não número de professores distintos. Grupo 1 representa formação considerada adequada conforme INEP. O número de escolas consideradas na AFD não equivale ao número total de matrículas.
+ICG: complexidade da gestão escolar por escola, agregada por rede/município e níveis 1–6; média e percentuais possuem denominador específico. Não transformar média da rede em ICG individual.
+INSE: indicador socioeconômico com última referência observada de **2023**, não 2025; os estudantes da amostra INSE não são todos os matriculados.

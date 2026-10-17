@@ -100,6 +100,12 @@
       "reference": "2025, código INEP por escola",
       "url": "https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar",
       "note": "PDDE 2025: 83 consultas para escolas municipais do mapa 2023, 82 com pagamentos válidos somando R$ 3.769.394,00, uma sem resultado. Cobertura do catálogo 2023, não total do município."
+    },
+    "rs_indicators": {
+      "status": "ok",
+      "reference": "Rendimento, adequação docente e ICG 2025; INSE 2023",
+      "url": "https://dados.rs.gov.br/dataset/indicadores-educacionais-da-educacao-basica-rio-grande-do-sul",
+      "note": "Séries oficiais por município e rede, derivadas do INEP. Rendimento ensino fundamental municipal 2025: aprovação 89,1%, reprovação 9,8%, abandono 1,1%; AFD grupo 1 (fundamental) 73,6%; ICG 2,79. INSE 2023; NÃO vinculados individualmente às escolas."
     }
   },
   "generatedAt": "2026-10-17",

@@ -1,3 +1,10 @@
+## Ampliação pré-1.0 — 17/10/2026
+- Rendimento escolar 2010–2025: aprovação, reprovação e abandono por rede/etapa, com séries e gráficos.
+- Formação docente AFD 2013–2025 por rede e etapas; grupo 1 no ensino fundamental municipal de 2025: 73,6%.
+- Complexidade de gestão ICG 2013–2025 por rede e níveis: municipal 2,79 em 2025.
+- Nível socioeconômico INSE de 2019–2023, com referência explícita de 2023 e não projeção.
+- Dados provenientes de 4 planilhas oficiais SEDUC/RS com SHA-256 e testes de reconciliação.
+
 ## 0.5.0 — 17/10/2026
 - Séries Censo Escolar por município/rede/etapa 2010–2025 (fonte INEP via SEDUC/RS): 196 escolas e 68.490 matrículas em 2025; rede municipal 82 escolas e 30.597 matrículas.
 - Fonte oficial FNDE PDDE Info por código INEP com programas, datas e valores efetivamente pagos: 82 escolas municipais respondentes positivos, R$ 3.769.394,00; uma escola consultada sem resposta oficial.

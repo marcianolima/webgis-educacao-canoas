@@ -107,3 +107,34 @@ class ReconciledSchoolDataTests(unittest.TestCase):
    if s["status"]=="ok":
     self.assertAlmostEqual(sum(p["paidBRL"] for p in s["payments"]),s["paidBRL"],places=2)
   self.assertAlmostEqual(sum(s["paidBRL"] for s in d["byInep"].values() if s["status"]=="ok"),d["totalPaidRespondedBRL"],places=2)
+
+class OfficialAdvancedIndicatorsTests(unittest.TestCase):
+ def test_flow_2025_percentages_sum_one_hundred(self):
+  d=json.loads((DATA/"rs_indicators.json").read_text(encoding="utf8"))
+  self.assertEqual(d["municipalityCode"],"4304606")
+  for network in ("Municipal","Estadual","Federal","Privada","Todas"):
+   r=next(x for x in d["schoolFlow"][network] if x["year"]==2025)
+   for key in ("fund","fund_ai","fund_af","med"):
+    a=[r.get(prefix+"_"+key) for prefix in ("aprov","reprov","aband")]
+    if all(x is not None for x in a):self.assertAlmostEqual(sum(a),100,delta=1.5)
+  r=next(x for x in d["schoolFlow"]["Municipal"] if x["year"]==2025)
+  self.assertAlmostEqual(r["aprov_fund"],89.1,places=1)
+  self.assertAlmostEqual(r["reprov_fund"],9.8,places=1)
+  self.assertAlmostEqual(r["aband_fund"],1.1,places=1)
+ def test_teacher_adequacy_2025_and_management(self):
+  d=json.loads((DATA/"rs_indicators.json").read_text(encoding="utf8"))
+  r=next(x for x in d["teacherAdequacy"]["Municipal"] if x["year"]==2025)
+  self.assertEqual(r["total_escolas"],82)
+  self.assertAlmostEqual(r["fund_total.g1"],73.6,places=1)
+  self.assertAlmostEqual(sum(r["fund_total.g"+str(i)] for i in range(1,6)),100,delta=2)
+  r=next(x for x in d["managementComplexity"]["Municipal"] if x["year"]==2025)
+  self.assertEqual(r["total_escolas"],82)
+  self.assertAlmostEqual(r["nivel_medio"],2.79,places=2)
+  self.assertEqual(sum(r["nivel_"+str(i)+".count"] for i in range(1,7)),82)
+ def test_socioeconomic_reference_is_2023(self):
+  d=json.loads((DATA/"rs_indicators.json").read_text(encoding="utf8"))
+  v=d["socioeconomic"]["Municipal"]
+  self.assertEqual(max(x["year"] for x in v),2023)
+  last=next(x for x in v if x["year"]==2023)
+  self.assertEqual(last["nivel"],"Nível V")
+  self.assertAlmostEqual(last["inse"],5.32,places=2)

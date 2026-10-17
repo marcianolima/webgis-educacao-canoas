@@ -61,6 +61,14 @@ for(const [device, width, height] of [
    await expect(page.getByRole('heading',{name:'Qualidade e aprendizagem'})).toBeVisible();
    await expect(page.getByText('IDEB 2025 — anos iniciais')).toBeVisible();
    await expect(page.locator('#quality-chart')).toBeVisible();
+   await expect(page.locator('#school-flow-chart')).toBeVisible();
+   await expect(page.getByText('Nível socioeconômico (INSE) · referência 2023')).toBeVisible();
+   await nav.locator('[data-page="teachers"]').click();
+   await expect(page.getByRole('heading',{name:'Docentes e formação adequada'})).toBeVisible();
+   await expect(page.locator('#teacher-chart')).toBeVisible();
+   await page.screenshot({path:testInfo.outputPath(device+'-docentes.png'),fullPage:true});
+   await nav.locator('[data-page="quality"]').click();
+
    await page.screenshot({path:testInfo.outputPath(device+'-ideb.png'),fullPage:true});
    await nav.locator('[data-page="childhood"]').click();
    await expect(page.getByRole('heading',{name:'Educação infantil e demografia territorial'})).toBeVisible();

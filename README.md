@@ -85,3 +85,6 @@ O Censo Escolar de 2025 passou a integrar indicadores oficiais agregados municip
 Também foi integrada a consulta pública PDDE Info por código INEP 2025: 83 escolas municipais do cadastro 2023 consultadas, 82 com pagamentos confirmados e uma sem resultado; pagamentos válidos somam **R$ 3.769.394,00** somente nas escolas cobertas. Cada ficha mostra os programas, valores pagos e datas, sem dados bancários.
 Arquivos públicos: public/data/rs_censo_municipal.json e public/data/pdde_schools.json. Coletores: scripts/rs_censo.py e scripts/fnde_pdde.py. Workflows: refresh-rs-censo.yml e refresh-pdde.yml.
 Microdados individuais de matrículas e docentes por escola, IDEB individual e SAEB individual ainda pendem da extração nacional segura do INEP, cujo servidor permanece com falhas TCP/TLS no GitHub runner.
+
+## Novos painéis oficiais do INEP/SEDUC-RS
+A página Qualidade inclui taxas de aprovação, reprovação e abandono por rede/etapa (2025) e série histórica do ensino fundamental. O módulo Profissionais apresenta a adequação da formação docente AFD por etapa e rede (grupos 1–5) e séries. Adicionou-se a complexidade de gestão ICG e o INSE com última referência **2023**. Fontes auditáveis e SHA-256 no `public/data/rs_indicators.json`; pipeline `refresh-rs-indicators.yml`.

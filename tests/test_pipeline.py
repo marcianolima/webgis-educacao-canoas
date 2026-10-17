@@ -138,3 +138,16 @@ class SeducGeometryTests(unittest.TestCase):
         self.assertEqual(cat["schools"][1]["latitude"],-29.96)
         self.assertEqual(diag["supplementedCoordinates"],1)
 
+
+class SEDUCExtendedMetadataTests(unittest.TestCase):
+    def test_seduc_offers_and_no_false_enrollment_year(self):
+        cat=json.loads((ROOT/"public"/"data"/"schools.json").read_text(encoding="utf8"))
+        if cat["year"]!=2023:return
+        rows=cat["schools"]
+        self.assertGreater(len([s for s in rows if (s.get("seducDetails") or {}).get("educationOffer")]),30)
+        for s in rows:
+            d=s.get("seducDetails") or {}
+            if d.get("stateReportedEnrollment") is not None:
+                self.assertEqual(s["network"],"Estadual")
+                self.assertIsNone(d.get("reportedCountsYear"))
+                self.assertIsNone(s["enrollments"])

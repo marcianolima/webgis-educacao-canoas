@@ -81,9 +81,9 @@ def extract(blob,prefix):
  b.close()
  return output
 def reconciled(matrix):
- for network in NETWORKS:
-  if len(matrix[network])!=len(matrix["Todas"]):raise ValueError("Anos das redes não compatíveis")
- years=[v["year"] for v in matrix["Todas"]]
+ yearsets={network:{v["year"] for v in matrix[network]} for network in NETWORKS}
+ years=sorted(set.intersection(*yearsets.values()))
+ if len(years)<14 or 2025 not in years:raise ValueError("Interseção de exercícios das redes insuficiente")
  for year in years:
   by={name:next(x for x in matrix[name] if x["year"]==year) for name in NETWORKS}
   for col in ("schools","mat_total"):

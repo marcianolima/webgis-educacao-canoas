@@ -17,6 +17,10 @@ for(const [device, width, height] of [
    await nav.locator('[data-page="schools"]').click();
    await expect(page.getByRole('heading',{name:'Escolas e território'})).toBeVisible();
    await expect(page.locator('.school-row').first()).toBeVisible();
+   await page.locator('#stage-select').selectOption({label:'Educação Infantil'});
+   expect(await page.locator('.school-row').count()).toBeGreaterThan(0);
+   await page.locator('#stage-select').selectOption({label:'Todas'});
+   await expect(page.locator('#size-select')).toBeVisible();
    await page.locator('.school-row').first().click();
    await expect(page.locator('#school-detail')).toBeVisible();
    await expect(page).toHaveURL(/inep=\d{8}/);

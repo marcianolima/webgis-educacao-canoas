@@ -64,3 +64,7 @@ Os dados cadastrais escolares provêm de fontes públicas e são apresentados co
 
 ## Dados federais PNAE (2024)
 Planilha XLSX oficial FNDE, `scripts/fnde_pnae.py`. A Prefeitura Municipal de Canoas tem **5 ações com previsão total de R$ 5.895.260,80 em 2024** (creche, AEE, EJA, ensino fundamental e pré-escola). O campo é previsão por ação, **não valor pago ou repassado**. Quantidades por ação não são estudantes únicos. O arquivo inclui SHA-256 do material original. Consulte `public/data/pnae.json`.
+
+
+## Oferta escolar e classificação territorial
+As escolas georreferenciadas da IDE/RS (referência INEP 2023) incluem etapa/modalidade ofertada, faixa de porte, tipo de localização, categoria privada e convênios, quando declarados. Os filtros de rede, etapa, porte e busca textual podem ser combinados. A mesma escola pode oferecer várias etapas, portanto a soma das contagens por etapa pode superar o total de escolas. Campos numéricos estaduais (`num_matriculas`, `num_turmas`) não têm competência explicitada pelo serviço e não entram nos totais do município.

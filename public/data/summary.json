@@ -12,13 +12,65 @@
     "schoolingYear": 2022
   },
   "education": {
-    "year": null,
-    "totalSchools": null,
-    "activeSchools": null,
-    "totalEnrollments": null,
-    "schoolsByNetwork": {},
-    "enrollmentsByNetwork": {},
-    "infrastructure": {}
+    "year": 2025,
+    "totalSchools": 196,
+    "activeSchools": 196,
+    "teacherFunctions": 3567,
+    "totalEnrollments": 68490,
+    "schoolsByNetwork": {
+      "Privada": 77,
+      "Estadual": 36,
+      "Municipal": 82,
+      "Federal": 1
+    },
+    "enrollmentsByNetwork": {
+      "Federal": 526,
+      "Estadual": 15675,
+      "Municipal": 30597,
+      "Privada": 21692
+    },
+    "infrastructure": {
+      "Internet": {
+        "yes": 196,
+        "observed": 196
+      },
+      "Biblioteca": {
+        "yes": 131,
+        "observed": 196
+      },
+      "Sala de leitura": {
+        "yes": 58,
+        "observed": 196
+      },
+      "Laboratório de informática": {
+        "yes": 68,
+        "observed": 196
+      },
+      "Laboratório de ciências": {
+        "yes": 55,
+        "observed": 196
+      },
+      "Quadra de esportes": {
+        "yes": 85,
+        "observed": 196
+      },
+      "Banheiro acessível": {
+        "yes": 153,
+        "observed": 196
+      },
+      "Água potável": {
+        "yes": 194,
+        "observed": 196
+      },
+      "Energia elétrica": {
+        "yes": 196,
+        "observed": 196
+      },
+      "Esgotamento público": {
+        "yes": 195,
+        "observed": 196
+      }
+    }
   },
   "sourceInfo": {
     "ibge": {
@@ -28,10 +80,11 @@
       "note": "Escolarização por residência, não matrículas em escolas do município."
     },
     "inep": {
-      "status": "pending",
+      "status": "ok",
       "reference": "2025",
-      "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
-      "note": "Aguardando execução e validação do coletor em GitHub Actions."
+      "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip",
+      "updatedAt": "2026-10-17T18:36:43.644190+00:00",
+      "note": "196 escolas em atividade (total de registros: 204), 214192 linhas nacionais; matrículas: 196/204 escolas com valor; 0 georreferenciadas. Colunas não encontradas: NO_BAIRRO, NO_ENDERECO, NU_ENDERECO, NU_LATITUDE, NU_LONGITUDE."
     },
     "ideb": {
       "status": "ok",
@@ -49,8 +102,8 @@
       "status": "ok",
       "reference": "2023 · coordenadas de escolas",
       "url": "https://iede.rs.gov.br/server/rest/services/SEDUC/Escolas_no_RS/MapServer/0",
-      "updatedAt": "2026-10-17T14:50:48.894798+00:00",
-      "note": "178 escolas georreferenciadas na camada; 0 correspondências com o INEP 2025; 178 posições complementadas. Não representa universo municipal completo."
+      "updatedAt": "2026-10-17T18:36:47.991646+00:00",
+      "note": "178 escolas georreferenciadas na camada; 169 correspondências com o INEP 2025; 169 posições complementadas. Não representa universo municipal completo."
     },
     "siconfi": {
       "status": "ok",
@@ -114,6 +167,6 @@
       "note": "Proficiências 2025 de Língua Portuguesa e Matemática por etapa da rede estadual no município. A rede municipal tem indicadores secundários separados aguardando confirmação na planilha INEP."
     }
   },
-  "generatedAt": "2026-10-17",
+  "generatedAt": "2026-10-17T18:36:43.644190+00:00",
   "note": "Os valores do IBGE são oficiais e independentes dos dados do INEP. Campos escolares nulos significam indisponível, não zero."
 }

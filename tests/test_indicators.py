@@ -72,3 +72,18 @@ class DemographicIBGETests(unittest.TestCase):
   self.assertEqual(sum(ages[str(a)] for a in range(6,15)),d["ageGroups"]["6–14 anos"])
   self.assertEqual(sum(ages[str(a)] for a in range(15,18)),d["ageGroups"]["15–17 anos"])
   self.assertGreater(d["totalPopulation"],sum(d["ageGroups"][k] for k in ("0–3 anos","4–5 anos","6–14 anos","15–17 anos","18–24 anos")))
+
+class FNDEActualTransferTests(unittest.TestCase):
+ def test_pnae_series_and_pnate_semantics(self):
+  d=json.loads((DATA/"fnde_actuals.json").read_text(encoding="utf8"))
+  self.assertEqual(d["municipalityCode"],"4304606")
+  s=d["pnae"]["series"]
+  self.assertEqual(len({y["year"] for y in s}),len(s))
+  self.assertGreaterEqual(len(s),16)
+  x=next(y for y in s if y["year"]==2025)
+  self.assertAlmostEqual(x["reportedTransferredBRL"],4439438.0,places=2)
+  self.assertEqual(x["schoolsServed"],91)
+  self.assertEqual(x["studentsConsidered"],35421)
+  self.assertIn("vl_pagar",d["pnate"]["measure"])
+  self.assertAlmostEqual(d["pnate"]["totalToPayBRL"],437.16,places=2)
+  self.assertAlmostEqual(sum(d["pnate"]["toPayBRL"].values()),d["pnate"]["totalToPayBRL"],places=2)

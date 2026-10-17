@@ -9,13 +9,18 @@ type Pnae={year:number;municipalityCode:number;fundingStatus:"planned";totalPlan
 let quality:Quality|null=null;
 let finance:Finance|null=null;
 let pnae:Pnae|null=null;
+type PNAETransfer={year:number;studentsConsidered:number;schoolsServed:number;reportedTransferredBRL:number|null};
+type FndeTransfers={municipalityCode:string;pnae:{series:PNAETransfer[];sourcePage:string;measure:string};pnate:{totalToPayBRL:number;toPayBRL:Record<string,number>;reportedAt:string;measure:string;sourcePage:string}};
+let transfers:FndeTransfers|null=null;
 
-export function setEducationExtras(a:unknown,b:unknown,c?:unknown){
+export function setEducationExtras(a:unknown,b:unknown,c?:unknown,d?:unknown){
  const q=a as Quality|undefined;const f=b as Finance|undefined;
  quality=q?.ideb?.series&&Array.isArray(q.ideb.series)?q:null;
  finance=f?.series&&Array.isArray(f.series)?f:null;
  const p=c as Pnae|undefined;
  pnae=p?.municipalityCode===4304606 && p.fundingStatus==="planned" && Array.isArray(p.actions)?p:null;
+ const t=d as FndeTransfers|undefined;
+ transfers=t?.municipalityCode==="4304606" && Array.isArray(t.pnae?.series)?t:null;
 }
 const esc=(v:unknown)=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]||x));
 const num=(v:number|null|undefined,dec=1)=>v===null||v===undefined?'—':new Intl.NumberFormat('pt-BR',{maximumFractionDigits:dec,minimumFractionDigits:dec}).format(v);
@@ -28,6 +33,7 @@ export function municipalEducationExtras(){
  if(!quality&&!finance)return '';
  const latest=quality?.ideb?.series.find(s=>s.year===2025);
  const fin=finance?.series.find(s=>s.year===2025);
+ const paid2025=transfers?.pnae.series.find(s=>s.year===2025);
  return '<section class="section" aria-label="Qualidade e financiamento municipal">'+
  '<div class="grid two">'+
  panel('Qualidade da educação · IDEB 2025','Rede municipal de Canoas · dados secundários corroborados',
@@ -39,6 +45,7 @@ export function municipalEducationExtras(){
   '<div class="grid finance-summary" style="gap:8px">'+kpi('Despesa empenhada',money(fin?.education.committed),'2025 · valor nominal · função 12')+
   '<button class="button light" data-page="finance">Ver execução financeira e série histórica →</button></div>')+
  '</div>'+
+ (paid2025?'<div class="notice info"><b>PNAE 2025 · campo Valor_Repasse informado pelo FNDE:</b> '+money(paid2025.reportedTransferredBRL)+' · '+new Intl.NumberFormat('pt-BR').format(paid2025.schoolsServed)+' escolas atendidas · '+new Intl.NumberFormat('pt-BR').format(paid2025.studentsConsidered)+' alunos considerados. Indicadores por ente executor, não por escola. <button class="button light" data-page="finance">Ver série histórica →</button></div>':'')+
  (pnae?'<div class="notice info"><b>PNAE '+pnae.year+':</b> previsão de repasses FNDE para o Município de Canoas: '+money(pnae.totalPlannedBRL)+'. Trata-se de <b>valor previsto</b>, não comprovante de transferência. <button class="button light" data-page="finance">Detalhar ações →</button></div>':'')+
  '</section>';
 }
@@ -83,14 +90,27 @@ export function financeEducationPage(){
  '<div class="table-wrap"><table class="table"><thead><tr><th>Ano</th><th>Empenhado</th><th>Liquidado</th><th>Pago</th><th>Infantil (empenhado)</th></tr></thead><tbody>'+
  s.map(x=>'<tr><td>'+x.year+'</td><td>'+money(x.education.committed)+'</td><td>'+money(x.education.liquidated)+'</td><td>'+money(x.education.paid)+'</td><td>'+money(x.subfunctions.earlyChildhood.committed)+'</td></tr>').join('')+
  '</tbody></table></div>')+'</div>'+
- (pnae?'<div class="section">'+panel('PNAE · previsão de repasses por ação ('+pnae.year+')','FNDE · ente executor Prefeitura de Canoas · valores previstos, não pagos',
+ (transfers?'<div class="section">'+panel('PNAE · valores informados como repassados ao município','FNDE · Plataforma Antonieta de Barros, produto 82 · por ente executor, não por unidade escolar',
+ '<div class="grid finance-kpis">'+
+ kpi('PNAE 2025 · Valor_Repasse',money(transfers.pnae.series.find(y=>y.year===2025)?.reportedTransferredBRL),'FNDE · exercício 2025 · Prefeitura de Canoas')+
+ kpi('Escolas atendidas 2025',num(transfers.pnae.series.find(y=>y.year===2025)?.schoolsServed,0),'PNAE 2025 · escolas do programa, não total censitário')+
+ kpi('Alunos considerados 2025',num(transfers.pnae.series.find(y=>y.year===2025)?.studentsConsidered,0),'PNAE 2025 · não estudantes únicos do município')+
+ '</div><div class="table-wrap"><table class="table"><thead><tr><th>Ano</th><th>Valor_Repasse</th><th>Alunos considerados</th><th>Escolas atendidas</th></tr></thead><tbody>'+
+ transfers.pnae.series.slice().reverse().map(v=>'<tr><td>'+v.year+'</td><td>'+money(v.reportedTransferredBRL)+'</td><td>'+num(v.studentsConsidered,0)+'</td><td>'+num(v.schoolsServed,0)+'</td></tr>').join('')+'</tbody></table></div>'+
+ '<p class="lead">Campo oficial <code>Valor_Repasse</code>. O arquivo não contém repasses individualizados às escolas, nem identifica parcelas por data. O ano de 2026 ainda aparece sem valor nesse arquivo e não deve ser interpretado como zero.</p>'+
+ '<p class="lead">'+link(transfers.pnae.sourcePage,'FNDE · produto 82')+'</p>')+'</div>':'')+
+ (transfers?'<div class="section">'+panel('PNATE · valores a pagar (não pagamentos realizados)','FNDE · produto 56 · arquivo com referência de atualização própria e competência não presumida',
+ '<div class="grid finance-kpis">'+kpi('Valor a pagar · PNATE',money(transfers.pnate.totalToPayBRL),'Colunas vl_pagar_* · registro consultado, não pagamento')+'</div>'+
+ '<p class="lead">A planilha registra a delegação da rede estadual e valores a pagar por etapa. O total é uma obrigação indicada, não um comprovante de repasse, despesa liquidada ou efetivamente paga.</p>'+
+ '<p class="lead">'+link(transfers.pnate.sourcePage,'FNDE · produto 56')+'</p>')+'</div>':'')+
+  (pnae?'<div class="section">'+panel('PNAE · previsão de repasses por ação ('+pnae.year+')','FNDE · ente executor Prefeitura de Canoas · valores previstos, não pagos',
  '<div class="grid finance-kpis">'+kpi('Total previsto PNAE',money(pnae.totalPlannedBRL),'Fonte FNDE · ano '+pnae.year)+'</div>'+
  '<div class="table-wrap"><table class="table"><thead><tr><th>Ação</th><th>Alunos considerados nesta ação</th><th>Valor previsto</th></tr></thead><tbody>'+
  pnae.actions.map(a=>'<tr><td>'+esc(a.name)+' ('+esc(a.code)+')</td><td>'+new Intl.NumberFormat('pt-BR').format(a.studentsForAction)+'</td><td>'+money(a.amountPlannedBRL)+'</td></tr>').join('')+'</tbody></table></div>'+
  '<p class="lead">Os alunos de diferentes ações podem se sobrepor; essas contagens não devem ser somadas como estudantes únicos. A previsão não é evidência de pagamento e não representa recursos repassados diretamente às escolas.</p>'+
  '<p class="lead">'+link(pnae.source,'Planilha oficial FNDE 2024')+'</p>')+'</div>':'')+
  '<div class="section">'+panel('Programas FNDE e fonte oficial','FUNDEB, PNAE, PDDE e FNDE não devem ser tratados como sinônimos da função orçamentária 12',
- '<p class="lead">Os valores repassados para entes municipais e unidades executoras precisam de conciliação específica antes de entrar na aplicação. A série acima é exclusivamente a despesa declarada no SICONFI.</p>'+
+ '<p class="lead">O PNAE por ente está integrado e o PNATE apresenta valores a pagar. O PDDE por escola e os pagamentos bancários detalhados ainda exigem reconciliação própria. A série SICONFI permanece separada.</p>'+
  '<p class="lead">'+link('https://apidatalake.tesouro.gov.br/docs/siconfi/','SICONFI · documentação da API')+' · '+link('https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos','FNDE · dados abertos')+'</p>')+'</div>';
 }
 export function mountEducationChart(page:'quality'|'finance',isDark:boolean):echarts.ECharts|null{

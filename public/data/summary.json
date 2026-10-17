@@ -76,6 +76,18 @@
       "reference": "Censo Demográfico 2022 · idade simples",
       "url": "https://apisidra.ibge.gov.br/values/t/9514/n6/4304606/v/93/p/2022/c2/0/c287/all",
       "note": "Distribuição etária 0–24 anos, grupos e idades simples do IBGE; residentes, não matrículas ou demanda de vagas. Reconciliado com 347.657 residentes."
+    },
+    "fnde_pnae_transfers": {
+      "status": "ok",
+      "reference": "2009–2025 · por entidade executora",
+      "url": "https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/82",
+      "note": "PNAE: Valor_Repasse anual informado pelo FNDE; 2025 R$ 4.439.438,00, 35.421 alunos considerados e 91 escolas atendidas. Não fornece distribuição por escola nem parcelas bancárias."
+    },
+    "fnde_pnate": {
+      "status": "partial",
+      "reference": "arquivo atualizado em janeiro/2026; linha de dados com data 2025-09-01",
+      "url": "https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/56",
+      "note": "PNATE tem campos vl_pagar_*: valores A PAGAR, sem prova de pagamento; competência não inferida."
     }
   },
   "generatedAt": "2026-10-17",

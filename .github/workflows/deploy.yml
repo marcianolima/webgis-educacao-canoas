@@ -43,7 +43,7 @@ jobs:
           page=(dist/'index.html').read_text(encoding='utf-8')
           assert 'WebGIS Educação' in page, 'index.html ausente/incorreto'
           assert '/webgis-educacao-canoas/assets/' in page, 'URLs dos assets sem base GitHub Pages'
-          for name in ('summary.json','schools.json','schools.geojson','quality.json','finance.json','pnae.json','ibge_age.json'):
+          for name in ('summary.json','schools.json','schools.geojson','quality.json','finance.json','pnae.json','ibge_age.json','fnde_actuals.json'):
               content=json.loads((dist/'data'/name).read_text(encoding='utf-8'))
               assert content is not None
               print(f'{name}: {(dist/"data"/name).stat().st_size} bytes')
@@ -53,6 +53,8 @@ jobs:
           d=json.loads((dist/'data/ibge_age.json').read_text(encoding='utf-8'))
           assert p['fundingStatus']=='planned'
           assert d['totalPopulation']==347657
+          transferred=json.loads((dist/'data/fnde_actuals.json').read_text(encoding='utf-8'))
+          assert transferred['municipalityCode']=='4304606'
           assert q['municipality']=='4304606'
           assert f['municipalityCode']==4304606
           assert 2025 in [row['year'] for row in f['series']]
@@ -132,6 +134,8 @@ jobs:
                   d=json.loads(fetch('data/ibge_age.json'))
                   assert p['fundingStatus']=='planned'
                   assert d['totalPopulation']==347657
+                  transferred=json.loads(fetch('data/fnde_actuals.json'))
+                  assert transferred['municipalityCode']=='4304606'
                   assert q['municipality']=='4304606'
                   assert f['municipalityCode']==4304606
                   assert any(r['year']==2025 for r in f['series'])

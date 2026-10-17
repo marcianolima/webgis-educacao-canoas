@@ -11,7 +11,7 @@ Frontend TypeScript + Vite + CSS responsivo, ECharts e MapLibre GL JS. A primeir
 
 Snapshot inicial IBGE verificado: **347.657** habitantes (Censo 2022), **359.845** habitantes (estimativa 2026), escolarização de 6–14 anos **97,17%** (2022). Fonte: https://www.ibge.gov.br/cidades-e-estados/rs/canoas.html. Não são indicadores de matrículas por escola.
 
-O coletor `scripts/inep_censo.py` está implementado para baixar e validar o pacote oficial de microdados do Censo Escolar **2025** durante o GitHub Actions. **Até o workflow confirmar a extração nacional e a contagem municipal, escolas, matrículas e mapa escolar não devem ser apresentados como integrados.** Coleta incompleta conserva arquivos anteriores. Se o arquivo do INEP não possuir campos opcionais, preserva valores nulos.
+O coletor `scripts/inep_censo.py` está implementado para baixar e validar o pacote oficial de microdados do Censo Escolar **2025** durante o GitHub Actions. Une as tabelas **Escola, Matrícula e Docente** pelo identificador INEP, preservando diferenças metodológicas entre matrícula e função docente. **Até o workflow confirmar a extração nacional e a contagem municipal, escolas, matrículas e mapa escolar não devem ser apresentados como integrados.** Coleta incompleta conserva arquivos anteriores. Se o arquivo do INEP não possuir campos opcionais, preserva valores nulos.
 
 ## Organização
 

@@ -9,7 +9,8 @@
 | Escolarização 6–14 anos | Residentes de 6 a 14 anos matriculados no ensino regular | Residentes de 6 a 14 anos | 2022 | 97,17%; não significa taxa de matrícula em escolas sediadas em Canoas |
 | Escolas cadastradas | Registros únicos CO_ENTIDADE em Canoas | Não é taxa | Censo 2025 | Inclui situações de funcionamento distintas |
 | Escolas em atividade | Escolas com TP_SITUACAO_FUNCIONAMENTO=1 | Não é taxa | Censo 2025 | Não confundir com série histórica de escolas existentes |
-| Matrículas declaradas | Soma QT_MAT_BAS quando totalmente disponível | Não é taxa | Censo 2025 | Não equivale a estudantes únicos; sob cobertura parcial permanece null |
+| Matrículas declaradas | Soma QT_MAT_BAS da Tabela_Matricula unida a Tabela_Escola por CO_ENTIDADE | Não é taxa | Censo 2025 | Não equivale a estudantes únicos; sob cobertura parcial permanece null |
+| Funções docentes | Soma QT_DOC_BAS da Tabela_Docente vinculada a CO_ENTIDADE | Não é taxa | Censo 2025 | Pode contar a mesma pessoa em diferentes escolas; só com cobertura integral |
 | Infraestrutura | Escolas com IN_*=1 | Escolas com resposta 0/1 naquele campo | Censo 2025 | Não contam respostas nulas no denominador |
 | IDEB / SAEB | Conforme metodologia oficial e edição | Conforme regras de elegibilidade | 2025 e anteriores | Não integrados; não inferir pontuações |
 | Financiamento | Repasses oficiais conforme programa e ente beneficiário | Variável | Várias | Não redistribuir repasses de município entre escolas |

@@ -91,8 +91,8 @@ def convert_row(row: dict[str, str]) -> dict:
         "address": address,
         "city": "Canoas",
         "year": YEAR,
-        "enrollments": integer(row.get("QT_MAT_BAS")),
-        "stages": {name: integer(row.get(col)) for name, col in STAGES.items()},
+        "enrollments": None, "teacherFunctions": None,
+        "stages": {name: None for name in STAGES},
         "infrastructure": {name: flag(row.get(col)) for name, col in INFRASTRUCTURE.items()},
         "latitude": lat,
         "longitude": lon,
@@ -166,30 +166,85 @@ def download(destination: Path) -> str:
                 time.sleep(2 ** attempt * 3)
     raise RuntimeError(f"INEP indisponível após tentativas: {error}")
 
+def read_table(z: zipfile.ZipFile, info: zipfile.ZipInfo):
+    if info.file_size > MAX_EXTRACTED:
+        raise RuntimeError(f"CSV {info.filename} excede limite descompactado ({info.file_size})")
+    with z.open(info) as probe:
+        prefix = probe.read(12000)
+    try:
+        prefix.decode("utf-8-sig", errors="strict")
+        encoding = "utf-8-sig"
+    except UnicodeDecodeError:
+        encoding = "cp1252"
+    with z.open(info) as raw, io.TextIOWrapper(raw, encoding=encoding, newline="", errors="replace") as stream:
+        reader = csv.DictReader(stream, delimiter=";")
+        # Os cabeçalhos não são renomeados implicitamente; erro de esquema é explícito.
+        if reader.fieldnames:
+            reader.fieldnames = [x.strip().lstrip("\ufeff") for x in reader.fieldnames]
+        yield reader
+
+def find_csv(z: zipfile.ZipFile, word: str) -> zipfile.ZipInfo | None:
+    candidates = [m for m in z.infolist()
+                  if not m.is_dir() and re.search(r"(?:^|/|\\\\)Tabela[_ -]?" + re.escape(word) + r"[_ -]?2025\.csv$",m.filename,re.I)]
+    if not candidates:
+        return None
+    return sorted(candidates,key=lambda m:(len(m.filename),m.filename))[0]
+
+def join_measurement(z: zipfile.ZipFile, member: zipfile.ZipInfo, schools: list[dict], columns: dict[str,str], label: str) -> dict:
+    by_id = {s["inep"]: s for s in schools}
+    seen: set[str] = set()
+    observed: set[str] = set()
+    total_rows = 0
+    matched = 0
+    for reader in read_table(z,member):
+        observed = set(reader.fieldnames or [])
+        if "CO_ENTIDADE" not in observed:
+            raise ValueError(f"{label}: coluna CO_ENTIDADE ausente")
+        for row in reader:
+            total_rows += 1
+            code = str(row.get("CO_ENTIDADE") or "").strip()
+            if code not in by_id:
+                continue
+            if code in seen:
+                raise ValueError(f"{label}: código escolar repetido: {code}")
+            seen.add(code)
+            target = by_id[code]
+            for dest, col in columns.items():
+                value = integer(row.get(col))
+                if dest == "enrollments" or dest == "teacherFunctions":
+                    target[dest] = value
+                elif dest.startswith("stage:"):
+                    target["stages"][dest[6:]] = value
+            matched += 1
+    if total_rows < 100_000:
+        raise ValueError(f"{label}: cobertura nacional não comprovada: {total_rows} linhas")
+    return {"rows":total_rows,"matched":matched,
+            "missingColumns":sorted(set(columns.values())-observed),
+            "missingSchools":len(schools)-matched,"member":member.filename}
+
 def read_zip(archive: Path) -> tuple[list[dict],dict,str]:
     with zipfile.ZipFile(archive) as z:
-        candidates = [
-            i for i in z.infolist()
-            if re.search(r"(Tabela[_ -]?Escola|microdados_ed_basica|microdados_educacao_basica|escolas)[^/]*\.csv$", i.filename, re.I)
-            and not i.is_dir()
-        ]
-        if not candidates:
-            raise RuntimeError("ZIP sem CSV cadastral escolar reconhecido: " + ", ".join(i.filename for i in z.infolist()[:20]))
-        # Alguns pacotes incluem outra tabela por escola; preferir Tabela_Escola.
-        candidates.sort(key=lambda i: (0 if "tabela_escola" in i.filename.lower() else 1,i.file_size))
-        member = candidates[0]
-        if member.file_size > MAX_EXTRACTED:
-            raise RuntimeError(f"CSV excede limite descompactado: {member.file_size}")
-        with z.open(member) as stream:
-            preview = stream.read(10000)
-        try:
-            preview.decode("utf-8-sig", errors="strict")
-            encoding = "utf-8-sig"
-        except UnicodeDecodeError:
-            encoding = "cp1252"
-        with z.open(member) as stream, io.TextIOWrapper(stream, encoding=encoding, newline="", errors="replace") as text_stream:
-            data, info = transform(csv.DictReader(text_stream, delimiter=";"))
-        return data, info, member.filename
+        school_file = find_csv(z,"Escola")
+        if school_file is None:
+            raise RuntimeError("ZIP sem Tabela_Escola_2025.csv: " + ", ".join(i.filename for i in z.infolist()[:25]))
+        for reader in read_table(z,school_file):
+            data, info = transform(reader)
+        # Em 2025, as matrículas e os docentes são disponibilizados pelo INEP
+        # em tabelas separadas e devem ser unidos por CO_ENTIDADE, nunca por nome.
+        enrollment_file = find_csv(z,"Matricula")
+        if enrollment_file:
+            columns = {"enrollments":"QT_MAT_BAS",**{"stage:"+k:v for k,v in STAGES.items()}}
+            info["matricula"] = join_measurement(z,enrollment_file,data,columns,"Matrícula")
+        else:
+            info["matricula"] = {"status":"not_found"}
+        teacher_file = find_csv(z,"Docente")
+        if teacher_file:
+            info["docente"] = join_measurement(z,teacher_file,data,{"teacherFunctions":"QT_DOC_BAS"},"Docente")
+        else:
+            info["docente"] = {"status":"not_found"}
+        info["enrollmentCoverage"]=sum(s["enrollments"] is not None for s in data)
+        info["teacherCoverage"]=sum(s["teacherFunctions"] is not None for s in data)
+        return data,info,school_file.filename
 
 def build_documents(schools: list[dict], meta: dict, sha256: str, member: str) -> dict[str,dict]:
     now = datetime.now(timezone.utc).isoformat()
@@ -210,6 +265,7 @@ def build_documents(schools: list[dict], meta: dict, sha256: str, member: str) -
         "year": YEAR,
         "totalSchools": len(schools),
         "activeSchools": active,
+        "teacherFunctions": sum(s["teacherFunctions"] for s in schools) if all(s["teacherFunctions"] is not None for s in schools) else None,
         "totalEnrollments": sum(s["enrollments"] for s in schools) if enrollment_complete else None,
         "schoolsByNetwork": dict(network),
         "enrollmentsByNetwork": enrollment_by_network,
@@ -257,8 +313,8 @@ def main() -> None:
         docs = build_documents(records,meta,sha,member)
         publish(docs)
     print(f"Coleta INEP {YEAR} validada: {meta['municipalRows']} escolas, {meta['withCoordinates']} com coordenadas; matrículas informadas para {meta['enrollmentCoverage']}.")
-    if not meta["enrollmentCoverage"]:
-        print("::warning::Arquivo de escolas não contém total de matrículas; integração matrícula-escola permanece pendente.")
+    if meta["enrollmentCoverage"] < len(records):
+        print("::warning::Matrículas sem cobertura integral; total municipal permanece indisponível.")
 
 if __name__ == "__main__":
     main()

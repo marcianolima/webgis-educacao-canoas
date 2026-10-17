@@ -9,7 +9,8 @@
 
 ## Contrato de dados
 - `education.totalSchools` soma registros escolares do ano de referência; `activeSchools` considera TP_SITUACAO_FUNCIONAMENTO=1.
-- `education.totalEnrollments` soma QT_MAT_BAS somente se esse campo existir e tiver valor em **todas** as escolas do recorte. Sem cobertura integral, publica **null** e não uma soma parcial.
+- `education.totalEnrollments` soma QT_MAT_BAS da tabela **Tabela_Matricula_2025.csv** unida por CO_ENTIDADE à tabela de escolas, somente quando todas as escolas possuem valor. Sem cobertura integral, publica **null**.
+- `education.teacherFunctions` soma QT_DOC_BAS da **Tabela_Docente_2025.csv** somente com cobertura integral; representa funções docentes declaradas por escola, **não docentes únicos**.
 - `infrastructure.{recurso}.yes/observed`: apenas resposta explícita de 1 ou 0 no campo IN_; ausentes excluídos do denominador; campo inexistente não aparece.
 - `schools[].stages`: cada etapa recebe valor apenas se seu campo de 2025 realmente existir. Valores nulos não são transformados em zero.
 - Coordenadas ausentes/fora dos limites geográficos plausíveis da cidade geram `null` e escola permanece na lista. Coordenadas da fonte não equivalem a levantamento de precisão.

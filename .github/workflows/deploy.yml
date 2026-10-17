@@ -68,3 +68,43 @@ jobs:
     steps:
       - uses: actions/deploy-pages@v4
         id: deployment
+      - name: Testar URL pública, arquivos e catálogo no GitHub Pages
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          python - <<'PY'
+          import json,os,re,time,urllib.request
+          from urllib.parse import urljoin
+          base=os.environ['PAGE_URL'].rstrip('/')+'/'
+          error=None
+          for attempt in range(10):
+              try:
+                  def fetch(path):
+                      url=urljoin(base,path)
+                      req=urllib.request.Request(url,headers={'User-Agent':'WebGIS-Educacao-CI/1.0','Cache-Control':'no-cache'})
+                      with urllib.request.urlopen(req,timeout=15) as r:
+                          if r.status != 200:raise ValueError(f'{path}: HTTP {r.status}')
+                          return r.read()
+                  html=fetch('').decode('utf-8')
+                  assert 'WebGIS Educação' in html
+                  scripts=re.findall(r'src="([^"]+\.js)"',html)
+                  assert scripts,'Nenhum JS no index'
+                  js_path=scripts[0].replace('/webgis-educacao-canoas/','')
+                  assert len(fetch(js_path)) > 10000
+                  summary=json.loads(fetch('data/summary.json'))
+                  school=json.loads(fetch('data/schools.json'))
+                  geo=json.loads(fetch('data/schools.geojson'))
+                  assert summary['municipality']['ibge']=='4304606'
+                  assert school['schemaVersion']==1
+                  assert len(geo['features'])<=len(school['schools'])
+                  if school['schools']:assert len(geo['features'])>=30
+                  print(f'HTTP 200: {base}, JS, summary, schools, GeoJSON')
+                  print(f'Escolas publicadas: {len(school["schools"])}; coordenadas: {len(geo["features"])}; fonte ano: {school["year"]}')
+                  break
+              except Exception as exc:
+                  error=exc
+                  print(f'Tentativa {attempt+1}/10: {exc}',flush=True)
+                  time.sleep(6)
+          else:
+              raise RuntimeError('Falha no teste HTTP pós-deploy: '+str(error))
+          PY

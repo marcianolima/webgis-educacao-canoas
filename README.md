@@ -72,3 +72,10 @@ As escolas georreferenciadas da IDE/RS (referência INEP 2023) incluem etapa/mod
 
 ## Perfil etário IBGE/SIDRA 9514 — Censo Demográfico 2022
 O coletor `scripts/ibge_age.py` consulta a API SIDRA oficial por município IBGE 4304606, confirma população total de **347.657 residentes** e reconcilia idades simples 0–24 com faixas quinquenais. Publica as faixas 0–3, 4–5, 6–14, 15–17, 18–24 e o agregado 0–17, usadas no módulo Educação Infantil e Painel Municipal. Esses números representam residentes no Censo 2022, não matrículas em escolas nem estimativas de 2026. Atualização anual de verificação do arquivo está em `.github/workflows/refresh-ibge-age.yml`.
+
+
+## Estado da v0.4 — fontes efetivamente novas
+- **FNDE PNAE (2024):** R$ 5.895.260,80 **previstos**, em cinco ações, pela entidade executora Prefeitura Municipal de Canoas; estudantes contabilizados por ação (podem se sobrepor). `public/data/pnae.json`, `scripts/fnde_pnae.py`.
+- **IBGE/SIDRA (2022):** população residente de 0–3, 4–5, 6–14, 15–17, 18–24 e 0–17, sem projeções artificiais. `public/data/ibge_age.json`, `scripts/ibge_age.py`.
+- **SEDUC/RS (base cartográfica 2023):** oferta escolar, tipo de localização, porte e características das unidades, com filtros cruzados. Campos de matrículas e turmas do geosserviço estadual sem competência explícita não compõem somas municipais.
+- **Em análise:** fontes FNDE/PAB para valores PNAE efetivamente transferidos, PNATE, SIOPE e PDDE; INEP Data para matrícula 2025 e IDEB/SAEB por escola.

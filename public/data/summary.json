@@ -70,6 +70,12 @@
       "reference": "2024 · previsão por entidade executora",
       "url": "https://www.gov.br/fnde/pt-br/acesso-a-informacao/acoes-e-programas/programas/pnae/consultas/repasses-financeiros-por-entidade-executora",
       "note": "Previsão de R$ 5.895.260,80 para a Prefeitura de Canoas, em 5 ações PNAE; não são transferências efetivas nem valores atribuídos a escolas."
+    },
+    "ibge_age": {
+      "status": "ok",
+      "reference": "Censo Demográfico 2022 · idade simples",
+      "url": "https://apisidra.ibge.gov.br/values/t/9514/n6/4304606/v/93/p/2022/c2/0/c287/all",
+      "note": "Distribuição etária 0–24 anos, grupos e idades simples do IBGE; residentes, não matrículas ou demanda de vagas. Reconciliado com 347.657 residentes."
     }
   },
   "generatedAt": "2026-10-17",

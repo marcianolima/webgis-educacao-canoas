@@ -39,3 +39,15 @@ A consulta `SEDUC/Escolas_no_RS/MapServer/0` retorna `etapas_modalidade`, `porte
 
 ## IBGE / SIDRA · perfil etário do Censo 2022
 **Integrado (fonte primária):** `https://apisidra.ibge.gov.br/values/t/9514/n6/4304606/v/93/p/2022/c2/0/c287/all`. A extração retorna residentes por idade e por forma de declaração; o coletor filtra a categoria total de declaração, remove faixas sobrepostas e reconcilia idades simples com os grupos 0–4, 5–9, 10–14, 15–19 e 20–24, além do total geral 347.657. Valores não devem ser usados como número de matrículas ou demanda reprimida. Arquivo `public/data/ibge_age.json`.
+
+
+## FNDE - novas fontes oficiais identificadas para próximas integrações
+| Conjunto | Fonte e granularidade | Estado real / restrição |
+|---|---|---|
+| PNAE 2024 · previsão | Planilha oficial por UF, entidade executora, ação; `https://www.gov.br/fnde/pt-br/acesso-a-informacao/acoes-e-programas/programas/pnae/consultas/repasses-financeiros-por-entidade-executora` | **Integrado**; coluna `VALOR_PREVISTO`, não confundir com execução ou pagamento |
+| PNAE repasses efetivos | FNDE Plataforma Antonieta de Barros, produto 82: `https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/82` | Produto oficial identificado, arquivo .txt.gz; exportação precisa de rota/contrato validado antes de coletar |
+| PNATE · repasses e alunos | FNDE Plataforma Antonieta de Barros, produtos 55 e 56 | Dados por UF/município catalogados; ainda não descarregados nem reconciliados |
+| Indicadores SIOPE | FNDE Plataforma Antonieta de Barros, produto 54; históricos até 2025, produto 73 | Catálogos oficiais identificados; layout e convenções contábeis pendentes |
+| PDDE por escola | `https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar` | Consulta por ano e código INEP existente, integração automatizada e identificação de valor efetivamente pago pendentes |
+| INEP Data · Catálogo de Escolas | `https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/catalogo-de-escolas/` | Alternativa oficial com filtros e exportação por município/escola, sem endpoint de exportação autenticado ou estável identificado |
+| INEP Data · Estatísticas Censo Escolar | `https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/estatisticas-censo-escolar` | Painéis municipais e históricos disponíveis, interface de BI sem contrato para ETL automático comprovado |

@@ -22,3 +22,13 @@
 **LGPD:** dados expostos limitados a cadastro institucional, infraestrutura, localização oficial e agregados escolares. Não publicar nomes de docentes ou estudantes, CPFs, NIS, matrículas individuais, endereços residenciais, atributos sensíveis ou recortes passíveis de reidentificação. Quando futuras fontes apresentarem pequenas contagens sensíveis, aplicar supressão e explicar a regra.
 
 **Inspeção pós-deploy:** testar `dist/index.html`, `dist/data/summary.json`, `dist/data/schools.json`, `dist/data/schools.geojson`; conferir totais, referências e status além do resultado dos jobs. Homologação visual com navegadores e leitores de tela físicos ainda necessária.
+
+
+## PNAE 2024: natureza do valor e sobreposição
+A planilha `Previsão Repasse Financeiro PNAE - 2024` do FNDE apresenta `ENTIDADE_RESP=PREF MUN DE CANOAS`, `UF=RS`, `ACAO`, `QTDE_ALUNO` e `VALOR_PREVISTO`. O número financeiro divulgado é **previsão**, não transferência, empenho ou valor pago. A soma das cinco ações é R$ 5.895.260,80, verificada contra as linhas de origem. Os alunos considerados em AEE e demais ações podem se sobrepor; não somar como estudantes únicos nem distribuir às escolas. O arquivo público `pnae.json` armazena o SHA-256 do XLSX oficial.
+
+## Faixas etárias — Censo 2022
+A tabela IBGE/SIDRA 9514 traz idade simples por residência. O coletor usa `c2/0` (sexo total) e a dimensão total da forma de declaração da idade, reconcilia valores de 0 a 24 anos com grupos quinquenais e população total do Censo 2022 (347.657). As faixas publicadas são 0–3, 4–5, 6–14, 15–17, 18–24 e 0–17; o último é agregado dos anteriores até 17, não uma faixa mutuamente exclusiva em gráficos. Os valores não expressam demanda por vagas nem população projetada para 2026.
+
+## Oferta escolar da IDE SEDUC
+`etapas_modalidade`, `porte_escola`, `localizacao` e outros campos descritivos são de fonte geoespacial oficial com referência cartográfica INEP 2023. Etapas podem se sobrepor, portanto contagens por etapa não são somáveis para número único de escolas. A camada contém valores `num_matriculas` e `num_turmas` em escolas estaduais, mas o período próprio dessas quantidades não está documentado; a visualização individual inclui ressalva e não converte esses registros em totais municipais.

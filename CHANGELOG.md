@@ -1,3 +1,11 @@
+## 0.4.0 — 17/10/2026 — PNAE, demografia e oferta territorial
+- Corrigidos cartões financeiros em celulares: grid de uma coluna, tipografia flexível e teste automático de overflow incluindo PNAE.
+- PNAE 2024: planilha oficial FNDE recuperada por HTTPS com integridade SHA-256; cinco ações de Canoas e previsão total R$ 5.895.260,80. Indicadores rotulados como **previstos**, não transferidos.
+- IBGE/SIDRA tabela 9514: população por idade simples de 0 a 24 anos, validada contra o total do Censo 2022 (347.657) e faixas quinquenais. Integração na página inicial e no módulo Educação Infantil.
+- SEDUC/RS (cadastro geográfico 2023): ofertas educacionais, categorias, faixas de porte e filtros de etapa/porte, novos campos nas fichas por código INEP; dados estaduais sem período explícito não utilizados em agregados oficiais.
+- Atualização separada por fonte via GitHub Actions; testes Python/TypeScript e Playwright desktop/tablet/celular.
+- Continua pendente o download do microdado 2025 do INEP via host oficial (falhas de conexão/certificação), IDEB/SAEB originais por escola, repasses efetivamente pagos do PNAE/PDDE/PNATE/FUNDEB.
+
 ## 0.3.0 — 17/10/2026 — Qualidade, SICONFI e fontes complementares
 - Fonte primária Tesouro Nacional SICONFI, DCA Anexo I-E, função Educação: séries anuais verificadas 2019–2025; estágios empenhada/liquidada/paga e subfunções sem dupla contagem.
 - IDEB municipal por etapa 2005–2025, valores corroborados em portais secundários que referenciam o INEP; proveniência e limitações em destaque.

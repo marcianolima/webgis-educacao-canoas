@@ -1,0 +1,46 @@
+name: WebGIS Educação | IDEB e SAEB oficiais SEDUC
+on:
+  push:
+    paths:
+      - 'scripts/rs_quality_official.py'
+      - '.github/workflows/refresh-rs-quality.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '45 9 25 9 *'
+permissions: {contents: write}
+concurrency: {group: rs-quality-canoas, cancel-in-progress: false}
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install openpyxl==3.1.5
+      - name: IDEB 2025 INEP original processado RS e SAEB estadual município
+        run: python scripts/rs_quality_official.py
+      - name: Reconciliar fontes e valores
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('public/data/rs_quality_official.json').read_text(encoding='utf8'))
+          a=next(q for q in x['idebByNetwork']['Municipal'] if q['year']==2025)
+          b=next(q for q in x['idebByNetwork']['Estadual'] if q['year']==2025)
+          assert a['AI.ideb']==5.3 and a['AF.ideb']==4.6 and b['EM.ideb']==4.5
+          assert next(q for q in x['saebStateByMunicipality'] if q['year']==2025)['5EF.media_lp']==218.1
+          print('IDEB SEDUC/INEP 2025 reconciliado',a,b)
+          PY
+      - run: python -m unittest discover -s tests -v
+      - name: Publicar arquivo originalizado por rede e ano
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/rs_quality_official.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: IDEB municipal INEP e SAEB estadual 2025 oficiais SEDUC RS'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

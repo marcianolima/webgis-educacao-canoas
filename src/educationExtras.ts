@@ -32,7 +32,7 @@ export function municipalEducationExtras(){
   kpi('Anos finais',num(latest?.finalMunicipal),'IDEB 2025 · rede municipal')+
   '</div><p class="lead">Confirmação cruzada em duas fontes secundárias. As planilhas oficiais do INEP permanecem pendentes de acesso confiável.</p><button class="button light" data-page="quality">Explorar evolução do IDEB e SAEB →</button>')+
  panel('Despesa com educação · 2025','Tesouro Nacional / SICONFI · DCA, função 12',
-  '<div class="grid" style="gap:8px">'+kpi('Despesa empenhada',money(fin?.education.committed),'2025 · valor nominal · função 12')+
+  '<div class="grid finance-summary" style="gap:8px">'+kpi('Despesa empenhada',money(fin?.education.committed),'2025 · valor nominal · função 12')+
   '<button class="button light" data-page="finance">Ver execução financeira e série histórica →</button></div>')+
  '</div></section>';
 }
@@ -67,7 +67,7 @@ export function financeEducationPage(){
  const last=s.find(x=>x.year===2025)||s[s.length-1];
  if(!last)return '<div class="empty">Sem exercícios financeiros verificados.</div>';
  return '<div class="heading-row"><div><h2>Financiamento público da educação</h2><p class="lead">Execução orçamentária municipal · DCA Anexo I-E, Função 12.</p></div><span class="tag">Tesouro Nacional · 2019–2025</span></div>'+
- '<div class="grid kpis">'+kpi('Empenhado em '+last.year,money(last.education.committed),'Função educação · exercício '+last.year)+
+ '<div class="grid kpis finance-kpis">'+kpi('Empenhado em '+last.year,money(last.education.committed),'Função educação · exercício '+last.year)+
  kpi('Liquidado em '+last.year,money(last.education.liquidated),'Função educação · exercício '+last.year)+
  kpi('Pago em '+last.year,money(last.education.paid),'Função educação · exercício '+last.year)+
  kpi('Educação infantil',money(last.subfunctions.earlyChildhood.committed),'Subfunção 12.365 · empenhado · parte do total')+'</div>'+

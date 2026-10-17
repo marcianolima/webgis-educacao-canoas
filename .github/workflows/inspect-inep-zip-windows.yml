@@ -1,0 +1,53 @@
+name: INEP 2025 | Inspecionar microdados com TLS Windows
+on:
+  push:
+    paths: ['.github/workflows/inspect-inep-zip-windows.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  inspect:
+    runs-on: windows-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Baixar ZIP oficial via Schannel com validação TLS
+        shell: pwsh
+        run: |
+          $ErrorActionPreference="Stop"
+          $url="https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip"
+          $file=Join-Path $env:RUNNER_TEMP "microdados_2025.zip"
+          & curl.exe --fail --location --retry 3 --retry-all-errors --connect-timeout 25 --max-time 900 --silent --show-error --output $file $url
+          if($LASTEXITCODE -ne 0){ throw "Download INEP falhou com curl $LASTEXITCODE" }
+          $bytes=(Get-Item $file).Length
+          Write-Host "ZIP_BYTES=$bytes"
+          if($bytes -lt 500000000 -or $bytes -gt 650000000){ throw "ZIP fora do limite de integridade esperado" }
+          "INEP_INPUT_ZIP=$file" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Investigar lista de membros e cabeçalhos sem extrair dados sensíveis
+        shell: pwsh
+        run: |
+          @'
+          import os,zipfile,csv,io,re,hashlib
+          f=os.environ["INEP_INPUT_ZIP"]
+          print("ZIP_IDENTIFIED",zipfile.is_zipfile(f),flush=True)
+          h=hashlib.sha256()
+          with open(f,"rb") as src:
+            for chunk in iter(lambda:src.read(4*1024*1024),b""):h.update(chunk)
+          print("SHA256",h.hexdigest(),flush=True)
+          with zipfile.ZipFile(f) as z:
+            infos=z.infolist()
+            print("MEMBERS",len(infos),flush=True)
+            for member in infos[:90]:
+              print("MEMBER",member.filename[:130],"SIZE",member.file_size,"COMP",member.compress_size,flush=True)
+              if not re.search(r"\.csv$",member.filename,re.I):continue
+              if member.file_size>5_000_000_000:continue
+              with z.open(member) as r: raw=r.read(10000)
+              for enc in ("utf-8-sig","cp1252"):
+                try: decoded=raw.decode(enc);break
+                except UnicodeError:continue
+              lines=decoded.splitlines()
+              if lines:
+                sample=lines[0][:3500]
+                print("CSV_HEADER",member.filename[:120],sample,flush=True)
+          '@ | python -

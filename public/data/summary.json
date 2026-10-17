@@ -83,8 +83,8 @@
       "status": "ok",
       "reference": "2025",
       "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip",
-      "updatedAt": "2026-10-17T18:36:43.644190+00:00",
-      "note": "196 escolas em atividade (total de registros: 204), 214192 linhas nacionais; matrículas: 196/204 escolas com valor; 169 georreferenciadas após enriquecimento do geosserviço oficial SEDUC/RS. Colunas não encontradas: NO_BAIRRO, NO_ENDERECO, NU_ENDERECO, NU_LATITUDE, NU_LONGITUDE."
+      "updatedAt": "2026-10-17T18:55:47.740050+00:00",
+      "note": "196 escolas em atividade (total de registros: 204), 214192 linhas nacionais; matrículas: 196/204 escolas com valor; 0 georreferenciadas. Colunas não encontradas: NO_BAIRRO, NO_ENDERECO, NU_ENDERECO, NU_LATITUDE, NU_LONGITUDE."
     },
     "ideb": {
       "status": "ok",
@@ -102,7 +102,7 @@
       "status": "ok",
       "reference": "2023 · coordenadas de escolas",
       "url": "https://iede.rs.gov.br/server/rest/services/SEDUC/Escolas_no_RS/MapServer/0",
-      "updatedAt": "2026-10-17T18:36:47.991646+00:00",
+      "updatedAt": "2026-10-17T18:55:51.735373+00:00",
       "note": "178 escolas georreferenciadas na camada; 169 correspondências com o INEP 2025; 169 posições complementadas. Não representa universo municipal completo."
     },
     "siconfi": {
@@ -167,6 +167,6 @@
       "note": "Proficiências 2025 de Língua Portuguesa e Matemática por etapa da rede estadual no município. A rede municipal tem indicadores secundários separados aguardando confirmação na planilha INEP."
     }
   },
-  "generatedAt": "2026-10-17T18:36:43.644190+00:00",
+  "generatedAt": "2026-10-17T18:55:47.740050+00:00",
   "note": "Os valores do IBGE são oficiais e independentes dos dados do INEP. Campos escolares nulos significam indisponível, não zero."
 }

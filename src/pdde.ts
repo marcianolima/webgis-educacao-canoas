@@ -8,7 +8,7 @@ export function setPdde(raw:unknown){
   !!d.byInep?d:null;
 }
 const money=(v:number|null|undefined)=>v==null?'Não disponível':new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v);
-const esc=(v:unknown)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c));
+const esc=(v:unknown)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c));
 export function pddeSchoolPanel(inep:string){
  if(!pdde)return '';
  const item=pdde.byInep[inep];

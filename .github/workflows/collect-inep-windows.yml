@@ -46,6 +46,7 @@ jobs:
         shell: pwsh
         run: |
           python -m unittest discover -s tests -v
+          if($LASTEXITCODE -ne 0){throw "Testes Python falharam, snapshot rejeitado"}
           @'
           import json
           from pathlib import Path
@@ -68,18 +69,52 @@ jobs:
                   assert forbidden not in row
           print("SUCCESS: INEP 2025 verificado e reconciliado",len(a["schools"]),"linhas, points",len(g["features"]))
           '@ | python -
-      - name: Versionar somente os agregados/cadastro públicos (sem ZIP)
+          if($LASTEXITCODE -ne 0){throw "Reconciliação INEP falhou"}
+      - name: Versionar somente snapshots compatibilizados com branch main
         shell: pwsh
         run: |
+          $ErrorActionPreference="Stop"
+          $names=@("summary.json","schools.json","schools.geojson","inep_provenance.json","seduc_provenance.json")
+          $snapshotDir=Join-Path $env:RUNNER_TEMP "inep-validated"
+          New-Item -ItemType Directory -Force -Path $snapshotDir | Out-Null
+          foreach($name in $names){
+            Copy-Item (Join-Path "public/data" $name) (Join-Path $snapshotDir $name) -Force
+          }
+          $env:INEP_SNAPSHOT_DIR=$snapshotDir
+          git fetch origin main
+          if($LASTEXITCODE -ne 0){throw "Não foi possível consultar a versão mais recente do branch main"}
+          git reset --hard origin/main
+          if($LASTEXITCODE -ne 0){throw "Falha ao atualizar checkout para main"}
+          foreach($name in $names){
+            if($name -ne "summary.json"){
+              Copy-Item (Join-Path $snapshotDir $name) (Join-Path "public/data" $name) -Force
+            }
+          }
+          @'
+          import json,os
+          from pathlib import Path
+          folder=Path(os.environ["INEP_SNAPSHOT_DIR"])
+          data=Path("public/data")
+          original=json.loads((folder/"summary.json").read_text(encoding="utf-8"))
+          current=json.loads((data/"summary.json").read_text(encoding="utf-8"))
+          current["education"]=original["education"]
+          current["generatedAt"]=original["generatedAt"]
+          for source in ("inep","seduc"):
+              current.setdefault("sourceInfo",{})[source]=original["sourceInfo"][source]
+          assert current["education"]["totalSchools"]==196
+          assert current["education"]["totalEnrollments"]==68490
+          assert current["sourceInfo"]["inep"]["status"]=="ok"
+          (data/"summary.json").write_text(json.dumps(current,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("Merged official 2025 INEP snapshots into latest main, preserving other metadata")
+          '@ | python -
+          if($LASTEXITCODE -ne 0){throw "Erro ao reconciliar os metadados com main"}
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/data/summary.json public/data/schools.json public/data/schools.geojson public/data/inep_provenance.json public/data/seduc_provenance.json
           git diff --cached --quiet
-          if($LASTEXITCODE -ne 0) {
-            git commit -m "data: escolas, matrículas e docentes Censo Escolar INEP 2025 reconciliados"
+          if($LASTEXITCODE -ne 0){
+            git commit -m "data: INEP 2025 escola matrícula docente validados e conciliados"
             if($LASTEXITCODE -ne 0){throw "Git commit falhou"}
-            git pull --rebase origin main
-            if($LASTEXITCODE -ne 0){throw "Git pull falhou"}
             git push origin HEAD:main
             if($LASTEXITCODE -ne 0){throw "Git push falhou"}
           }

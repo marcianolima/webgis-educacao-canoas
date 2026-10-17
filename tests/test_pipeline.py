@@ -87,7 +87,13 @@ class SnapshotTests(unittest.TestCase):
             self.assertIn(school["network"],inep.NETWORKS.values())
         count=self.s["education"]["totalSchools"]
         if count is not None:
-            self.assertEqual(count,len(schools))
+            if self.c["year"]==2025:
+                # O Censo 2025 informa 196 escolas em atividade e mantém
+                # oito registros sem atividade no cadastro bruto (204).
+                active=sum(s["status"]=="Em atividade" for s in schools)
+                self.assertEqual(count,active)
+            else:
+                self.assertEqual(count,len(schools))
             self.assertGreater(count,30)
             self.assertEqual(count,sum(self.s["education"]["schoolsByNetwork"].values()))
 

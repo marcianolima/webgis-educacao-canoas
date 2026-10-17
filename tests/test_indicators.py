@@ -5,7 +5,7 @@ from pathlib import Path
 DATA=Path(__file__).resolve().parents[1]/"public"/"data"
 class AdditionalDataTests(unittest.TestCase):
  def test_quality_scope_years(self):
-  q=json.loads((DATA/"quality.json").read_text())
+  q=json.loads((DATA/"quality.json").read_text(encoding="utf-8"))
   self.assertEqual(q["municipality"],"4304606")
   series=q["ideb"]["series"]
   years=[r["year"] for r in series]
@@ -21,11 +21,11 @@ class AdditionalDataTests(unittest.TestCase):
   self.assertEqual(series[-1]["initialMunicipal"],5.3)
   self.assertEqual(series[-1]["finalMunicipal"],4.6)
  def test_quality_no_school_imputation(self):
-  q=json.loads((DATA/"quality.json").read_text())
+  q=json.loads((DATA/"quality.json").read_text(encoding="utf-8"))
   self.assertEqual(q["schoolIndicators"],[])
   self.assertEqual(q["saeb"]["status"],"secondary_single_source")
  def test_siconfi_annual_no_double_count(self):
-  f=json.loads((DATA/"finance.json").read_text())
+  f=json.loads((DATA/"finance.json").read_text(encoding="utf-8"))
   self.assertEqual(f["municipalityCode"],4304606)
   self.assertEqual(f["annex"],"DCA-Anexo I-E")
   years=[r["year"] for r in f["series"]]
@@ -44,7 +44,7 @@ class AdditionalDataTests(unittest.TestCase):
   self.assertAlmostEqual(latest["education"]["liquidated"],478477062.27,places=2)
   self.assertAlmostEqual(latest["education"]["paid"],395913248.00,places=2)
  def test_missing_not_zero(self):
-  f=json.loads((DATA/"finance.json").read_text())
+  f=json.loads((DATA/"finance.json").read_text(encoding="utf-8"))
   self.assertTrue(any(s["subfunctions"]["specialEducation"]["committed"] is None for s in f["series"]))
 
 class PNAETests(unittest.TestCase):
@@ -90,13 +90,13 @@ class FNDEActualTransferTests(unittest.TestCase):
 
 class ReconciledSchoolDataTests(unittest.TestCase):
  def test_censo_2025(self):
-  d=json.loads((DATA/"rs_censo_municipal.json").read_text())
+  d=json.loads((DATA/"rs_censo_municipal.json").read_text(encoding="utf-8"))
   t={k:next(x for x in d["enrollments"][k] if x["year"]==2025) for k in ("Todas","Municipal","Estadual","Federal","Privada")}
   self.assertEqual((t["Todas"]["mat_total"],t["Todas"]["schools"]),(68490,196))
   self.assertEqual((t["Municipal"]["mat_total"],t["Municipal"]["schools"]),(30597,82))
   self.assertEqual(sum(t[k]["mat_total"] for k in ("Municipal","Estadual","Federal","Privada")),68490)
  def test_pdde_payments(self):
-  d=json.loads((DATA/"pdde_schools.json").read_text())
+  d=json.loads((DATA/"pdde_schools.json").read_text(encoding="utf-8"))
   self.assertEqual(d["municipalityCode"],"4304606")
   self.assertEqual(d["year"],2025)
   self.assertGreaterEqual(d["schoolsWithPublishedPayments"],70)

@@ -1,0 +1,42 @@
+name: WebGIS Educação | PNAE FNDE 2024
+on:
+  push:
+    paths: ['scripts/fnde_pnae.py','.github/workflows/refresh-pnae.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: fnde-pnae-educacao
+  cancel-in-progress: false
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Extrair planilha pública oficial, reconciliar Canoas e tipificar previsão
+        run: python scripts/fnde_pnae.py
+      - name: Validar todos os snapshots e chaves
+        run: python -m unittest discover -s tests -v
+      - name: Confirmar integridade e salvar dados validados
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('public/data/pnae.json').read_text(encoding='utf8'))
+          assert p['year']==2024 and p['fundingStatus']=='planned' and p['municipalityCode']==4304606
+          assert len(p['actions'])>=2
+          assert abs(sum(x['amountPlannedBRL'] for x in p['actions'])-p['totalPlannedBRL'])<0.05
+          print('PNAE ações e previsão 2024:',len(p['actions']),p['totalPlannedBRL'])
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/pnae.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: previsões PNAE 2024 FNDE por ação e ente executor'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-17T14:26:26.300154+00:00",
+  "source": "https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/dca",
+  "annex": "DCA-Anexo I-E",
+  "municipalityCode": 4304606,
+  "unit": "BRL nominal",
+  "definition": "DCA Anexo I-E, função 12, cod_conta=TotalDespesas. Empenhada, liquidada e paga são etapas alternativas, não aditivas.",
+  "series": [
+    {
+      "year": 2019,
+      "education": {
+        "committed": 275207756.56,
+        "liquidated": 256140849.97,
+        "paid": 232500241.69
+      },
+      "subfunctions": {
+        "earlyChildhood": {
+          "committed": 80156858.05,
+          "liquidated": 71202883.76,
+          "paid": 65243142.28
+        },
+        "specialEducation": {
+          "committed": null,
+          "liquidated": null,
+          "paid": null
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "education": {
+        "committed": 268405818.35,
+        "liquidated": 249269184.22,
+        "paid": 248069240.38
+      },
+      "subfunctions": {
+        "earlyChildhood": {
+          "committed": 76349809.8,
+          "liquidated": 67993667.43,
+          "paid": 67906028.77
+        },
+        "specialEducation": {
+          "committed": null,
+          "liquidated": null,
+          "paid": null
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "education": {
+        "committed": 355905061.6,
+        "liquidated": 264590455.81,
+        "paid": 264032531.07
+      },
+      "subfunctions": {
+        "earlyChildhood": {
+          "committed": 77134245.0,
+          "liquidated": 65904247.35,
+          "paid": 65753681.23
+        },
+        "specialEducation": {
+          "committed": null,
+          "liquidated": null,
+          "paid": null
+        }
+      }
+    },
+    {
+      "year": 2022,
+      "education": {
+        "committed": 446069327.72,
+        "liquidated": 309278938.6,
+        "paid": 289274415.95
+      },
+      "subfunctions": {
+        "earlyChildhood": {
+          "committed": 61730990.76,
+          "liquidated": 44049418.19,
+          "paid": 41931370.26
+        },
+        "specialEducation": {
+          "committed": null,
+          "liquidated": null,
+          "paid": null
+        }
+      }
+    },
+    {
+      "year": 2023,
+      "education": {
+        "committed": 488412034.3,
+        "liquidated": 353376409.28,
+        "paid": 346102441.8
+      },
+      "subfunctions": {
+        "earlyChildhood": {
+          "committed": 144033748.96,
+          "liquidated": 113774287.89,
+          "paid": 109430667.73
+        },
+        "specialEducation": {
+          "committed": null,
+          "liquidated": null,
+          "paid": null
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "education": {
+        "committed": 495902632.64,
+        "liquidated": 396026809.52,
+        "paid": 360102591.43
+      },
+      "subfunctions": {
+        "earlyChildhood": {
+          "committed": 147462305.75,
+          "liquidated": 120601505.29,
+          "paid": 109954057.61
+        },
+        "specialEducation": {
+          "committed": 5180999.83,
+          "liquidated": 3835563.28,
+          "paid": 3443072.48
+        }
+      }
+    },
+    {
+      "year": 2025,
+      "education": {
+        "committed": 525098080.19,
+        "liquidated": 478477062.27,
+        "paid": 395913248.0
+      },
+      "subfunctions": {
+        "earlyChildhood": {
+          "committed": 158827930.83,
+          "liquidated": 147030589.55,
+          "paid": 129783000.21
+        },
+        "specialEducation": {
+          "committed": 5668020.65,
+          "liquidated": 3807439.36,
+          "paid": 2931178.57
+        }
+      }
+    }
+  ],
+  "failures": [],
+  "programs": [],
+  "programStatus": "pending"
+}

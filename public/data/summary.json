@@ -1,1 +1,65 @@
-{"schemaVersion":1,"municipality":{"name":"Canoas","uf":"RS","ibge":"4304606","populationCensus":347657,"populationCensusYear":2022,"populationEstimate":359845,"populationEstimateYear":2026,"schooling6to14":97.17,"schoolingYear":2022},"education":{"year":null,"totalSchools":null,"activeSchools":null,"totalEnrollments":null,"schoolsByNetwork":{},"enrollmentsByNetwork":{},"infrastructure":{}},"sourceInfo":{"ibge":{"status":"ok","reference":"Censo Demográfico 2022; estimativa populacional 2026","url":"https://www.ibge.gov.br/cidades-e-estados/rs/canoas.html","note":"Escolarização por residência, não matrículas em escolas do município."},"inep":{"status":"pending","reference":"2025","url":"https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar","note":"Aguardando execução e validação do coletor em GitHub Actions."},"ideb":{"status":"pending","reference":"2005–2025","url":"https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025","note":"Não integrado, sem publicação de valores."},"fnde":{"status":"pending","reference":null,"url":"https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos","note":"Aguardando integração com granularidade verificada."},"seduc":{"status":"ok","reference":"2023 · coordenadas de escolas","url":"https://iede.rs.gov.br/server/rest/services/SEDUC/Escolas_no_RS/MapServer/0","updatedAt":"2026-10-17T13:53:11.104450+00:00","note":"178 escolas georreferenciadas na camada; 0 correspondências com o INEP 2025; 178 posições complementadas. Não representa universo municipal completo."}},"generatedAt":"2026-10-17","note":"Os valores do IBGE são oficiais e independentes dos dados do INEP. Campos escolares nulos significam indisponível, não zero."}
+{
+  "schemaVersion": 1,
+  "municipality": {
+    "name": "Canoas",
+    "uf": "RS",
+    "ibge": "4304606",
+    "populationCensus": 347657,
+    "populationCensusYear": 2022,
+    "populationEstimate": 359845,
+    "populationEstimateYear": 2026,
+    "schooling6to14": 97.17,
+    "schoolingYear": 2022
+  },
+  "education": {
+    "year": null,
+    "totalSchools": null,
+    "activeSchools": null,
+    "totalEnrollments": null,
+    "schoolsByNetwork": {},
+    "enrollmentsByNetwork": {},
+    "infrastructure": {}
+  },
+  "sourceInfo": {
+    "ibge": {
+      "status": "ok",
+      "reference": "Censo Demográfico 2022; estimativa populacional 2026",
+      "url": "https://www.ibge.gov.br/cidades-e-estados/rs/canoas.html",
+      "note": "Escolarização por residência, não matrículas em escolas do município."
+    },
+    "inep": {
+      "status": "pending",
+      "reference": "2025",
+      "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
+      "note": "Aguardando execução e validação do coletor em GitHub Actions."
+    },
+    "ideb": {
+      "status": "pending",
+      "reference": "2005–2025",
+      "url": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025",
+      "note": "Não integrado, sem publicação de valores."
+    },
+    "fnde": {
+      "status": "pending",
+      "reference": null,
+      "url": "https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos",
+      "note": "Aguardando integração com granularidade verificada."
+    },
+    "seduc": {
+      "status": "ok",
+      "reference": "2023 · coordenadas de escolas",
+      "url": "https://iede.rs.gov.br/server/rest/services/SEDUC/Escolas_no_RS/MapServer/0",
+      "updatedAt": "2026-10-17T13:53:11.104450+00:00",
+      "note": "178 escolas georreferenciadas na camada; 0 correspondências com o INEP 2025; 178 posições complementadas. Não representa universo municipal completo."
+    },
+    "siconfi": {
+      "status": "ok",
+      "reference": "2019–2025 (anos com cobertura validada)",
+      "url": "https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/dca",
+      "updatedAt": "2026-10-17T14:26:26.300154+00:00",
+      "note": "Despesas por função orçamentária (educação), DCA anual; não são repasses do FNDE ou despesas por escola."
+    }
+  },
+  "generatedAt": "2026-10-17",
+  "note": "Os valores do IBGE são oficiais e independentes dos dados do INEP. Campos escolares nulos significam indisponível, não zero."
+}

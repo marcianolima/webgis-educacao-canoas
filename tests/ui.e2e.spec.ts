@@ -23,9 +23,17 @@ for(const [device, width, height] of [
    await expect(page.locator('#size-select')).toBeVisible();
    await page.locator('.school-row').first().click();
    await expect(page.locator('#school-detail')).toBeVisible();
+   await expect(page.getByText('PDDE 2025').first()).toBeVisible();
+
    await expect(page).toHaveURL(/inep=\d{8}/);
    await page.screenshot({path:testInfo.outputPath(device+'-ficha.png'),fullPage:true});
    // Os painéis não podem inferir indicadores municipais como dados escolares.
+
+   await nav.locator('[data-page="enrollments"]').click();
+   await expect(page.getByRole('heading',{name:'Rede escolar e matrículas'})).toBeVisible();
+   await expect(page.locator('#rs-enrollments-chart')).toBeVisible();
+   await nav.locator('[data-page="infrastructure"]').click();
+   await expect(page.getByRole('heading',{name:'Infraestrutura escolar'})).toBeVisible();
    await nav.locator('[data-page="quality"]').click();
    await expect(page.getByRole('heading',{name:'Qualidade e aprendizagem'})).toBeVisible();
    await expect(page.getByText('IDEB 2025 — anos iniciais')).toBeVisible();

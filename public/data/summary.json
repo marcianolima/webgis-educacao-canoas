@@ -88,6 +88,18 @@
       "reference": "arquivo atualizado em janeiro/2026; linha de dados com data 2025-09-01",
       "url": "https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/56",
       "note": "PNATE tem campos vl_pagar_*: valores A PAGAR, sem prova de pagamento; competência não inferida."
+    },
+    "censo_rs": {
+      "status": "ok",
+      "reference": "2010–2025 por município e rede",
+      "url": "https://dados.rs.gov.br/dataset/acesso-matriculas-e-perfil-dos-estudantes-da-educacao-basica-rio-grande-do-sul",
+      "note": "Censo 2025 via SEDUC/RS/INEP: 196 escolas e 68.490 matrículas, rede municipal 82 escolas e 30.597 matrículas; não são dados de matrículas individuais por código INEP."
+    },
+    "pdde_2025": {
+      "status": "partial",
+      "reference": "2025, código INEP por escola",
+      "url": "https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar",
+      "note": "PDDE 2025: 83 consultas para escolas municipais do mapa 2023, 82 com pagamentos válidos somando R$ 3.769.394,00, uma sem resultado. Cobertura do catálogo 2023, não total do município."
     }
   },
   "generatedAt": "2026-10-17",

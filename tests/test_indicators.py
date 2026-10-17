@@ -87,3 +87,23 @@ class FNDEActualTransferTests(unittest.TestCase):
   self.assertIn("vl_pagar",d["pnate"]["measure"])
   self.assertAlmostEqual(d["pnate"]["totalToPayBRL"],437.16,places=2)
   self.assertAlmostEqual(sum(d["pnate"]["toPayBRL"].values()),d["pnate"]["totalToPayBRL"],places=2)
+
+class ReconciledSchoolDataTests(unittest.TestCase):
+ def test_censo_2025(self):
+  d=json.loads((DATA/"rs_censo_municipal.json").read_text())
+  t={k:next(x for x in d["enrollments"][k] if x["year"]==2025) for k in ("Todas","Municipal","Estadual","Federal","Privada")}
+  self.assertEqual((t["Todas"]["mat_total"],t["Todas"]["schools"]),(68490,196))
+  self.assertEqual((t["Municipal"]["mat_total"],t["Municipal"]["schools"]),(30597,82))
+  self.assertEqual(sum(t[k]["mat_total"] for k in ("Municipal","Estadual","Federal","Privada")),68490)
+ def test_pdde_payments(self):
+  d=json.loads((DATA/"pdde_schools.json").read_text())
+  self.assertEqual(d["municipalityCode"],"4304606")
+  self.assertEqual(d["year"],2025)
+  self.assertGreaterEqual(d["schoolsWithPublishedPayments"],70)
+  for inep,s in d["byInep"].items():
+   self.assertRegex(inep,"^[0-9]{8}$")
+   self.assertNotIn("cnpj",s)
+   self.assertNotIn("account",s)
+   if s["status"]=="ok":
+    self.assertAlmostEqual(sum(p["paidBRL"] for p in s["payments"]),s["paidBRL"],places=2)
+  self.assertAlmostEqual(sum(s["paidBRL"] for s in d["byInep"].values() if s["status"]=="ok"),d["totalPaidRespondedBRL"],places=2)

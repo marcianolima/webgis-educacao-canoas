@@ -31,6 +31,7 @@ for(const [device, width, height] of [
    await expect(page.getByRole('heading',{name:'Financiamento público da educação'})).toBeVisible();
    await expect(page.getByText('Empenhado em 2025')).toBeVisible();
    await expect(page.locator('#finance-chart')).toBeVisible();
+   await expect(page.getByText('PNAE · previsão de repasses por ação (2024)')).toBeVisible();
    // Regressão: cifras longas não podem ultrapassar as caixas nem a viewport móvel.
    const overflow=await page.locator('.finance-kpis .kpi-value').evaluateAll(els=>
     els.map(el=>{

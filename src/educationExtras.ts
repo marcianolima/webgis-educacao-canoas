@@ -5,13 +5,17 @@ type SaebStage={stage:string;portuguese:number|null;math:number|null};
 type Quality={status:string;note:string;ideb:{sourcePrimary:string;secondarySources:string[];series:IdebEntry[]};saeb:{year:number;status:string;stages:SaebStage[];secondarySource:string;sourcePrimary:string}};
 type FinanceYear={year:number;education:{committed:number|null;liquidated:number|null;paid:number|null};subfunctions:{earlyChildhood:{committed:number|null;liquidated:number|null;paid:number|null};specialEducation:{committed:number|null;liquidated:number|null;paid:number|null}}};
 type Finance={source:string;unit:string;series:FinanceYear[];definition:string;annex:string;updatedAt:string};
+type Pnae={year:number;municipalityCode:number;fundingStatus:"planned";totalPlannedBRL:number;source:string;definition:string;actions:{code:string;name:string;studentsForAction:number;amountPlannedBRL:number}[]};
 let quality:Quality|null=null;
 let finance:Finance|null=null;
+let pnae:Pnae|null=null;
 
-export function setEducationExtras(a:unknown,b:unknown){
+export function setEducationExtras(a:unknown,b:unknown,c?:unknown){
  const q=a as Quality|undefined;const f=b as Finance|undefined;
  quality=q?.ideb?.series&&Array.isArray(q.ideb.series)?q:null;
  finance=f?.series&&Array.isArray(f.series)?f:null;
+ const p=c as Pnae|undefined;
+ pnae=p?.municipalityCode===4304606 && p.fundingStatus==="planned" && Array.isArray(p.actions)?p:null;
 }
 const esc=(v:unknown)=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]||x));
 const num=(v:number|null|undefined,dec=1)=>v===null||v===undefined?'—':new Intl.NumberFormat('pt-BR',{maximumFractionDigits:dec,minimumFractionDigits:dec}).format(v);
@@ -34,7 +38,9 @@ export function municipalEducationExtras(){
  panel('Despesa com educação · 2025','Tesouro Nacional / SICONFI · DCA, função 12',
   '<div class="grid finance-summary" style="gap:8px">'+kpi('Despesa empenhada',money(fin?.education.committed),'2025 · valor nominal · função 12')+
   '<button class="button light" data-page="finance">Ver execução financeira e série histórica →</button></div>')+
- '</div></section>';
+ '</div>'+
+ (pnae?'<div class="notice info"><b>PNAE '+pnae.year+':</b> previsão de repasses FNDE para o Município de Canoas: '+money(pnae.totalPlannedBRL)+'. Trata-se de <b>valor previsto</b>, não comprovante de transferência. <button class="button light" data-page="finance">Detalhar ações →</button></div>':'')+
+ '</section>';
 }
 export function qualityEducationPage(){
  if(!quality)return '<div class="empty">Dados de IDEB e SAEB ainda não disponíveis.</div>';
@@ -77,6 +83,12 @@ export function financeEducationPage(){
  '<div class="table-wrap"><table class="table"><thead><tr><th>Ano</th><th>Empenhado</th><th>Liquidado</th><th>Pago</th><th>Infantil (empenhado)</th></tr></thead><tbody>'+
  s.map(x=>'<tr><td>'+x.year+'</td><td>'+money(x.education.committed)+'</td><td>'+money(x.education.liquidated)+'</td><td>'+money(x.education.paid)+'</td><td>'+money(x.subfunctions.earlyChildhood.committed)+'</td></tr>').join('')+
  '</tbody></table></div>')+'</div>'+
+ (pnae?'<div class="section">'+panel('PNAE · previsão de repasses por ação ('+pnae.year+')','FNDE · ente executor Prefeitura de Canoas · valores previstos, não pagos',
+ '<div class="grid finance-kpis">'+kpi('Total previsto PNAE',money(pnae.totalPlannedBRL),'Fonte FNDE · ano '+pnae.year)+'</div>'+
+ '<div class="table-wrap"><table class="table"><thead><tr><th>Ação</th><th>Alunos considerados nesta ação</th><th>Valor previsto</th></tr></thead><tbody>'+
+ pnae.actions.map(a=>'<tr><td>'+esc(a.name)+' ('+esc(a.code)+')</td><td>'+new Intl.NumberFormat('pt-BR').format(a.studentsForAction)+'</td><td>'+money(a.amountPlannedBRL)+'</td></tr>').join('')+'</tbody></table></div>'+
+ '<p class="lead">Os alunos de diferentes ações podem se sobrepor; essas contagens não devem ser somadas como estudantes únicos. A previsão não é evidência de pagamento e não representa recursos repassados diretamente às escolas.</p>'+
+ '<p class="lead">'+link(pnae.source,'Planilha oficial FNDE 2024')+'</p>')+'</div>':'')+
  '<div class="section">'+panel('Programas FNDE e fonte oficial','FUNDEB, PNAE, PDDE e FNDE não devem ser tratados como sinônimos da função orçamentária 12',
  '<p class="lead">Os valores repassados para entes municipais e unidades executoras precisam de conciliação específica antes de entrar na aplicação. A série acima é exclusivamente a despesa declarada no SICONFI.</p>'+
  '<p class="lead">'+link('https://apidatalake.tesouro.gov.br/docs/siconfi/','SICONFI · documentação da API')+' · '+link('https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos','FNDE · dados abertos')+'</p>')+'</div>';

@@ -46,3 +46,14 @@ class AdditionalDataTests(unittest.TestCase):
  def test_missing_not_zero(self):
   f=json.loads((DATA/"finance.json").read_text())
   self.assertTrue(any(s["subfunctions"]["specialEducation"]["committed"] is None for s in f["series"]))
+
+class PNAETests(unittest.TestCase):
+ def test_2024_planned_only(self):
+  d=json.loads((DATA/"pnae.json").read_text(encoding="utf8"))
+  self.assertEqual(d["year"],2024)
+  self.assertEqual(d["municipalityCode"],4304606)
+  self.assertEqual(d["fundingStatus"],"planned")
+  self.assertEqual(len(d["actions"]),5)
+  self.assertAlmostEqual(d["totalPlannedBRL"],5895260.80,places=2)
+  self.assertAlmostEqual(sum(x["amountPlannedBRL"] for x in d["actions"]),d["totalPlannedBRL"],places=2)
+  self.assertEqual(len({x["code"] for x in d["actions"]}),len(d["actions"]))

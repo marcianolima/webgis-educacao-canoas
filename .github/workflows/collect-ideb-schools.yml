@@ -3,7 +3,7 @@ on:
   push:
     paths: ['scripts/inep_ideb_schools.py','.github/workflows/collect-ideb-schools.yml']
   workflow_dispatch:
-permissions: {contents: write}
+permissions: {contents: write, actions: write}
 concurrency: {group: ideb-school-2025-canoas, cancel-in-progress: false}
 jobs:
   schools:
@@ -73,3 +73,9 @@ jobs:
             git push origin HEAD:main
             if($LASTEXITCODE -ne 0){throw "push falhou"}
           }
+
+      - name: Atualizar GitHub Pages após a carga de dados
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

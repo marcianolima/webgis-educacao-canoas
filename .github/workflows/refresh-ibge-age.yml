@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '30 11 10 1 *'
-permissions: {contents: write}
+permissions: {contents: write, actions: write}
 concurrency: {group: ibge-ages-canoas, cancel-in-progress: false}
 jobs:
   collect:
@@ -28,3 +28,9 @@ jobs:
             git pull --rebase origin main
             git push origin HEAD:main
           fi
+
+      - name: Atualizar GitHub Pages após a carga de dados
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: inep-2025-schools-official
   cancel-in-progress: false
@@ -118,3 +119,9 @@ jobs:
             git push origin HEAD:main
             if($LASTEXITCODE -ne 0){throw "Git push falhou"}
           }
+
+      - name: Atualizar GitHub Pages após a carga de dados
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

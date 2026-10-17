@@ -1,0 +1,43 @@
+name: WebGIS Educação | Censo municipal SEDUC
+on:
+  push:
+    paths: ['scripts/rs_censo.py','.github/workflows/refresh-rs-censo.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '20 9 25 9 *'
+permissions: {contents: write}
+concurrency: {group: rs-censo-canoas, cancel-in-progress: false}
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --disable-pip-version-check openpyxl==3.1.5
+      - name: Extrair planilhas INEP publicadas por SEDUC/RS
+        run: python scripts/rs_censo.py
+      - name: Reconciliar códigos/2025/todas as redes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('public/data/rs_censo_municipal.json').read_text())
+          assert d["municipalityCode"]=="4304606"
+          for k in ("enrollments","infrastructure"):
+              assert len(d[k]["Todas"])>=14
+              assert any(v["year"]==2025 for v in d[k]["Todas"])
+          print("2025:",next(x for x in d["enrollments"]["Todas"] if x["year"]==2025))
+          PY
+      - name: Persistir dados agregados municipais públicos
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/rs_censo_municipal.json
+          if ! git diff --staged --quiet; then
+            git commit -m 'data: Censo Escolar municipal 2025 por rede via SEDUC/RS'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

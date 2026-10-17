@@ -124,8 +124,8 @@ def transform(reader: csv.DictReader) -> tuple[list[dict], dict]:
     availability = {
         "observedColumns": sorted(fields),
         "missingOptionalColumns": sorted(
-            ({'QT_MAT_BAS','NU_LATITUDE','NU_LONGITUDE','NO_BAIRRO','NO_ENDERECO','NU_ENDERECO'}
-             | set(STAGES.values()) | set(INFRASTRUCTURE.values())) - fields
+            ({'NU_LATITUDE','NU_LONGITUDE','NO_BAIRRO','NO_ENDERECO','NU_ENDERECO'}
+             | set(INFRASTRUCTURE.values())) - fields
         ),
         "nationalRows": all_rows,
         "municipalRows": len(data),
@@ -250,9 +250,13 @@ def build_documents(schools: list[dict], meta: dict, sha256: str, member: str) -
     now = datetime.now(timezone.utc).isoformat()
     network = Counter(s["network"] for s in schools)
     active = sum(s["status"] == "Em atividade" for s in schools)
-    enrollment_complete = all(s["enrollments"] is not None for s in schools)
+    # Escola fora de atividade pode não possuir linha de matrícula no ano.
+    # Ausência individual permanece desconhecida, não zero presumido.
+    active_schools = [s for s in schools if s["status"] == "Em atividade"]
+    enrollment_complete = bool(active_schools) and all(s["enrollments"] is not None for s in active_schools)
+    teachers_complete = bool(active_schools) and all(s["teacherFunctions"] is not None for s in active_schools)
     enrollment_by_network = {
-        n: sum(s["enrollments"] or 0 for s in schools if s["network"] == n)
+        n: sum(s["enrollments"] for s in active_schools if s["network"] == n)
         for n in NETWORKS.values()
     } if enrollment_complete else {}
     infra = {}
@@ -265,8 +269,8 @@ def build_documents(schools: list[dict], meta: dict, sha256: str, member: str) -
         "year": YEAR,
         "totalSchools": len(schools),
         "activeSchools": active,
-        "teacherFunctions": sum(s["teacherFunctions"] for s in schools) if all(s["teacherFunctions"] is not None for s in schools) else None,
-        "totalEnrollments": sum(s["enrollments"] for s in schools) if enrollment_complete else None,
+        "teacherFunctions": sum(s["teacherFunctions"] for s in active_schools) if teachers_complete else None,
+        "totalEnrollments": sum(s["enrollments"] for s in active_schools) if enrollment_complete else None,
         "schoolsByNetwork": dict(network),
         "enrollmentsByNetwork": enrollment_by_network,
         "infrastructure": infra,
@@ -313,7 +317,7 @@ def main() -> None:
         docs = build_documents(records,meta,sha,member)
         publish(docs)
     print(f"Coleta INEP {YEAR} validada: {meta['municipalRows']} escolas, {meta['withCoordinates']} com coordenadas; matrículas informadas para {meta['enrollmentCoverage']}.")
-    if meta["enrollmentCoverage"] < len(records):
+    if any(s["status"] == "Em atividade" and s["enrollments"] is None for s in records):
         print("::warning::Matrículas sem cobertura integral; total municipal permanece indisponível.")
 
 if __name__ == "__main__":

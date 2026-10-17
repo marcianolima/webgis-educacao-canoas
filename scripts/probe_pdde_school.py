@@ -15,3 +15,8 @@ print("ELEMENTS",p.tags[:140])
 for word in ("Consultar","csrf","_token","codEscola","codigoEscola","2025","consulta","endpoint","api/","javax.faces","primefaces","x-csrf"):
  pos=[m.start() for m in re.finditer(word,text,re.I)]
  print("CONTEXT",word,[text[max(0,i-90):i+210].replace("\n"," ")[:300] for i in pos[:5]])
+
+print("INTERACTIVE",[(tag,attrs) for tag,attrs in p.tags if tag in ("form","input","select","button")],flush=True)
+for term in ("btn-consultar","form-consulta","ajax({","$.get(","$.post(","btnConsultar","action:","pddeinfo/escola","consultar/"):
+ for m in list(re.finditer(re.escape(term),text,re.I))[-8:]:
+  i=m.start();print("SCRIPT",term,text[max(0,i-650):i+900].replace("\n"," ")[:1550],flush=True)

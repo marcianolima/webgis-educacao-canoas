@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "year": 2025,
   "municipalityCode": "4304606",
-  "catalogYear": 2023,
+  "catalogYear": 2025,
   "scope": "Escolas da rede MUNICIPAL presentes no catálogo geográfico SEDUC/RS 2023",
   "source": "https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar",
   "sourceType": "PDDE Info · consulta pública por código INEP e exercício",
-  "updatedAt": "2026-10-17T15:31:18.493411+00:00",
-  "schoolsChecked": 83,
-  "schoolsResponded": 83,
+  "updatedAt": "2026-10-17T18:45:47.649428+00:00",
+  "schoolsChecked": 89,
+  "schoolsResponded": 89,
   "schoolsWithPublishedPayments": 82,
-  "schoolsWithNoOfficialResult": 1,
+  "schoolsWithNoOfficialResult": 7,
   "schoolsWithFetchErrors": 0,
   "totalPaidRespondedBRL": 3769394.0,
   "coverageNote": "Somente escolas do catálogo municipal 2023. Total soma APENAS as respostas válidas; ausência/erro não são zeros. Não é total do PDDE de Canoas para todas as redes ou escolas ativas em 2025.",
@@ -192,11 +192,6 @@
       "paymentCount": 8,
       "payments": [
         {
-          "program": "PDDE Basico - 2 Parcela",
-          "paidBRL": 9195.0,
-          "paymentDate": "2025-09-25"
-        },
-        {
           "program": "PDDE Emergencial RS- Adicional - P1",
           "paidBRL": 38000.0,
           "paymentDate": "2025-02-14"
@@ -207,19 +202,19 @@
           "paymentDate": "2025-05-16"
         },
         {
+          "program": "PDDE Basico - 2 Parcela",
+          "paidBRL": 9195.0,
+          "paymentDate": "2025-09-25"
+        },
+        {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
           "paidBRL": 3700.0,
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Educação Conectada 2024 - P1",
-          "paidBRL": 3892.0,
-          "paymentDate": "2025-03-26"
-        },
-        {
-          "program": "Escola e Comunidade 2024 - P1",
+          "program": "Escola e Comunidade 2025 - P1",
           "paidBRL": 3000.0,
-          "paymentDate": "2025-03-21"
+          "paymentDate": "2025-12-08"
         },
         {
           "program": "Educação Conectada 2025 - P1",
@@ -227,9 +222,14 @@
           "paymentDate": "2025-12-16"
         },
         {
-          "program": "Escola e Comunidade 2025 - P1",
+          "program": "Escola e Comunidade 2024 - P1",
           "paidBRL": 3000.0,
-          "paymentDate": "2025-12-08"
+          "paymentDate": "2025-03-21"
+        },
+        {
+          "program": "Educação Conectada 2024 - P1",
+          "paidBRL": 3892.0,
+          "paymentDate": "2025-03-26"
         }
       ]
     },
@@ -445,14 +445,14 @@
           "paymentDate": "2025-09-25"
         },
         {
-          "program": "PDDE Basico - 1 Parcela",
-          "paidBRL": 11775.0,
-          "paymentDate": "2025-05-16"
-        },
-        {
           "program": "PDDE Emergencial RS- Adicional - P1",
           "paidBRL": 38000.0,
           "paymentDate": "2025-01-24"
+        },
+        {
+          "program": "PDDE Basico - 1 Parcela",
+          "paidBRL": 11775.0,
+          "paymentDate": "2025-05-16"
         },
         {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
@@ -460,14 +460,14 @@
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Educação Conectada 2025 - P1",
-          "paidBRL": 3892.0,
-          "paymentDate": "2025-11-26"
-        },
-        {
           "program": "Escola e Comunidade 2025 - P1",
           "paidBRL": 3500.0,
           "paymentDate": "2025-12-08"
+        },
+        {
+          "program": "Educação Conectada 2025 - P1",
+          "paidBRL": 3892.0,
+          "paymentDate": "2025-11-26"
         }
       ]
     },
@@ -479,11 +479,6 @@
       "paymentCount": 5,
       "payments": [
         {
-          "program": "PDDE Basico - 2 Parcela",
-          "paidBRL": 5965.0,
-          "paymentDate": "2025-09-25"
-        },
-        {
           "program": "PDDE Basico - 1 Parcela",
           "paidBRL": 5965.0,
           "paymentDate": "2025-05-16"
@@ -492,6 +487,11 @@
           "program": "PDDE Emergencial RS- Adicional - P1",
           "paidBRL": 38000.0,
           "paymentDate": "2025-01-24"
+        },
+        {
+          "program": "PDDE Basico - 2 Parcela",
+          "paidBRL": 5965.0,
+          "paymentDate": "2025-09-25"
         },
         {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
@@ -513,11 +513,6 @@
       "paymentCount": 6,
       "payments": [
         {
-          "program": "PDDE Basico - 2 Parcela",
-          "paidBRL": 6165.0,
-          "paymentDate": "2025-09-25"
-        },
-        {
           "program": "PDDE Emergencial RS- Adicional - P1",
           "paidBRL": 38000.0,
           "paymentDate": "2025-05-23"
@@ -528,19 +523,24 @@
           "paymentDate": "2025-05-16"
         },
         {
+          "program": "PDDE Basico - 2 Parcela",
+          "paidBRL": 6165.0,
+          "paymentDate": "2025-09-25"
+        },
+        {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
           "paidBRL": 3700.0,
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Escola e Comunidade 2025 - P1",
-          "paidBRL": 3000.0,
-          "paymentDate": "2025-12-08"
-        },
-        {
           "program": "Educação Conectada 2025 - P1",
           "paidBRL": 3892.0,
           "paymentDate": "2025-12-16"
+        },
+        {
+          "program": "Escola e Comunidade 2025 - P1",
+          "paidBRL": 3000.0,
+          "paymentDate": "2025-12-08"
         }
       ]
     },
@@ -625,9 +625,9 @@
       "paymentCount": 6,
       "payments": [
         {
-          "program": "PDDE Basico - 2 Parcela",
-          "paidBRL": 5245.0,
-          "paymentDate": "2025-10-10"
+          "program": "PDDE Emergencial RS- Adicional - P1",
+          "paidBRL": 38000.0,
+          "paymentDate": "2025-01-24"
         },
         {
           "program": "PDDE Basico - 1 Parcela",
@@ -635,9 +635,9 @@
           "paymentDate": "2025-05-16"
         },
         {
-          "program": "PDDE Emergencial RS- Adicional - P1",
-          "paidBRL": 38000.0,
-          "paymentDate": "2025-01-24"
+          "program": "PDDE Basico - 2 Parcela",
+          "paidBRL": 5245.0,
+          "paymentDate": "2025-10-10"
         },
         {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
@@ -645,14 +645,14 @@
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Escola e Comunidade 2025 - P1",
-          "paidBRL": 2500.0,
-          "paymentDate": "2025-12-08"
-        },
-        {
           "program": "Educação Conectada 2025 - P1",
           "paidBRL": 3328.0,
           "paymentDate": "2025-11-26"
+        },
+        {
+          "program": "Escola e Comunidade 2025 - P1",
+          "paidBRL": 2500.0,
+          "paymentDate": "2025-12-08"
         }
       ]
     },
@@ -961,6 +961,11 @@
       "paymentCount": 6,
       "payments": [
         {
+          "program": "PDDE Basico - 2 Parcela",
+          "paidBRL": 10725.0,
+          "paymentDate": "2025-09-30"
+        },
+        {
           "program": "PDDE Emergencial RS- Adicional - P1",
           "paidBRL": 38000.0,
           "paymentDate": "2025-01-24"
@@ -971,24 +976,19 @@
           "paymentDate": "2025-09-26"
         },
         {
-          "program": "PDDE Basico - 2 Parcela",
-          "paidBRL": 10725.0,
-          "paymentDate": "2025-09-30"
-        },
-        {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
           "paidBRL": 3700.0,
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Educação Conectada 2025 - P1",
-          "paidBRL": 3892.0,
-          "paymentDate": "2025-12-16"
-        },
-        {
           "program": "Escola e Comunidade 2025 - P1",
           "paidBRL": 3000.0,
           "paymentDate": "2025-12-08"
+        },
+        {
+          "program": "Educação Conectada 2025 - P1",
+          "paidBRL": 3892.0,
+          "paymentDate": "2025-12-16"
         }
       ]
     },
@@ -1039,14 +1039,14 @@
           "paymentDate": "2025-09-25"
         },
         {
-          "program": "PDDE Basico - 1 Parcela",
-          "paidBRL": 6245.0,
-          "paymentDate": "2025-05-16"
-        },
-        {
           "program": "PDDE Emergencial RS- Adicional - P1",
           "paidBRL": 38000.0,
           "paymentDate": "2025-01-24"
+        },
+        {
+          "program": "PDDE Basico - 1 Parcela",
+          "paidBRL": 6245.0,
+          "paymentDate": "2025-05-16"
         },
         {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
@@ -1054,14 +1054,14 @@
           "paymentDate": "2025-12-15"
         },
         {
-          "program": "Educação Conectada 2025 - P1",
-          "paidBRL": 3892.0,
-          "paymentDate": "2025-11-26"
-        },
-        {
           "program": "Escola e Comunidade 2025 - P1",
           "paidBRL": 3000.0,
           "paymentDate": "2025-12-08"
+        },
+        {
+          "program": "Educação Conectada 2025 - P1",
+          "paidBRL": 3892.0,
+          "paymentDate": "2025-11-26"
         }
       ]
     },
@@ -1282,11 +1282,6 @@
       "paymentCount": 6,
       "payments": [
         {
-          "program": "PDDE Emergencial RS- Adicional - P1",
-          "paidBRL": 38000.0,
-          "paymentDate": "2025-02-14"
-        },
-        {
           "program": "PDDE Basico - 2 Parcela",
           "paidBRL": 6495.0,
           "paymentDate": "2025-09-25"
@@ -1295,6 +1290,11 @@
           "program": "PDDE Basico - 1 Parcela",
           "paidBRL": 6495.0,
           "paymentDate": "2025-05-16"
+        },
+        {
+          "program": "PDDE Emergencial RS- Adicional - P1",
+          "paidBRL": 38000.0,
+          "paymentDate": "2025-02-14"
         },
         {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
@@ -1447,14 +1447,14 @@
           "paymentDate": "2025-09-25"
         },
         {
-          "program": "PDDE Emergencial RS- Adicional - P1",
-          "paidBRL": 38000.0,
-          "paymentDate": "2025-01-24"
-        },
-        {
           "program": "PDDE Basico - 1 Parcela",
           "paidBRL": 10525.0,
           "paymentDate": "2025-05-16"
+        },
+        {
+          "program": "PDDE Emergencial RS- Adicional - P1",
+          "paidBRL": 38000.0,
+          "paymentDate": "2025-01-24"
         },
         {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
@@ -1462,14 +1462,14 @@
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Educação Conectada 2025 - P1",
-          "paidBRL": 3892.0,
-          "paymentDate": "2025-11-26"
-        },
-        {
           "program": "Escola e Comunidade 2025 - P1",
           "paidBRL": 3000.0,
           "paymentDate": "2025-12-08"
+        },
+        {
+          "program": "Educação Conectada 2025 - P1",
+          "paidBRL": 3892.0,
+          "paymentDate": "2025-11-26"
         }
       ]
     },
@@ -1540,14 +1540,14 @@
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Escola e Comunidade 2025 - P1",
-          "paidBRL": 2500.0,
-          "paymentDate": "2025-12-08"
-        },
-        {
           "program": "Educação Conectada 2025 - P1",
           "paidBRL": 2451.0,
           "paymentDate": "2025-12-16"
+        },
+        {
+          "program": "Escola e Comunidade 2025 - P1",
+          "paidBRL": 2500.0,
+          "paymentDate": "2025-12-08"
         }
       ]
     },
@@ -1559,6 +1559,11 @@
       "paymentCount": 6,
       "payments": [
         {
+          "program": "PDDE Basico - 2 Parcela",
+          "paidBRL": 6215.0,
+          "paymentDate": "2025-09-25"
+        },
+        {
           "program": "PDDE Emergencial RS- Adicional - P1",
           "paidBRL": 38000.0,
           "paymentDate": "2025-01-24"
@@ -1569,24 +1574,19 @@
           "paymentDate": "2025-07-11"
         },
         {
-          "program": "PDDE Basico - 2 Parcela",
-          "paidBRL": 6215.0,
-          "paymentDate": "2025-09-25"
-        },
-        {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
           "paidBRL": 3700.0,
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Educação Conectada 2025 - P1",
-          "paidBRL": 3328.0,
-          "paymentDate": "2025-12-16"
-        },
-        {
           "program": "Escola e Comunidade 2025 - P1",
           "paidBRL": 2500.0,
           "paymentDate": "2025-12-08"
+        },
+        {
+          "program": "Educação Conectada 2025 - P1",
+          "paidBRL": 3328.0,
+          "paymentDate": "2025-12-16"
         }
       ]
     },
@@ -1758,14 +1758,14 @@
           "paymentDate": "2025-12-15"
         },
         {
-          "program": "Escola e Comunidade 2025 - P1",
-          "paidBRL": 3000.0,
-          "paymentDate": "2025-12-08"
-        },
-        {
           "program": "Educação Conectada 2025 - P1",
           "paidBRL": 3892.0,
           "paymentDate": "2025-12-16"
+        },
+        {
+          "program": "Escola e Comunidade 2025 - P1",
+          "paidBRL": 3000.0,
+          "paymentDate": "2025-12-08"
         }
       ]
     },
@@ -1816,11 +1816,6 @@
       "paymentCount": 7,
       "payments": [
         {
-          "program": "PDDE Basico - 2 Parcela",
-          "paidBRL": 10605.0,
-          "paymentDate": "2025-09-25"
-        },
-        {
           "program": "PDDE Basico - 1 Parcela",
           "paidBRL": 10605.0,
           "paymentDate": "2025-05-16"
@@ -1831,14 +1826,19 @@
           "paymentDate": "2025-01-24"
         },
         {
+          "program": "PDDE Basico - 2 Parcela",
+          "paidBRL": 10605.0,
+          "paymentDate": "2025-09-25"
+        },
+        {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
           "paidBRL": 3700.0,
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Escola e Comunidade 2025 - P1",
-          "paidBRL": 3000.0,
-          "paymentDate": "2025-12-08"
+          "program": "Escola das Adolescências 2025 - P1",
+          "paidBRL": 7800.0,
+          "paymentDate": "2025-12-15"
         },
         {
           "program": "Educação Conectada 2025 - P1",
@@ -1846,9 +1846,9 @@
           "paymentDate": "2025-10-23"
         },
         {
-          "program": "Escola das Adolescências 2025 - P1",
-          "paidBRL": 7800.0,
-          "paymentDate": "2025-12-15"
+          "program": "Escola e Comunidade 2025 - P1",
+          "paidBRL": 3000.0,
+          "paymentDate": "2025-12-08"
         }
       ]
     },
@@ -2010,14 +2010,14 @@
           "paymentDate": "2025-09-26"
         },
         {
-          "program": "Educação Conectada 2024 - P1",
-          "paidBRL": 2451.0,
-          "paymentDate": "2025-03-26"
-        },
-        {
           "program": "Educação Conectada 2025 - P1",
           "paidBRL": 2451.0,
           "paymentDate": "2025-12-16"
+        },
+        {
+          "program": "Educação Conectada 2024 - P1",
+          "paidBRL": 2451.0,
+          "paymentDate": "2025-03-26"
         }
       ]
     },
@@ -2049,6 +2049,13 @@
           "paymentDate": "2025-10-23"
         }
       ]
+    },
+    "43184251": {
+      "inep": "43184251",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
     },
     "43184260": {
       "inep": "43184260",
@@ -2144,6 +2151,13 @@
           "paymentDate": "2025-11-26"
         }
       ]
+    },
+    "43184324": {
+      "inep": "43184324",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
     },
     "43184332": {
       "inep": "43184332",
@@ -2285,6 +2299,13 @@
         }
       ]
     },
+    "43184383": {
+      "inep": "43184383",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
     "43184391": {
       "inep": "43184391",
       "year": 2025,
@@ -2313,6 +2334,13 @@
           "paymentDate": "2025-11-26"
         }
       ]
+    },
+    "43184405": {
+      "inep": "43184405",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
     },
     "43184413": {
       "inep": "43184413",
@@ -2366,6 +2394,20 @@
           "paymentDate": "2025-11-26"
         }
       ]
+    },
+    "43184430": {
+      "inep": "43184430",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
+    "43184448": {
+      "inep": "43184448",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
     },
     "43184456": {
       "inep": "43184456",
@@ -2433,14 +2475,14 @@
           "paymentDate": "2025-09-25"
         },
         {
-          "program": "PDDE Basico - 1 Parcela",
-          "paidBRL": 7525.0,
-          "paymentDate": "2025-07-11"
-        },
-        {
           "program": "PDDE Emergencial RS- Adicional - P1",
           "paidBRL": 38000.0,
           "paymentDate": "2025-01-24"
+        },
+        {
+          "program": "PDDE Basico - 1 Parcela",
+          "paidBRL": 7525.0,
+          "paymentDate": "2025-07-11"
         },
         {
           "program": "PDDE Diversidades-R. Étnico-Raciais 2025 - P1",
@@ -2448,14 +2490,14 @@
           "paymentDate": "2025-10-22"
         },
         {
-          "program": "Educação Conectada 2025 - P1",
-          "paidBRL": 3892.0,
-          "paymentDate": "2025-10-23"
-        },
-        {
           "program": "Escola e Comunidade 2025 - P1",
           "paidBRL": 3000.0,
           "paymentDate": "2025-12-08"
+        },
+        {
+          "program": "Educação Conectada 2025 - P1",
+          "paidBRL": 3892.0,
+          "paymentDate": "2025-10-23"
         }
       ]
     },
@@ -2590,6 +2632,13 @@
         }
       ]
     },
+    "43221300": {
+      "inep": "43221300",
+      "year": 2025,
+      "status": "no-official-result",
+      "paidBRL": null,
+      "payments": []
+    },
     "43295177": {
       "inep": "43295177",
       "year": 2025,
@@ -2671,23 +2720,16 @@
           "paymentDate": "2025-07-11"
         },
         {
-          "program": "Educação Conectada 2024 - P1",
-          "paidBRL": 2451.0,
-          "paymentDate": "2025-07-25"
-        },
-        {
           "program": "Educação Conectada 2025 - P1",
           "paidBRL": 2451.0,
           "paymentDate": "2025-11-26"
+        },
+        {
+          "program": "Educação Conectada 2024 - P1",
+          "paidBRL": 2451.0,
+          "paymentDate": "2025-07-25"
         }
       ]
-    },
-    "43367240": {
-      "inep": "43367240",
-      "year": 2025,
-      "status": "no-official-result",
-      "paidBRL": null,
-      "payments": []
     }
   },
   "errors": {}

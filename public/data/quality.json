@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "municipality": "4304606",
+  "updatedAt": "2026-10-17",
+  "status": "secondary_corroborated",
+  "note": "Séries municipais reconstruídas de agregadores públicos que indicam INEP como fonte primária. Valores 2025 corroborados por dois portais independentes; aguarda reconciliação com planilhas originais do INEP (bloqueio do host de download). Não são dados de escolas.",
+  "ideb": {
+    "unit": "índice de 0 a 10",
+    "sourcePrimary": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025",
+    "secondarySources": [
+      "https://prefeiturasemnumeros.com.br/municipios/canoas-rs",
+      "https://www.eleverconsultoria.com.br/dados/rs/canoas"
+    ],
+    "series": [
+      {
+        "year": 2005,
+        "initialMunicipal": 3.8,
+        "finalMunicipal": 3.6,
+        "highState": null
+      },
+      {
+        "year": 2007,
+        "initialMunicipal": 4.1,
+        "finalMunicipal": 3.5,
+        "highState": null
+      },
+      {
+        "year": 2009,
+        "initialMunicipal": 4.4,
+        "finalMunicipal": 3.5,
+        "highState": null
+      },
+      {
+        "year": 2011,
+        "initialMunicipal": 4.8,
+        "finalMunicipal": 3.9,
+        "highState": null
+      },
+      {
+        "year": 2013,
+        "initialMunicipal": 4.9,
+        "finalMunicipal": 3.9,
+        "highState": null
+      },
+      {
+        "year": 2015,
+        "initialMunicipal": 5,
+        "finalMunicipal": 4,
+        "highState": null
+      },
+      {
+        "year": 2017,
+        "initialMunicipal": 5.1,
+        "finalMunicipal": 4,
+        "highState": 2.7
+      },
+      {
+        "year": 2019,
+        "initialMunicipal": 5.3,
+        "finalMunicipal": 4.3,
+        "highState": 3.4
+      },
+      {
+        "year": 2021,
+        "initialMunicipal": 5.4,
+        "finalMunicipal": 4.8,
+        "highState": null
+      },
+      {
+        "year": 2023,
+        "initialMunicipal": 5.4,
+        "finalMunicipal": 4.7,
+        "highState": 3.9
+      },
+      {
+        "year": 2025,
+        "initialMunicipal": 5.3,
+        "finalMunicipal": 4.6,
+        "highState": 4.5
+      }
+    ]
+  },
+  "saeb": {
+    "unit": "pontos de proficiência (escala SAEB)",
+    "status": "secondary_single_source",
+    "year": 2025,
+    "sourcePrimary": "https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/saeb/resultados/2025",
+    "secondarySource": "https://www.eleverconsultoria.com.br/dados/rs/canoas",
+    "scope": "Rede municipal de Canoas (não escolas individuais)",
+    "stages": [
+      {
+        "stage": "Anos iniciais",
+        "portuguese": 204.9,
+        "math": 212.8
+      },
+      {
+        "stage": "Anos finais",
+        "portuguese": 265,
+        "math": 259.7
+      }
+    ]
+  },
+  "schoolIndicators": [],
+  "limitations": [
+    "IDEB municipal por rede não se aplica automaticamente às escolas dessa rede.",
+    "As notas municipais acima foram verificadas em fontes secundárias; não são extração das planilhas oficiais, que tiveram falhas de conectividade no runner.",
+    "SAEB 2025 depende de confirmação adicional por planilha do INEP.",
+    "Dados municipais do ensino médio representam rede estadual, não rede municipal."
+  ]
+}

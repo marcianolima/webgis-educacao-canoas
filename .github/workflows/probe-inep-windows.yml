@@ -1,0 +1,31 @@
+name: Verificar download INEP por runner Windows
+on:
+  push:
+    paths: ['.github/workflows/probe-inep-windows.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  verify-windows:
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Testar conexão TLS autenticada para microdados INEP 2025
+        shell: pwsh
+        run: |
+          @'
+          import ssl,urllib.request
+          print("OpenSSL",ssl.OPENSSL_VERSION,flush=True)
+          url="https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip"
+          for method in ("HEAD","GET"):
+              try:
+                  headers={"User-Agent":"Mozilla/5.0 (educacao-canoas/1.0)"}
+                  if method=="GET":headers["Range"]="bytes=0-1023"
+                  req=urllib.request.Request(url,headers=headers,method=method)
+                  with urllib.request.urlopen(req,timeout=32) as res:
+                      print("RESULT",method,res.status,res.headers.get("Content-Length"),res.headers.get("Content-Type"),res.geturl(),flush=True)
+                      if method=="GET":print("MAGIC",res.read(8)[:4],flush=True)
+              except Exception as ex:print("ERROR",method,type(ex).__name__,str(ex),flush=True)
+          '@ | python -

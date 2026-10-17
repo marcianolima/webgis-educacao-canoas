@@ -1,0 +1,85 @@
+name: INEP 2025 | Integrar escolas e matrículas oficiais
+on:
+  push:
+    paths:
+      - '.github/workflows/collect-inep-windows.yml'
+      - 'scripts/inep_censo.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: inep-2025-schools-official
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: windows-latest
+    timeout-minutes: 32
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download oficial INEP V2 via certificado Schannel Windows
+        shell: pwsh
+        run: |
+          $ErrorActionPreference="Stop"
+          $url="https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip"
+          $zip=Join-Path $env:RUNNER_TEMP "microdados_inep_2025_v2.zip"
+          & curl.exe --fail --location --retry 3 --retry-all-errors --connect-timeout 25 --max-time 1050 --silent --show-error --output $zip $url
+          if($LASTEXITCODE -ne 0){throw "Falha TLS/download curl.exe $LASTEXITCODE"}
+          $hash=(Get-FileHash -Algorithm SHA256 $zip).Hash.ToLowerInvariant()
+          $expected="ad2c389160be5cf6b8e32257677e9b5657f01d10a342355ad9757bfecd2fc90a"
+          if($hash -ne $expected){throw "Checksum SHA-256 inesperado: $hash. Fonte mudou: revisar versão de julho/2026 antes de importar."}
+          $length=(Get-Item $zip).Length
+          if($length -ne 537217189){throw "Tamanho ZIP diferente do arquivo V2 conferido"}
+          "INEP_INPUT_ZIP=$zip" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "ZIP INEP 2025 V2 verificado: $length bytes, SHA256 $hash"
+      - name: Processar escolas, matrículas e docências com controle de cobertura
+        shell: pwsh
+        run: python scripts/inep_censo.py
+      - name: Completar posições geográficas faltantes SEDUC/RS
+        shell: pwsh
+        run: python scripts/seduc_geo.py
+      - name: Testar totais, códigos INEP, privacidade, ZIP e geometrias
+        shell: pwsh
+        run: |
+          python -m unittest discover -s tests -v
+          @'
+          import json
+          from pathlib import Path
+          p=Path("public/data")
+          a=json.loads((p/"schools.json").read_text(encoding="utf8"))
+          s=json.loads((p/"summary.json").read_text(encoding="utf8"))
+          g=json.loads((p/"schools.geojson").read_text(encoding="utf8"))
+          m=json.loads((p/"inep_provenance.json").read_text(encoding="utf8"))
+          assert a["year"]==2025 and s["education"]["year"]==2025
+          assert s["education"]["totalSchools"]==196
+          assert s["education"]["totalEnrollments"]==68490
+          assert s["education"]["schoolsByNetwork"]["Municipal"]==82
+          assert s["education"]["enrollmentsByNetwork"]["Municipal"]==30597
+          assert m["reconciledAgainst"]["municipalEnrollments"]==30597
+          assert s["sourceInfo"]["inep"]["status"]=="ok"
+          assert len(g["features"])>=70
+          for row in a["schools"]:
+              assert row["inep"].isdigit() and len(row["inep"])==8
+              for forbidden in ("CPF","NIS","ALUNO_CPF","ID_ALUNO"):
+                  assert forbidden not in row
+          print("SUCCESS: INEP 2025 verificado e reconciliado",len(a["schools"]),"linhas, points",len(g["features"]))
+          '@ | python -
+      - name: Versionar somente os agregados/cadastro públicos (sem ZIP)
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/summary.json public/data/schools.json public/data/schools.geojson public/data/inep_provenance.json public/data/seduc_provenance.json
+          git diff --cached --quiet
+          if($LASTEXITCODE -ne 0) {
+            git commit -m "data: escolas, matrículas e docentes Censo Escolar INEP 2025 reconciliados"
+            if($LASTEXITCODE -ne 0){throw "Git commit falhou"}
+            git pull --rebase origin main
+            if($LASTEXITCODE -ne 0){throw "Git pull falhou"}
+            git push origin HEAD:main
+            if($LASTEXITCODE -ne 0){throw "Git push falhou"}
+          }

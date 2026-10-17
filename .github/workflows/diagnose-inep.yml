@@ -1,0 +1,29 @@
+name: Diagnosticar TLS e formatos INEP
+on:
+  push:
+    paths: ['.github/workflows/diagnose-inep.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Testar links oficiais sem desativar TLS
+        shell: bash
+        run: |
+          set +e
+          echo "===== CERTIFICADO E CA CHAIN ====="
+          timeout 14 bash -c "echo | openssl s_client -connect download.inep.gov.br:443 -servername download.inep.gov.br -showcerts -verify_return_error" 2>&1 | grep -E 'subject=|issuer=|verify error|Verify return|Certificate chain|depth=|BEGIN CERTIFICATE|END CERTIFICATE|[0-9]+ s:|[0-9]+ i:' | head -35
+          for url in "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2025.zip" "https://download.inep.gov.br/saeb/resultados/saeb_2025_brasil_estados_municipios_censitario.xlsx" "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip"; do
+            echo "===== CHECK OFFICIAL $url"
+            curl -IL --connect-timeout 12 --max-time 22 --retry 1 "$url" -o /dev/null -sS -w 'HTTP=%{http_code} FINAL=%{url_effective} CERT=%{ssl_verify_result} TYPE=%{content_type} BYTES=%{size_download}\n'
+          done
+          echo "===== CLIENT TRUSTSTORE"
+          python - <<'PY'
+          import ssl,sys
+          print(ssl.OPENSSL_VERSION,ssl.get_default_verify_paths())
+          PY
+          echo "===== HTTP SECURE API MEC"
+          curl -IL --connect-timeout 10 --max-time 20 -sS "https://apigatewayolinda.mec.gov.br/" -o /dev/null -w 'HTTP=%{http_code} CERT=%{ssl_verify_result}\n'

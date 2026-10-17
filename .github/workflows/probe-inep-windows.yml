@@ -29,3 +29,14 @@ jobs:
                       if method=="GET":print("MAGIC",res.read(8)[:4],flush=True)
               except Exception as ex:print("ERROR",method,type(ex).__name__,str(ex),flush=True)
           '@ | python -
+          Write-Host '===== WINDOWS TRUST STORE / SCHANNEL (TLS ENFORCED) ====='
+          try {
+            $r=Invoke-WebRequest -Uri "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip" -Method Head -MaximumRedirection 5 -TimeoutSec 25 -ErrorAction Stop
+            Write-Host "IWR_STATUS $($r.StatusCode) TYPE $($r.Headers['Content-Type']) LENGTH $($r.Headers['Content-Length'])"
+          } catch {
+            Write-Host "IWR_ERROR $($_.Exception.Message)"
+          }
+          & curl.exe --version | Select-Object -First 2
+          & curl.exe -I -L --connect-timeout 12 --max-time 30 "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip"
+          Write-Host "CURL_EXIT $LASTEXITCODE"
+

@@ -138,6 +138,28 @@ def transform(reader: csv.DictReader) -> tuple[list[dict], dict]:
     return data, availability
 
 def download(destination: Path) -> str:
+    # A origem pode ter sido baixada pelo Schannel do Windows, que verifica a
+    # cadeia de certificados pelo repositório de confiança do sistema.
+    # Nunca usar TLS sem validação ou confiar em URLs arbitrárias.
+    local = os.environ.get("INEP_INPUT_ZIP")
+    if local:
+        original = Path(local)
+        if not original.is_file():
+            raise FileNotFoundError("INEP_INPUT_ZIP aponta para arquivo ausente")
+        size = original.stat().st_size
+        if not 50_000_000 <= size <= MAX_COMPRESSED:
+            raise ValueError(f"Arquivo INEP local fora dos limites de tamanho: {size}")
+        digest = hashlib.sha256()
+        with original.open("rb") as source, destination.open("wb") as target:
+            while True:
+                chunk=source.read(2 * 1024 * 1024)
+                if not chunk:break
+                digest.update(chunk)
+                target.write(chunk)
+        if not zipfile.is_zipfile(destination):
+            raise ValueError("Download INEP local não é ZIP válido")
+        print(f"INEP: ZIP original autenticado via download prévio, tamanho={size}, SHA256={digest.hexdigest()}",flush=True)
+        return digest.hexdigest()
     error = None
     for attempt in range(3):
         try:

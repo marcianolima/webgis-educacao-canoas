@@ -13,3 +13,9 @@ for word in ("AUTO_STORING","exportArtifact","downloadArtifact","exportarArtefat
   start=max(0,m.start()-200)
   print("SNIP",text[start:m.end()+240].replace("\n"," ")[:450],flush=True)
 print("ENDPOINTS",list(dict.fromkeys(re.findall(r'["\\\']((?:https?://[^"\\\']+|/[^"\\\']+)(?:artifact|artefato|download|export|api)[^"\\\']*)',text,re.I)))[:50],flush=True)
+
+for word in ("getArtifactByDataProductId","getFilesMinio","VITE_API_URL","VITE_API","plataforma-antonieta-de-barros-api","trpc","httpBatchLink","apiBaseUrl","downloadArtifact"):
+ import re
+ pos=[m.start() for m in re.finditer(re.escape(word),text)]
+ for p in pos[:4]:
+  print("DEEP",word,text[max(0,p-1000):p+1050][:2000],flush=True)

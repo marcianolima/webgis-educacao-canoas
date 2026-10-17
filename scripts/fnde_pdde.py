@@ -93,6 +93,8 @@ def main():
             except Exception as e:
                 errors[code]=str(e)[:240]
                 print("::warning::",code,errors[code],flush=True)
+    if sum(v['status']=='ok' for v in results.values())<max(3,len(ids)*0.1):
+        raise ValueError('PDDE: todas/quase todas escolas sem resultado público: provável bloqueio de consultas ou erro de contrato; preservar snapshot anterior')
     if len(results)<len(ids)*0.8:
         raise ValueError(f"PDDE cobertura validada insuficiente: {len(results)}/{len(ids)}")
     paid=[v for v in results.values() if v["status"]=="ok"]

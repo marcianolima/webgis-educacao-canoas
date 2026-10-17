@@ -1,0 +1,58 @@
+name: WebGIS Educação | Carregar escolas no mapa
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bootstrap-map.yml'
+      - 'scripts/seduc_geo.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: schools-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  load-school-points:
+    name: Coletar escolas georreferenciadas da IDE/RS
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Consultar SEDUC/RS por código INEP
+        run: python scripts/seduc_geo.py
+      - name: Conferir integridade de escola, INEP e coordenadas
+        run: python -m unittest discover -s tests -v
+      - name: Demonstrar quantidades e proveniência
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path('public/data')
+          s=json.loads((d/'schools.json').read_text(encoding='utf-8'))
+          g=json.loads((d/'schools.geojson').read_text(encoding='utf-8'))
+          meta=json.loads((d/'seduc_provenance.json').read_text(encoding='utf-8'))
+          assert len(s['schools']) >= 30
+          assert len(g['features']) > 0
+          print('Escolas no catálogo:',len(s['schools']))
+          print('Escolas georreferenciadas:',len(g['features']))
+          print('Ano:',s['year'],'Fonte:',meta['source'])
+          PY
+      - name: Persistir JSON e GeoJSON públicos
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: publicar mapa escolar IDE SEDUC (2023)'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

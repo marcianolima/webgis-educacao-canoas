@@ -27,8 +27,8 @@ MAX_EXTRACTED = int(os.environ.get("INEP_MAX_CSV_MB", "3500")) * 1024 * 1024
 NETWORKS = {"1": "Federal", "2": "Estadual", "3": "Municipal", "4": "Privada"}
 STAGES = {
     "Educação infantil": "QT_MAT_INF",
-    "Creche": "QT_MAT_CRE",
-    "Pré-escola": "QT_MAT_PRE",
+    "Creche": "QT_MAT_INF_CRE",
+    "Pré-escola": "QT_MAT_INF_PRE",
     "Ensino fundamental": "QT_MAT_FUND",
     "Ensino médio": "QT_MAT_MED",
     "EJA": "QT_MAT_EJA",
@@ -210,7 +210,7 @@ def read_table(z: zipfile.ZipFile, info: zipfile.ZipInfo):
 
 def find_csv(z: zipfile.ZipFile, word: str) -> zipfile.ZipInfo | None:
     candidates = [m for m in z.infolist()
-                  if not m.is_dir() and re.search(r"(?:^|/|\\\\)Tabela[_ -]?" + re.escape(word) + r"[_ -]?2025\.csv$",m.filename,re.I)]
+                  if not m.is_dir() and re.search(r"(?:^|/|\\\\)Tabela[_ -]?" + re.escape(word) + r"[_ -]?2025(?:[_ -]?V2)?\.csv$",m.filename,re.I)]
     if not candidates:
         return None
     return sorted(candidates,key=lambda m:(len(m.filename),m.filename))[0]
@@ -251,7 +251,7 @@ def read_zip(archive: Path) -> tuple[list[dict],dict,str]:
     with zipfile.ZipFile(archive) as z:
         school_file = find_csv(z,"Escola")
         if school_file is None:
-            raise RuntimeError("ZIP sem Tabela_Escola_2025.csv: " + ", ".join(i.filename for i in z.infolist()[:25]))
+            raise RuntimeError("ZIP sem Tabela_Escola_2025_V2.csv: " + ", ".join(i.filename for i in z.infolist()[:25]))
         for reader in read_table(z,school_file):
             data, info = transform(reader)
         # Em 2025, as matrículas e os docentes são disponibilizados pelo INEP
@@ -269,12 +269,28 @@ def read_zip(archive: Path) -> tuple[list[dict],dict,str]:
             info["docente"] = {"status":"not_found"}
         info["enrollmentCoverage"]=sum(s["enrollments"] is not None for s in data)
         info["teacherCoverage"]=sum(s["teacherFunctions"] is not None for s in data)
+        # A primeira carga de 2025 é submetida à conferência cruzada com a
+        # SEDUC/RS (microdados INEP processados por rede) antes de substituir
+        # qualquer JSON disponível ao público.
+        active = [v for v in data if v["status"] == "Em atividade"]
+        if len(active)!=196:
+            raise ValueError(f"Total de escolas ativas INEP 2025 incompatível com SEDUC/RS: {len(active)} != 196")
+        municipal=[v for v in active if v["network"]=="Municipal"]
+        if len(municipal)!=82:
+            raise ValueError(f"Rede municipal INEP 2025 incompatível com SEDUC/RS: {len(municipal)} != 82")
+        if any(v["enrollments"] is None for v in active):
+            raise ValueError("INEP 2025: matrículas ausentes em pelo menos uma escola ativa; preservar dados anteriores")
+        if sum(v["enrollments"] for v in active)!=68490:
+            raise ValueError("INEP 2025: soma de matrículas não confere com 68.490 da SEDUC/RS")
+        if sum(v["enrollments"] for v in municipal)!=30597:
+            raise ValueError("INEP 2025: matrículas da rede municipal não conferem com 30.597 da SEDUC/RS")
+        info["reconciledAgainst"]={"year":2025,"activeSchools":196,"municipalSchools":82,"enrollments":68490,"municipalEnrollments":30597}
         return data,info,school_file.filename
 
 def build_documents(schools: list[dict], meta: dict, sha256: str, member: str) -> dict[str,dict]:
     now = datetime.now(timezone.utc).isoformat()
-    network = Counter(s["network"] for s in schools)
     active = sum(s["status"] == "Em atividade" for s in schools)
+    active_network=Counter(s["network"] for s in schools if s["status"]=="Em atividade")
     # Escola fora de atividade pode não possuir linha de matrícula no ano.
     # Ausência individual permanece desconhecida, não zero presumido.
     active_schools = [s for s in schools if s["status"] == "Em atividade"]
@@ -292,11 +308,11 @@ def build_documents(schools: list[dict], meta: dict, sha256: str, member: str) -
     summary = json.loads((DATA/"summary.json").read_text(encoding="utf-8"))
     summary["education"] = {
         "year": YEAR,
-        "totalSchools": len(schools),
+        "totalSchools": active,
         "activeSchools": active,
         "teacherFunctions": sum(s["teacherFunctions"] for s in active_schools) if teachers_complete else None,
         "totalEnrollments": sum(s["enrollments"] for s in active_schools) if enrollment_complete else None,
-        "schoolsByNetwork": dict(network),
+        "schoolsByNetwork": dict(active_network),
         "enrollmentsByNetwork": enrollment_by_network,
         "infrastructure": infra,
     }
@@ -305,7 +321,7 @@ def build_documents(schools: list[dict], meta: dict, sha256: str, member: str) -
         "status": "ok" if enrollment_complete else "partial",
         "reference": str(YEAR), "url": URL,
         "updatedAt": now,
-        "note": f"{len(schools)} escolas, {meta['nationalRows']} linhas nacionais; matrículas: {meta['enrollmentCoverage']}/{len(schools)} escolas com valor; {meta['withCoordinates']} georreferenciadas. Colunas não encontradas: {', '.join(meta['missingOptionalColumns']) or 'nenhuma'}."
+        "note": f"{active} escolas em atividade (total de registros: {len(schools)}), {meta['nationalRows']} linhas nacionais; matrículas: {meta['enrollmentCoverage']}/{len(schools)} escolas com valor; {meta['withCoordinates']} georreferenciadas. Colunas não encontradas: {', '.join(meta['missingOptionalColumns']) or 'nenhuma'}."
     }
     geo = {"type": "FeatureCollection", "features": [
         {"type": "Feature", "properties": {"inep": s["inep"], "name": s["name"], "network": s["network"]},

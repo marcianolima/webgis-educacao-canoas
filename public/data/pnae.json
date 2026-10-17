@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "municipalityCode": 4304606,
+  "year": 2024,
+  "source": "https://www.gov.br/fnde/pt-br/acesso-a-informacao/acoes-e-programas/programas/pnae/consultas/repasses-financeiros-por-entidade-executora/DadosFinanceirosdoPNAE_RedesEstadual_Distrital_Municipal_PorEntidadeExecutora_2024.xlsx/@@download/file",
+  "sourceHashSHA256": "fc5eecb6d23bddf186301105a66c1f134c9892150e2889641f8f9a41ff194c5c",
+  "updatedAt": "2026-10-17T14:49:47.760345+00:00",
+  "scope": "PREF MUN DE CANOAS · RS",
+  "fundingStatus": "planned",
+  "program": "PNAE",
+  "currency": "BRL",
+  "definition": "PREVISÃO de repasse financeiro PNAE em 2024, por ação/modalidade e entidade executora. Não é total de valores efetivamente transferidos.",
+  "totalPlannedBRL": 5895260.8,
+  "actions": [
+    {
+      "code": "PNACN",
+      "name": "Creche",
+      "studentsForAction": 3391,
+      "amountPlannedBRL": 1022047.4,
+      "entity": "PREF MUN DE CANOAS"
+    },
+    {
+      "code": "PNAEE",
+      "name": "Atendimento Educacional Especializado (AEE)",
+      "studentsForAction": 1587,
+      "amountPlannedBRL": 237415.2,
+      "entity": "PREF MUN DE CANOAS"
+    },
+    {
+      "code": "PNAEN",
+      "name": "Educação de Jovens e Adultos (EJA)",
+      "studentsForAction": 1482,
+      "amountPlannedBRL": 133887.6,
+      "entity": "PREF MUN DE CANOAS"
+    },
+    {
+      "code": "PNAFN",
+      "name": "Ensino fundamental",
+      "studentsForAction": 27412,
+      "amountPlannedBRL": 3121355.6,
+      "entity": "PREF MUN DE CANOAS"
+    },
+    {
+      "code": "PNAPN",
+      "name": "Pré-escola",
+      "studentsForAction": 5100,
+      "amountPlannedBRL": 1380555.0,
+      "entity": "PREF MUN DE CANOAS"
+    }
+  ],
+  "caveat": "QTDE_ALUNO é quantidade por ação. O mesmo estudante pode participar de ações diferentes. NÃO somar como pessoas únicas. Valores não estão vinculados a escolas."
+}

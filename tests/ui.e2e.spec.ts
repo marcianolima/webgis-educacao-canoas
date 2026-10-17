@@ -45,7 +45,7 @@ for(const [device, width, height] of [
         scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,viewport:window.innerWidth};
     })
    );
-   expect(overflow.length).toBe(4);
+   expect(overflow.length).toBeGreaterThanOrEqual(4); // 4 estágios orçamentários + previsão PNAE quando disponível
    for(const m of overflow){
      expect(m.withinCard,m.value+' saiu do cartão').toBeTruthy();
      expect(m.scrollWidth,m.value+' excedeu o container').toBeLessThanOrEqual(m.clientWidth+1);

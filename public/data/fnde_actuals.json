@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "municipalityCode": "4304606",
+  "updatedAt": "2026-10-17T15:16:26.218879+00:00",
+  "pnae": {
+    "sourceProductId": 82,
+    "source": "https://www.fnde.gov.br/plataforma-antonieta-de-barros-api/products/data-products/82/artifact",
+    "sourcePage": "https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/82",
+    "reference": "2009–2026; 2026 sem valor divulgado no arquivo",
+    "sourceSHA256": "2825b55c7205590c382c288f0671ef12f7f4b49b3b9b63056cba308a956c75f4",
+    "sourceUpdatedAt": "2026-04-08T18:51:46Z",
+    "measure": "Valor_Repasse (campo oficial), agregado por ente executor/ano. Não é repasse por escola.",
+    "series": [
+      {
+        "year": 2009,
+        "studentsConsidered": 33217,
+        "schoolsServed": 76,
+        "reportedTransferredBRL": 1286128.8
+      },
+      {
+        "year": 2010,
+        "studentsConsidered": 37900,
+        "schoolsServed": 75,
+        "reportedTransferredBRL": 2648866.4
+      },
+      {
+        "year": 2011,
+        "studentsConsidered": 44369,
+        "schoolsServed": 83,
+        "reportedTransferredBRL": 3229380.0
+      },
+      {
+        "year": 2012,
+        "studentsConsidered": 46073,
+        "schoolsServed": 83,
+        "reportedTransferredBRL": 3617676.0
+      },
+      {
+        "year": 2013,
+        "studentsConsidered": 46824,
+        "schoolsServed": 84,
+        "reportedTransferredBRL": 2259924.0
+      },
+      {
+        "year": 2014,
+        "studentsConsidered": 36115,
+        "schoolsServed": 86,
+        "reportedTransferredBRL": 3337100.0
+      },
+      {
+        "year": 2015,
+        "studentsConsidered": 41100,
+        "schoolsServed": 85,
+        "reportedTransferredBRL": 3627092.0
+      },
+      {
+        "year": 2016,
+        "studentsConsidered": 39410,
+        "schoolsServed": 93,
+        "reportedTransferredBRL": 3333160.0
+      },
+      {
+        "year": 2017,
+        "studentsConsidered": 40612,
+        "schoolsServed": 93,
+        "reportedTransferredBRL": 3892864.0
+      },
+      {
+        "year": 2018,
+        "studentsConsidered": 38561,
+        "schoolsServed": 94,
+        "reportedTransferredBRL": 3918170.0
+      },
+      {
+        "year": 2019,
+        "studentsConsidered": 38863,
+        "schoolsServed": 98,
+        "reportedTransferredBRL": 3727953.2
+      },
+      {
+        "year": 2020,
+        "studentsConsidered": 37385,
+        "schoolsServed": 99,
+        "reportedTransferredBRL": 4131445.56
+      },
+      {
+        "year": 2021,
+        "studentsConsidered": 39489,
+        "schoolsServed": 102,
+        "reportedTransferredBRL": 4124612.8
+      },
+      {
+        "year": 2022,
+        "studentsConsidered": 39508,
+        "schoolsServed": 101,
+        "reportedTransferredBRL": 3837090.0
+      },
+      {
+        "year": 2023,
+        "studentsConsidered": 40586,
+        "schoolsServed": 101,
+        "reportedTransferredBRL": 5181636.6
+      },
+      {
+        "year": 2024,
+        "studentsConsidered": 38972,
+        "schoolsServed": 100,
+        "reportedTransferredBRL": 5895260.8
+      },
+      {
+        "year": 2025,
+        "studentsConsidered": 35421,
+        "schoolsServed": 91,
+        "reportedTransferredBRL": 4439438.0
+      },
+      {
+        "year": 2026,
+        "studentsConsidered": 38521,
+        "schoolsServed": 101,
+        "reportedTransferredBRL": null
+      }
+    ],
+    "nationalRowsRead": 100682
+  },
+  "pnate": {
+    "sourceProductId": 56,
+    "source": "https://www.fnde.gov.br/plataforma-antonieta-de-barros-api/products/data-products/56/artifact",
+    "sourcePage": "https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/56",
+    "sourceSHA256": "98045f3758c763996fbc0d57b86d92d68545867173a41cd231167cdb756cccb1",
+    "sourceUpdatedAt": "2026-01-22T14:05:21Z",
+    "measure": "vl_pagar_* (valor a pagar). Não equivale a pagamento efetivo; competência do arquivo não presumida.",
+    "reportedAt": "2025-09-01T03:00:04.000Z",
+    "perCapitaBRL": 145.73,
+    "delegatedStateNetwork": "Sim",
+    "toPayBRL": {
+      "earlyChildhood": 0.0,
+      "elementary": 437.16,
+      "highSchool": 0.0
+    },
+    "totalToPayBRL": 437.16
+  }
+}

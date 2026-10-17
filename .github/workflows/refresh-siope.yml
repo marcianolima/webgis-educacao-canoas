@@ -1,10 +1,6 @@
-name: WebGIS Educação | SIOPE FNDE 2025
+name: DIAGNÓSTICO | SIOPE FNDE schema pendente
 on:
-  push:
-    paths: ['scripts/fnde_siope.py','.github/workflows/refresh-siope.yml']
   workflow_dispatch:
-  schedule:
-    - cron: '15 8 15 * *'
 permissions: {contents: write}
 concurrency: {group: siope-educacao-canoas, cancel-in-progress: false}
 jobs:
@@ -16,7 +12,7 @@ jobs:
         with: {ref: main}
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - name: Ler declarações SIOPE 6º bimestre e validar município
+      - name: Diagnosticar formatação dos registros SIOPE sem publicar resultados não validados
         run: python scripts/fnde_siope.py
       - run: python -m unittest discover -s tests -v
       - name: Persistir apenas agregados SIOPE sem duplicar SICONFI

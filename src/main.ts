@@ -51,7 +51,7 @@ function toggleMobileDrawer(open:boolean){
  document.body.classList.toggle('nav-lock',open);
  if(open){
   const active=drawer.querySelector<HTMLElement>('.nav-btn.active');
-  active?.scrollIntoView({block:'nearest',behavior:'instant'});
+  active?.scrollIntoView({block:'nearest',behavior:'auto'});
   drawer.querySelector<HTMLButtonElement>('#close-nav')?.focus();
  }else if(drawer.contains(document.activeElement)){trigger.focus();}
 }

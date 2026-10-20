@@ -15,31 +15,42 @@ for(const [device, width, height] of [
    await expect(municipal).toBeVisible();
    await expect(page.getByText('68.490',{exact:true}).first()).toBeVisible();
 
-   const nav=width<940?page.locator('.mobile-menu'):page.locator('.sidebar');
+   const nav=width<940?page.locator('#mobile-drawer'):page.locator('.sidebar');
+   const go=async(section:string)=>{
+    if(width<940){
+     await page.locator('#open-nav').click();
+     const button=nav.locator('[data-page="'+section+'"]');
+     const group=button.locator('xpath=ancestor::section[contains(@class,"nav-group")]');
+     if(await group.count()){
+      const toggle=group.locator('[data-nav-group]');
+      if(await toggle.getAttribute('aria-expanded')==='false')await toggle.click();
+     }
+     await expect(button).toBeVisible();
+     await button.click();
+     await expect(page.locator('#mobile-drawer')).toBeHidden();
+    }else{
+     const button=nav.locator('[data-page="'+section+'"]');
+     const group=button.locator('xpath=ancestor::section[contains(@class,"nav-group")]');
+     if(await group.count()){
+      const toggle=group.locator('[data-nav-group]');
+      if(await toggle.getAttribute('aria-expanded')==='false')await toggle.click();
+     }
+     await button.click();
+    }
+   };
    if(width<940){
-     // Regressão: qualquer aba (inclusive a última) permanece selecionada,
-     // destacada e posicionada à esquerda do menu de rolagem horizontal.
-     const cases=['sources','finance','quality','schools','municipal'];
-     for(const section of cases){
-       await nav.locator('[data-page="'+section+'"]').click();
-       const current=nav.locator('[data-page="'+section+'"]');
-       await expect(current).toHaveClass(/active/);
-       await expect(current).toHaveAttribute('aria-current','page');
-       const geometry=await nav.evaluate(el=>{
-         const selected=el.querySelector<HTMLElement>('.nav-btn.active')!;
-         const leftPadding=parseFloat(getComputedStyle(el).paddingLeft)||0;
-         const menuBox=el.getBoundingClientRect();
-         const buttonBox=selected.getBoundingClientRect();
-         return {alignment:buttonBox.left-menuBox.left-leftPadding,
-           scrollLeft:el.scrollLeft,
-           visible:buttonBox.right<=menuBox.right+1};
-       });
-       expect(Math.abs(geometry.alignment),section+' não ficou à esquerda').toBeLessThanOrEqual(2);
-       expect(geometry.visible,section+' ficou fora do menu').toBeTruthy();
-       if(section==='sources')expect(geometry.scrollLeft).toBeGreaterThan(50);
+     for(const section of ['sources','finance','quality','schools','municipal']){
+       await go(section);
+       await page.locator('#open-nav').click();
+       const active=nav.locator('[data-page="'+section+'"]');
+       await expect(active).toHaveClass(/active/);
+       await expect(active).toHaveAttribute('aria-current','page');
+       await expect(active).toBeVisible();
+       await expect(active).toBeInViewport();
+       await page.locator('#close-nav').click();
      }
    }
-   await nav.locator('[data-page="schools"]').click();
+   await go('schools');
    await expect(page.getByRole('heading',{name:'Escolas e território'})).toBeVisible();
    await expect(page.locator('.school-row').first()).toBeVisible();
    await page.locator('#stage-select').selectOption({label:'Educação Infantil'});
@@ -54,31 +65,31 @@ for(const [device, width, height] of [
    await page.screenshot({path:testInfo.outputPath(device+'-ficha.png'),fullPage:true});
    // Os painéis não podem inferir indicadores municipais como dados escolares.
 
-   await nav.locator('[data-page="enrollments"]').click();
+   await go('enrollments');
    await expect(page.locator('main h2').filter({hasText:'Rede escolar e matrículas'})).toBeVisible();
    await expect(page.locator('#rs-enrollments-chart')).toBeVisible();
-   await nav.locator('[data-page="infrastructure"]').click();
+   await go('infrastructure');
    await expect(page.locator('main h2').filter({hasText:'Infraestrutura escolar'})).toBeVisible();
-   await nav.locator('[data-page="quality"]').click();
+   await go('quality');
    await expect(page.getByRole('heading',{name:'Qualidade e aprendizagem'})).toBeVisible();
    await expect(page.getByText('IDEB 2025 — anos iniciais')).toBeVisible();
    await expect(page.getByText('SAEB 2025 · rede ESTADUAL em Canoas')).toBeVisible();
    await expect(page.locator('#quality-chart')).toBeVisible();
    await expect(page.locator('#school-flow-chart')).toBeVisible();
    await expect(page.getByText('Nível socioeconômico (INSE) · referência 2023')).toBeVisible();
-   await nav.locator('[data-page="teachers"]').click();
+   await go('teachers');
    await expect(page.getByRole('heading',{name:'Docentes e formação adequada'})).toBeVisible();
    await expect(page.locator('#teacher-chart')).toBeVisible();
    await page.screenshot({path:testInfo.outputPath(device+'-docentes.png'),fullPage:true});
-   await nav.locator('[data-page="quality"]').click();
+   await go('quality');
 
    await page.screenshot({path:testInfo.outputPath(device+'-ideb.png'),fullPage:true});
-   await nav.locator('[data-page="childhood"]').click();
+   await go('childhood');
    await expect(page.getByRole('heading',{name:'Educação infantil e demografia territorial'})).toBeVisible();
    await expect(page.getByText('Crianças de 0–3 anos')).toBeVisible();
    await expect(page.locator('#age-chart')).toBeVisible();
    await page.screenshot({path:testInfo.outputPath(device+'-infancia.png'),fullPage:true});
-   await nav.locator('[data-page="finance"]').click();
+   await go('finance');
    await expect(page.getByRole('heading',{name:'Financiamento público da educação'})).toBeVisible();
    await expect(page.getByText('Empenhado em 2025')).toBeVisible();
    await expect(page.locator('#finance-chart')).toBeVisible();
@@ -102,7 +113,7 @@ for(const [device, width, height] of [
    expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1);
 
    await page.screenshot({path:testInfo.outputPath(device+'-financas.png'),fullPage:true});
-   await nav.locator('[data-page="sources"]').click();
+   await go('sources');
    await expect(page.getByText('Organizações e plataformas de apoio')).toBeVisible();
    if(width<940){
      // Alternar tema refaz o DOM, mas não deve perder o destaque/posição.

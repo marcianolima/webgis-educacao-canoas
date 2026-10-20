@@ -48,3 +48,55 @@
   pointer-events:none;
  }
 }
+
+
+/* Navegação agrupada compartilhada com o padrão WebGIS Empreender. */
+.shell{grid-template-columns:248px minmax(0,1fr)}
+.sidebar{padding:20px 12px 16px;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.sidebar .section-label,.drawer-panel .section-label{margin:18px 12px 9px;font-size:10px;letter-spacing:1.4px}
+.menu{gap:3px;align-content:start}
+.nav-btn{min-height:40px;padding:9px 11px;gap:10px;line-height:1.25}
+.nav-btn .symbol{flex:0 0 22px}
+.nav-btn .nav-text{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-group-toggle{color:#c5d7e2}
+.nav-group-toggle.is-current{color:#fff}
+.nav-chevron{margin-left:auto;font-size:19px;line-height:1}
+.nav-group-items{display:grid;gap:2px;padding:0 0 4px 18px}
+.nav-group-items[hidden]{display:none}
+.nav-group-items .nav-btn{font-size:12px;min-height:37px;padding:8px 9px}
+.nav-group-items .nav-btn.active{box-shadow:inset 3px 0 0 #edb734}
+.topbar{position:sticky;top:0;z-index:35;height:58px;min-height:58px;padding:0 clamp(12px,2vw,26px);justify-content:flex-start;box-shadow:0 2px 9px #102d4308}
+.top-title{flex:1;min-width:0}
+.topbar h1{font-size:clamp(15px,1.4vw,19px);margin:2px 0 0;letter-spacing:-.45px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eyebrow{font-size:9px;letter-spacing:1.1px}
+.top-actions{flex-shrink:0}
+.top-actions .button{min-height:36px;padding:7px 10px}
+.menu-toggle{display:none}
+.mobile-drawer[hidden]{display:none!important}
+body.nav-lock{overflow:hidden}
+@media(max-width:940px){
+ .menu-toggle{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;background:transparent;border:1px solid #d6e0e5;border-radius:9px;color:#193346;font-size:21px}
+ .mobile-drawer{position:fixed;inset:0;z-index:90;display:block}
+ .drawer-backdrop{position:absolute;inset:0;width:100%;background:#020d18a8;border:0;border-radius:0}
+ .drawer-panel{position:absolute;inset:0 auto 0 0;width:min(88vw,340px);background:#102d43;color:#fff;display:flex;flex-direction:column;padding:16px 12px;box-shadow:12px 0 35px #06172655}
+ .drawer-head{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid #315062;padding:0 0 14px;margin-bottom:10px}
+ .drawer-head .logo{padding:0;gap:8px;min-width:0}
+ .drawer-head .logo strong{font-size:15px;white-space:nowrap}
+ .drawer-head .logomark{width:36px;height:36px;flex:0 0 36px}
+ .drawer-close{height:36px;width:36px;background:transparent;color:#fff;border:0;border-radius:9px;font-size:19px}
+ .drawer-panel .menu{display:block;min-height:0;overflow-y:auto;overflow-x:hidden;padding-bottom:28px}
+ .drawer-panel .nav-btn{color:#c5d7e2}
+ .drawer-panel .nav-btn.active{color:#fff;background:#315b71;box-shadow:inset 3px 0 0 #edb734}
+ .drawer-panel .nav-btn:hover,.drawer-close:hover{background:#244b61}
+ .mobile-menu{display:none!important}
+ .topbar{height:58px;min-height:58px;padding:0 12px;gap:9px}
+ .topbar h1{font-size:15px}
+ .eyebrow{font-size:8px;letter-spacing:.7px}
+ .header-action span{display:none}
+}
+@media(max-width:420px){
+ .top-actions{gap:5px}
+ .top-actions .button{padding:7px 9px}
+ .topbar h1{font-size:14px}
+}
+.dark .menu-toggle{color:#e1edf3;border-color:#365060}

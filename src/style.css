@@ -100,3 +100,7 @@ body.nav-lock{overflow:hidden}
  .topbar h1{font-size:14px}
 }
 .dark .menu-toggle{color:#e1edf3;border-color:#365060}
+
+
+@media(max-width:940px){.mobile-brand{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;background:#edb734;color:#102d43;border-radius:8px;font-weight:900;font-size:15px}}
+@media(min-width:941px){.mobile-brand{display:none}}

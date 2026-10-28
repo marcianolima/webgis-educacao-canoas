@@ -72,7 +72,7 @@ export function mountEnrollmentChart(dark:boolean){
  const el=document.getElementById("rs-enrollments-chart");if(!el||!data)return null;
  const years=data.enrollments.Todas.map(r=>r.year);
  const chart=echarts.init(el,dark?"dark":undefined);
- chart.setOption({backgroundColor:"transparent",tooltip:{trigger:"axis"},legend:{top:0},
+ chart.setOption({animation:!window.matchMedia('(prefers-reduced-motion: reduce)').matches,backgroundColor:"transparent",tooltip:{trigger:"axis"},legend:{top:0},
  grid:{top:65,bottom:45,left:70,right:15},xAxis:{type:"category",data:years.map(String)},
  yAxis:{type:"value"},series:NETWORKS.map(network=>({name:network,type:"line",
  data:years.map(y=>row(network,y)?.mat_total??null),connectNulls:false,symbolSize:4}))});

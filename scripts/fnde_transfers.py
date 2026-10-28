@@ -119,6 +119,15 @@ def main():
         if not valid:raise RuntimeError("Fonte FNDE indisponível e snapshot existente inválido") from exc
         print(f"::warning::FNDE indisponível ({exc}). Snapshot validado preservado sem atualizar a data de coleta: {old.get('updatedAt','sem data')}",flush=True)
         return
+    # Mesmos arquivos oficiais: não alterar data nem emitir commit redundante.
+    prior=DATA/"fnde_actuals.json"
+    if prior.is_file():
+        old=json.loads(prior.read_text(encoding="utf-8"))
+        if (old.get("municipalityCode")=="4304606"
+            and old.get("pnae",{}).get("sourceSHA256")==hashlib.sha256(pbytes).hexdigest()
+            and old.get("pnate",{}).get("sourceSHA256")==hashlib.sha256(nbytes).hexdigest()):
+            print("::notice::FNDE sem mudanças nos arquivos de origem; snapshot preservado.",flush=True)
+            return
     series,national=pnae(pbytes)
     pn=pnate(nbytes)
     now=datetime.now(timezone.utc).isoformat()

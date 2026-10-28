@@ -45,7 +45,7 @@ export function mountAgeChart(dark:boolean){
  const el=document.getElementById('age-chart');if(!el||!demographic)return null;
  const labels=['0–3 anos','4–5 anos','6–14 anos','15–17 anos','18–24 anos'];
  const chart=echarts.init(el,dark?'dark':undefined);
- chart.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis'},
+ chart.setOption({animation:!window.matchMedia('(prefers-reduced-motion: reduce)').matches,backgroundColor:'transparent',tooltip:{trigger:'axis'},
  grid:{top:10,bottom:35,left:60,right:20},
  xAxis:{type:'category',data:labels,axisLabel:{interval:0,color:dark?'#eee':'#64748b'}},
  yAxis:{type:'value',axisLabel:{color:dark?'#eee':'#64748b'}},

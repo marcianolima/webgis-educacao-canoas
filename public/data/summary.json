@@ -96,8 +96,7 @@
       "status": "ok",
       "reference": "PNAE 2009–2025 por entidade executora; PDDE 2025 por escola; PNATE a pagar",
       "url": "https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos",
-      "note": "PNAE 2025: R$ 4.439.438,00 em campo Valor_Repasse; PDDE 2025: cobertura parcial das escolas municipais; PNATE não representa pagamento efetivo. Último snapshot validado é mantido quando a fonte não responde.",
-      "updatedAt": "2026-10-17T18:45:14Z"
+      "note": "PNAE 2025: R$ 4.439.438,00 em campo Valor_Repasse; PDDE 2025: cobertura parcial das escolas municipais; PNATE não representa pagamento efetivo. Último snapshot validado é mantido quando a fonte não responde."
     },
     "seduc": {
       "status": "ok",

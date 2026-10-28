@@ -1,95 +1,73 @@
-# WebGIS Educação Canoas — versão funcional 0.3.0
+# WebGIS Educação Canoas — versão 1.0.0
 
-**Aplicação pública:** https://marcianolima.github.io/webgis-educacao-canoas/  
-**Repositório:** https://github.com/marcianolima/webgis-educacao-canoas  
-**Deploy confirmado:** https://github.com/marcianolima/webgis-educacao-canoas/actions/runs/39038793085
+[**Abrir aplicação**](https://marcianolima.github.io/webgis-educacao-canoas/) · [Código-fonte](https://github.com/marcianolima/webgis-educacao-canoas) · [Testes e publicação](https://github.com/marcianolima/webgis-educacao-canoas/actions)
 
-Plataforma pública de inteligência territorial educacional para **Canoas/RS**, código IBGE **4304606**. Vite + TypeScript, ECharts, MapLibre e pipeline de dados Python 3.12, publicação GitHub Pages.
+Observatório territorial de educação do município de **Canoas/RS** (IBGE **4304606**), com indicadores oficiais, séries históricas, cartografia interativa, fichas de escolas e transparência das fontes. Aplicação estática e responsiva, desenvolvida com **Vite, TypeScript, MapLibre GL JS e Apache ECharts** e publicada pelo GitHub Actions/Pages.
 
-## O que já funciona
+> **Escopo da 1.0:** a aplicação está estruturada para publicação, monitoramento e testes de regressão. Versão 1.0 **não** significa que todas as fontes públicas possam ser coletadas automaticamente nem que todos os indicadores tenham a mesma cobertura. Cada visualização informa período, escala e origem. Informação ausente não é zero.
 
-- Página inicial municipal com IBGE: população do Censo 2022 (**347.657**), estimativa 2026 (**359.845**) e escolarização de 6–14 anos (**97,17%**, Censo 2022).
-- Mapa interativo e catálogo georreferenciado de **178 escolas** da IDE/RS SEDUC, referência **2023**. Redes: **83 municipais, 36 estaduais, 1 federal e 58 privadas**. Inclui escolas privadas e públicas, filtros por rede, busca por nome e INEP, clustering e seleção.
-- Ficha cadastral individual por código INEP, endereço quando disponível, rede, posição, seleção compartilhável por `?inep=...`, exportação CSV e tema claro/escuro.
-- Separação rigorosa entre dados municipais e os indicadores de cada escola. Escolas do catálogo 2023 não são anunciadas como universo completo do Censo Escolar 2025.
-- Painéis temáticos e metodologia com estados de indisponibilidade honestos enquanto fontes exigem integração.
-- Deploy estático e verificação real da URL pública após publicação: HTML, JS e snapshots responderam HTTP 200.
-- Testes de integridade, projeção e coordenadas, chaves INEP, ausência de identificadores pessoais e consistência entre JSON/GeoJSON.
+## Dados disponíveis
 
-## O que ainda **não** está integrado
+| Domínio | Informação e granularidade | Competência |
+| --- | --- | --- |
+| Panorama | População residente de 347.657, estimativa de 359.845 e escolarização de 6–14 anos | IBGE, Censo 2022 e estimativa 2026 |
+| Censo Escolar | 204 registros escolares, 196 em atividade, 68.490 matrículas e 3.567 funções docentes; indicadores e características por unidade | INEP, microdados oficiais 2025 V2, ZIP verificado por SHA-256 |
+| Cartografia | 169 unidades do cadastro 2025 localizadas; as restantes continuam consultáveis na lista | SEDUC/RS, geometria com referência **2023** |
+| Matrículas e infraestrutura | Séries por rede, etapa e indicadores de condições de oferta | INEP/SEDUC-RS, série 2010–2025 |
+| Qualidade da educação | IDEB 2005–2025 por rede/etapa e IDEB 2025 **por escola quando divulgado**; rendimento, SAEB e INSE devidamente identificados | INEP/SEDUC-RS, competências específicas |
+| Profissionais | Indicador de adequação da formação docente, complexidade de gestão escolar, rendimento | SEDUC/RS, 2025; INSE 2023 |
+| Financiamento | Despesa municipal função 12, estágios empenhado, liquidado e pago | Tesouro Nacional, SICONFI/DCA 2019–2025 |
+| PNAE/PNATE | PNAE 2024 **previsto**, série PNAE do campo oficial `Valor_Repasse` 2009–2025; PNATE com valores **a pagar** | FNDE |
+| PDDE por escola | Pagamentos de 2025 para escolas municipais consultadas, cobertura parcial e identificada | FNDE PDDE Info |
+| Demografia | Faixas etárias e idades simples de 0 a 24 anos | IBGE/SIDRA 2022 |
 
-- **Matrículas, docentes, turmas e infraestrutura 2025:** existe ETL para os microdados oficiais do INEP 2025, mas a primeira carga encontrou **reset de conexão e falha de validação de certificado HTTPS** no host `download.inep.gov.br`, conforme logs do runner. Sem bypass de TLS não houve publicação do Censo 2025. O código mantém os campos nulos, sem estimar valores.
-- **IDEB/SAEB, fluxo, rendimento, distorção, FNDE/SIOPE:** fontes catalogadas, indicadores ainda não integrados.
-- Georreferenciamento não foi realizado por inferência textual: posições vêm do serviço oficial SEDUC/RS, baseado no INEP 2023.
+**Universos distintos:** os **204 registros** do Censo Escolar INEP 2025 incluem **8 escolas não ativas**; o universo **ativo tem 196 escolas**. As **169 coordenadas conciliadas** se originam do cadastro estadual de 2023 e podem não representar o endereço mais recente. Uma escola sem coordenada não é removida do catálogo.
 
-## Coleta e implantação — processos isolados
+## Interface e operação
 
-| Workflow | Papel | Disparo |
-|---|---|---|
-| `.github/workflows/deploy.yml` | Testes Python, typecheck TS, build Vite, inspeção da pasta dist e deploy GitHub Pages com teste HTTP público de ponta a ponta | Push na main ou manual |
-| `.github/workflows/bootstrap-map.yml` | Coleta do MapServer SEDUC, validação de 178 registros e commit dos snapshots | Primeira publicação; manual |
-| `.github/workflows/bootstrap-inep.yml` | Tentativa de primeira carga Censo 2025 e enriquecimento por SEDUC | Primeira publicação; manual |
-| `.github/workflows/update-data.yml` | INEP/SEDUC independentes, preserva snapshots quando fonte falha; mostra avisos de qualidade | Mensal ou manual |
+A aplicação oferece Painel Municipal, Escolas e Mapa, Matrículas e Redes, Qualidade, Infraestrutura, Profissionais, Educação Infantil, Financiamento e Dados/Metodologia. Inclui menus agrupados, cabeçalho compacto, tema claro/escuro, busca escolar por nome ou código INEP com filtro instantâneo, filtros de rede/etapa/porte, agrupamento de pontos no mapa, ficha individual por `?inep=CODIGO`, exportação CSV e gráficos interativos.
 
-O **deploy não depende do sucesso do download externo**. Quando o coletor conseguir publicar novos snapshots válidos, o commit automático em `public/data/` disparará o deploy.
+A versão mobile possui menu lateral com página atual destacada, fechamento por Escape e retorno de foco, link de salto para conteúdo e preferência por movimento reduzido. A interface é **mobile first**, mas os testes automatizados não substituem uma auditoria independente de acessibilidade nem uma homologação com aparelhos físicos.
 
-## Executar e verificar localmente
+## Fonte, metodologia e restrições
+
+- O **INEP 2025** contém indicadores de escolas, matrículas e funções docentes. Dados individuais de estudantes/professores ou ZIP nacional bruto **não** são publicados pela aplicação.
+- O **IDEB escolar** está disponível apenas para unidades e etapas com resultado oficial publicado. Ausência não é nota zero. Não se aplicam médias municipais a escolas individuais.
+- O **SAEB 2025 estadual** foi conciliado com dados SEDUC/RS. O resultado de proficiência **municipal** de fonte secundária permanece marcado como provisório até verificação no arquivo primário.
+- O **PNAE** distingue previsão 2024 de valores anuais reportados como `Valor_Repasse`. O PNATE `vl_pagar_*` significa **valor a pagar**, não pagamento realizado. O PDDE publicado cobre escolas consultadas, não representa automaticamente o total municipal.
+- O dado de **execução orçamentária SICONFI** não corresponde diretamente a repasse FNDE nem a gasto por escola.
+- Novas séries e serviços estão **catalogados**, não necessariamente importados: INEP (distorção idade-série, esforço e regularidade docente, horas-aula e tamanho de turma), Censo Escolar 2026, FNDE/FUNDEB/PNLD e fontes de organizações da sociedade civil.
+
+**Resiliência:** se a fonte remota do FNDE responder 404 ou falhar transitoriamente, o processo conserva o último snapshot validado e emite advertência, sem mudar sua data. Mudanças de esquema ou inconsistências nos valores permanecem erros, impedindo publicar valores não comprovados.
+
+Consulte [Fontes](docs/FONTES.md), [Metodologia](docs/METODOLOGIA.md), [Arquitetura](docs/ARQUITETURA.md) e os diretórios `scripts/` e `public/data/` para proveniência detalhada.
+
+## Instalar e testar
+
+Requisitos: **Node.js 22+**, npm e **Python 3.12+**.
 
 ```bash
 npm install
 python -m unittest discover -s tests -v
 npm run build
+npx playwright install chromium
+npm run test:e2e
 npm run dev
 ```
 
-Requisitos: Node.js 22 e Python 3.12 ou superior. Para validar o Censo manualmente: `python scripts/inep_censo.py` (download do servidor oficial INEP requer TLS confiável, conectividade e espaço temporário).
+O caminho de publicação está em `vite.config.ts`. Os snapshots ficam versionados em `public/data/`; novas cargas exigem validação de município, competência, integridade, denominadores, granularidade e privacidade.
 
-## Documentação
+### Workflows e homologação
 
-- `docs/ARQUITETURA.md` — contratos e CI/CD;
-- `docs/FONTES.md` — matriz e granularidades;
-- `docs/METODOLOGIA.md` — indicadores e limites;
-- `docs/DIAGNOSTICO_DEPLOY.md` — análise dos erros corrigidos e evidência de publicação;
-- `CHANGELOG.md` — histórico e versão.
+- `.github/workflows/deploy.yml` executa testes Python, TypeScript e Vite, valida `dist/`, roda testes Playwright em **Chromium simulado** desktop (1440 px), tablet (810 px) e celular (390 px), disponibiliza capturas e verifica a URL pública após o deploy.
+- `.github/workflows/collect-inep-windows.yml` baixa a edição INEP 2025 V2 com checksum verificado, concilia matrícula/docência por estabelecimento e incorpora coordenadas SEDUC de 2023.
+- `.github/workflows/refresh-*.yml` atualiza independentemente as fontes estaduais/federais quando disponíveis.
+- `tests/test_pipeline.py`, `tests/test_indicators.py` e `tests/test_release.py` validam snapshots, conceitos e cobertura; `tests/ui.e2e.spec.ts` cobre navegação, filtros, fichas, tema, acessibilidade básica, responsividade e transbordamento de cards.
 
-Os dados cadastrais escolares provêm de fontes públicas e são apresentados como base de consulta territorial exploratória; o sistema não substitui as publicações oficiais do INEP, FNDE, IBGE ou da Secretaria Municipal da Educação. O WebGIS Saúde não foi alterado.
+Antes de atestar a versão publicada, verifique o **resultado da execução mais recente** no [GitHub Actions](https://github.com/marcianolima/webgis-educacao-canoas/actions). Homologação em dispositivos físicos, auditoria WCAG formal e disponibilidade permanente dos servidores externos continuam exigindo acompanhamento próprio.
 
-## Ampliação de indicadores — v0.3
-- **Financiamento municipal primário:** DCA/SICONFI da função 12 (Educação), série 2019–2025; valores nominais empenhados, liquidados e pagos; subfunções separadas (não aditivas). Scripts: `scripts/finance_siconfi.py` e `.github/workflows/refresh-finance.yml`.
-- **IDEB 2005–2025 de Canoas por etapa:** duas fontes secundárias independentes reproduzem os dados atribuídos ao INEP; identificados claramente como *corroborados em fontes secundárias*, não extração original. O IDEB individual de cada escola ainda não foi coletado.
-- **SAEB 2025:** valores municipais provenientes de uma fonte secundária, identificados como *aguardando conferência adicional*; não vinculados a escolas.
-- **Pesquisa de ONGs:** `docs/FONTES_COMPLEMENTARES.md` e sessão de Fontes no site detalham fontes validadas de contexto, critérios e condições de acesso.
-- **Testes:** Playwright em Chromium simulado nos tamanhos desktop, tablet e celular; capturas de tela e rastreamento de falhas ficam nos artefatos do workflow. Não é homologação com aparelhos físicos.
-- **Censo Escolar 2025:** endpoint do ZIP e dicionário de tabelas identificados; conectividade TLS oficial `download.inep.gov.br` instável/indisponível no GitHub runner. Não desativamos a segurança nem publicamos contagens inventadas.
+## Direitos e responsabilidade
 
-## Dados federais PNAE (2024)
-Planilha XLSX oficial FNDE, `scripts/fnde_pnae.py`. A Prefeitura Municipal de Canoas tem **5 ações com previsão total de R$ 5.895.260,80 em 2024** (creche, AEE, EJA, ensino fundamental e pré-escola). O campo é previsão por ação, **não valor pago ou repassado**. Quantidades por ação não são estudantes únicos. O arquivo inclui SHA-256 do material original. Consulte `public/data/pnae.json`.
+Consulte as condições de uso de cada fonte. Este é um projeto de análise territorial baseado em informações públicas, **não substitui** os sistemas certificados do INEP, IBGE, FNDE, SEDUC/RS ou Prefeitura de Canoas. Nenhuma licença de software foi declarada; a disponibilidade pública do código não implica concessão de licença para qualquer uso.
 
-
-## Oferta escolar e classificação territorial
-As escolas georreferenciadas da IDE/RS (referência INEP 2023) incluem etapa/modalidade ofertada, faixa de porte, tipo de localização, categoria privada e convênios, quando declarados. Os filtros de rede, etapa, porte e busca textual podem ser combinados. A mesma escola pode oferecer várias etapas, portanto a soma das contagens por etapa pode superar o total de escolas. Campos numéricos estaduais (`num_matriculas`, `num_turmas`) não têm competência explicitada pelo serviço e não entram nos totais do município.
-
-
-## Perfil etário IBGE/SIDRA 9514 — Censo Demográfico 2022
-O coletor `scripts/ibge_age.py` consulta a API SIDRA oficial por município IBGE 4304606, confirma população total de **347.657 residentes** e reconcilia idades simples 0–24 com faixas quinquenais. Publica as faixas 0–3, 4–5, 6–14, 15–17, 18–24 e o agregado 0–17, usadas no módulo Educação Infantil e Painel Municipal. Esses números representam residentes no Censo 2022, não matrículas em escolas nem estimativas de 2026. Atualização anual de verificação do arquivo está em `.github/workflows/refresh-ibge-age.yml`.
-
-
-## Estado da v0.4 — fontes efetivamente novas
-- **FNDE PNAE (2024):** R$ 5.895.260,80 **previstos**, em cinco ações, pela entidade executora Prefeitura Municipal de Canoas; estudantes contabilizados por ação (podem se sobrepor). `public/data/pnae.json`, `scripts/fnde_pnae.py`.
-- **IBGE/SIDRA (2022):** população residente de 0–3, 4–5, 6–14, 15–17, 18–24 e 0–17, sem projeções artificiais. `public/data/ibge_age.json`, `scripts/ibge_age.py`.
-- **SEDUC/RS (base cartográfica 2023):** oferta escolar, tipo de localização, porte e características das unidades, com filtros cruzados. Campos de matrículas e turmas do geosserviço estadual sem competência explícita não compõem somas municipais.
-- **Em análise:** fontes FNDE/PAB para valores PNAE efetivamente transferidos, PNATE, SIOPE e PDDE; INEP Data para matrícula 2025 e IDEB/SAEB por escola.
-
-## Versão 0.5 — Censo 2025 por rede e PDDE 2025 por escola
-O Censo Escolar de 2025 passou a integrar indicadores oficiais agregados municipais derivados do INEP por planilhas SEDUC/RS: **196 escolas, 68.490 matrículas**, das quais **82 municipais e 30.597 matrículas municipais**. Séries históricas 2010–2025 de matrículas e percentuais de infraestrutura por rede. O cadastro territorial do mapa tem referência 2023 (178 pontos), não o mesmo universo.
-Também foi integrada a consulta pública PDDE Info por código INEP 2025: 83 escolas municipais do cadastro 2023 consultadas, 82 com pagamentos confirmados e uma sem resultado; pagamentos válidos somam **R$ 3.769.394,00** somente nas escolas cobertas. Cada ficha mostra os programas, valores pagos e datas, sem dados bancários.
-Arquivos públicos: public/data/rs_censo_municipal.json e public/data/pdde_schools.json. Coletores: scripts/rs_censo.py e scripts/fnde_pdde.py. Workflows: refresh-rs-censo.yml e refresh-pdde.yml.
-Microdados individuais de matrículas e docentes por escola, IDEB individual e SAEB individual ainda pendem da extração nacional segura do INEP, cujo servidor permanece com falhas TCP/TLS no GitHub runner.
-
-## Novos painéis oficiais do INEP/SEDUC-RS
-A página Qualidade inclui taxas de aprovação, reprovação e abandono por rede/etapa (2025) e série histórica do ensino fundamental. O módulo Profissionais apresenta a adequação da formação docente AFD por etapa e rede (grupos 1–5) e séries. Adicionou-se a complexidade de gestão ICG e o INSE com última referência **2023**. Fontes auditáveis e SHA-256 no `public/data/rs_indicators.json`; pipeline `refresh-rs-indicators.yml`.
-
-## IDEB e SAEB oficiais via dados abertos da SEDUC/RS
-- IDEB 2005–2025, municipal/estadual/todas: fonte INEP processada na planilha oficial [dados_ideb.xlsx](https://dados.rs.gov.br/dataset/indice-de-desenvolvimento-da-educacao-basica-ideb-rio-grande-do-sul). Em Canoas 2025, rede municipal **5,3 anos iniciais** e **4,6 anos finais**; rede estadual ensino médio **4,5**. Não aplicar essas notas a cada estabelecimento individualmente.
-- SAEB da rede **estadual** em Canoas, LP e Matemática por etapa, 2017–2025, dados_saeb.xlsx da SEDUC/RS. Não reinterpretar como SAEB da rede municipal. A fonte não apresenta SAEB municipal 2025 em sua planilha e o outro dado segue marcado como secundário.
-- Dados `rs_quality_official.json`, integração `scripts/rs_quality_official.py` e workflow `refresh-rs-quality.yml`, com SHA256 de cada XLSX.
+Veja [CHANGELOG.md](CHANGELOG.md) para histórico. **Versão 1.0.0 — 27 de outubro de 2026.**

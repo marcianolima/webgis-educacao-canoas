@@ -99,7 +99,7 @@ export function mountAdvancedChart(page:'teachers'|'quality',dark:boolean){
  name:label==='aprov'?'Aprovação':label==='reprov'?'Reprovação':'Abandono',type:'line',connectNulls:false,
  data:rows.map(r=>r[label+'_fund'])
  }));
- chart.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis'},legend:{top:0},
+ chart.setOption({animation:!window.matchMedia('(prefers-reduced-motion: reduce)').matches,backgroundColor:'transparent',tooltip:{trigger:'axis'},legend:{top:0},
  grid:{top:60,bottom:45,left:55,right:18},
  xAxis:{type:'category',data:rows.map(r=>String(r.year))},
  yAxis:{type:'value',min:0,max:100,axisLabel:{formatter:'{value}%'}},

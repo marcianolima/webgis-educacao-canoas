@@ -1,63 +1,29 @@
-# Matriz de fontes investigadas — 17/10/2026
+# Matriz de fontes — auditoria 1.0 (27/10/2026)
 
-| Fonte | Órgão | URL oficial | Escala disponível | Ano/competência | Frequência | Formato / chave | Situação | Limitação |
-|---|---|---|---|---|---|---|---|---|
-| Censo Escolar, microdados | INEP | https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar | Brasil → escola e município | 2025, séries anteriores | Anual | ZIP/CSV; CO_ENTIDADE, CO_MUNICIPIO | Coletor implementado; download e reconciliação no runner pendentes | Layout deve ser conferido por edição; matrícula e coordenadas opcionais |
-| IDEB resultados | INEP | https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025 | Município/rede/escola conforme publicação | 2005–2025 | Ciclo de avaliação | Arquivos oficiais; INEP e município após tratamento | Identificado, não integrado | Divulgações e supressões por elegibilidade |
-| Rendimento escolar | INEP | https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/taxas-de-rendimento-escolar | Brasil → município e escola | 2025 e anteriores | Anual | Planilhas; INEP e município | Identificado, não integrado | Conferir layout e denominação de taxas |
-| Distorção idade-série | INEP | https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/taxas-de-distorcao-idade-serie | Brasil → município e escola | 2025 e anteriores | Anual | Planilhas; INEP e município | Identificado, não integrado | Aplicável a anos/séries específicos |
-| Outros indicadores docentes/turmas/INSE | INEP | https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais | Município e/ou escola segundo indicador | Edições distintas | Anual/irregular | Diversos; códigos INEP | Catálogo identificado, não integrado | Não combinar denominadores diferentes |
-| IBGE — Canoas | IBGE | https://www.ibge.gov.br/cidades-e-estados/rs/canoas.html | Município | População Censo 2022, estimativa 2026, escolarização 2022 | Censo/estimativa | HTML e serviços IBGE; 4304606 | Valores municipais manualmente verificados e publicados | Escolarização baseada em população residente |
-| IBGE SIDRA e geografia | IBGE | https://sidra.ibge.gov.br/ | Município/setor conforme tabela | Censo 2022 e outras | Diversa | API, planilhas; IBGE e geocódigos | Identificado, não integrado | Denominadores e recortes distintos |
-| FNDE PNAE/FUNDEB/PDDE | FNDE | https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos | Município/ente ou escola, segundo programa | Edições distintas | Mensal/anual | Bases variáveis; município, CNPJ, unidade executora ou INEP após verificação | Identificado, não integrado | Repasse municipal não é repasse escolar |
-| SIOPE | FNDE | https://www.gov.br/fnde/pt-br/assuntos/sistemas/siope/siope | Ente federativo | Competência fiscal | Anual | Consulta pública | Identificado, não integrado | Execução financeira não é investimento por escola |
-| Escolas no RS (geometria) | SEDUC/RS · IDE/RS | https://iede.rs.gov.br/server/rest/services/SEDUC/Escolas_no_RS/MapServer/0 | Escola (RS; filtro Canoas) | 2023 | Referência anual 2023 | ArcGIS REST JSON, codigo_inep / cod_ibge_mun | Coletor implementado; execução e cobertura pendentes | Fonte contém apenas registros georreferenciados; não é universo 2025; posições complementares por INEP |
-| Educação RS | SEDUC/RS | https://educacao.rs.gov.br/ | Rede estadual | Variável | Variável | Páginas/catálogos | Investigação parcial | Existência de serviços de escolarização oficiais confirmada na IDE/RS |
-| Educação Canoas | Prefeitura | https://www.canoas.rs.gov.br/ | Municipal/unidade | Variável | Variável | Páginas e serviços locais | Investigação pendente | Integrações institucionais requerem conferência |
-| GeoCanoas | Prefeitura | https://geo.canoas.rs.gov.br/ | Geoespacial municipal | Dinâmica | Variável | ArcGIS REST/GeoJSON quando exposto | Investigação pendente | Precisão e licença de uso de geometrias |
-| TCE/RS | TCE-RS | https://tcers.tc.br/ | Ente público | Variável | Variável | Portais públicos | Investigação pendente | Compatibilizar empenho, liquidação e pagamento |
+**Integrada** significa que dados numéricos foram coletados, conferidos e publicados em `public/data/`. **Catalogada** significa que há referência para pesquisa, mas nenhum valor municipal novo foi importado automaticamente. A chave municipal é IBGE **4304606**; escolas, INEP de **8 dígitos**.
 
-Situação "Identificado" significa que há catálogo/página oficial, **não** que houve download, verificação de colunas ou dados municipais publicados. Os números populacionais do IBGE são os únicos indicadores oficiais carregados no snapshot inicial; as demais integrações precisam ser reconciliadas na execução do workflow.
+| Fonte | Escala, período | Estado | Cautela de uso |
+|---|---|---|---|
+| [INEP Censo Escolar](https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar) | Escola, 2025 V2 | Integrada; ZIP verificado por SHA-256 | 204 registros, 196 ativos, 68.490 matrículas; arquivo sem coordenadas |
+| [INEP IDEB](https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados) | Município/rede/escola, 2005–2025 | Integrada | Resultado por escola só quando divulgado; não extrapolar |
+| [SEDUC/RS escolas](https://iede.rs.gov.br/server/rest/services/SEDUC/Escolas_no_RS/MapServer/0) | Escola, geometria 2023 | Integrada parcialmente | 169 registros do catálogo 2025 com ponto conciliado |
+| [Dados abertos SEDUC/RS](https://dados.rs.gov.br/) | Município e redes, 2010–2025 | Integrada | Matrículas, rendimento, infraestrutura, docentes, SAEB estadual |
+| [IBGE Censo e SIDRA](https://sidra.ibge.gov.br/) | Residentes, 2022 | Integrada | Residentes por idade não equivalem a matrículas ou vagas |
+| [Tesouro Nacional SICONFI](https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/dca) | Município, 2019–2025 | Integrada | DCA anexo I-E, função 12, empenho, liquidação e pagamento distintos |
+| [FNDE Dados Abertos](https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos/o-que-se-pode-acessar) | Município/ente e escola | Parcial | PNAE previsão 2024; Valor_Repasse 2009–2025; PNATE a pagar; PDDE 2025 por escola consultada |
+| [INEP Indicadores Educacionais](https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais) | Município/rede/escola conforme indicador | Catalogada | Distorção idade-série, regularidade/esforço docente, turma e horas-aula |
+| [INEP resultados Censo Escolar](https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/censo-escolar/resultados) | Anual, inclusive 2026 | Catalogada | Distinguir divulgação preliminar de resultados definitivos |
+| [TCE-RS](https://tcers.tc.br/) | Fiscalização municipal | Catalogada | Não distribuir empenhos por escola sem lançamento individual |
+| [UNICEF Busca Ativa Escolar](https://www.unicef.org/brazil/innocenti/busca-ativa-escolar) | Metodologia | Catalogada | Não importar dados pessoais ou casos de crianças |
+| [QEdu](https://qedu.org.br/), [Fundação Abrinq](https://observatoriocrianca.org.br/) | Dados e indicadores derivados | Catalogada | Conferência secundária, não substitui a publicação primária |
 
+## Controle de qualidade
 
-## Coleta e validação da edição de 17/10/2026
+1. Verificar autoridade, competência, arquivo original e SHA256, quando aplicável.
+2. Filtrar município e rede antes de agregar ou mapear; ligar escolas por código INEP.
+3. Diferenciar valor *previsto*, *informado como repassado*, *a pagar*, *liquidado* e *pago*.
+4. Manter `null` quando falta valor; não confundir ausência com zero.
+5. Preservar o último arquivo validado quando um endpoint estiver indisponível; divergência de conteúdo deve interromper publicação.
+6. Nunca inferir coordenadas de endereços sem validação cartográfica; dados do Censo 2025 e geometria 2023 têm competências distintas.
 
-- **SEDUC/RS / IDE/RS, escolas (2023):** consulta ArcGIS REST validada em 17/10/2026, resultando em 178 registros de Canoas e 178 geometrias, separadas por rede: 83 municipais, 36 estaduais, 1 federal e 58 privadas. Códigos INEP únicos e coordenadas verificadas dentro dos limites municipais plausíveis.
-- **INEP 2025:** endereço oficial do ZIP identificado (`https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip`). A tentativa efetiva no Actions de 17/10/2026 apresentou reset de conexão e `SSL: CERTIFICATE_VERIFY_FAILED`; microdados 2025 **não integrados**. Não desabilitar verificação de certificado sem mecanismo comprovável de autenticidade.
-- **GitHub Pages:** publicação estática validada com HTTP 200 para HTML, JS, summary.json, schools.json e schools.geojson, contendo o catálogo de 178 escolas da SEDUC 2023.
-
-
-## Novas fontes efetivamente utilizadas — versão 0.3
-- SICONFI DCA Anexo I-E: `https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/dca?an_exercicio=2025&id_ente=4304606&no_anexo=DCA-Anexo+I-E`. Fonte primária oficial, 2019–2025 com ano validado por `cod_ibge`, `exercicio`, `anexo`, `conta` e `coluna`. Despesa Educação, função 12, valores nominais. **Integrado**, sem distribuir para escolas.
-- IDEB resultados 2005–2025: catálogo primário `https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025`. Arquivos ZIP reais identificados por fase; indisponíveis pelo runner. Série histórica municipal cruzada entre `https://prefeiturasemnumeros.com.br/municipios/canoas-rs` e `https://www.eleverconsultoria.com.br/dados/rs/canoas`, **provisória em relação ao dado primário**, publicada em `quality.json` com situação diferenciada.
-- SAEB 2025: planilha oficial identificada em `https://download.inep.gov.br/saeb/resultados/saeb_2025_brasil_estados_municipios_censitario.xlsx`; indisponível pelo runner. Proficiências municipais publicadas a partir de fonte secundária, status **a validar com planilha oficial**.
-
-
-## Campos adicionais do geosserviço SEDUC
-A consulta `SEDUC/Escolas_no_RS/MapServer/0` retorna `etapas_modalidade`, `porte_escola`, `localizacao`, `categoria_esc_privada`, `conveniada`, `num_matriculas` e `num_turmas`. Os últimos dois são preenchidos somente em parte das escolas estaduais, sem período explícito de competência; por isso são contextualizados individualmente, não são somados nos indicadores do Censo 2025. A cobertura geográfica continua limitada às escolas com coordenadas da referência cadastral 2023.
-
-
-## IBGE / SIDRA · perfil etário do Censo 2022
-**Integrado (fonte primária):** `https://apisidra.ibge.gov.br/values/t/9514/n6/4304606/v/93/p/2022/c2/0/c287/all`. A extração retorna residentes por idade e por forma de declaração; o coletor filtra a categoria total de declaração, remove faixas sobrepostas e reconcilia idades simples com os grupos 0–4, 5–9, 10–14, 15–19 e 20–24, além do total geral 347.657. Valores não devem ser usados como número de matrículas ou demanda reprimida. Arquivo `public/data/ibge_age.json`.
-
-
-## FNDE - novas fontes oficiais identificadas para próximas integrações
-| Conjunto | Fonte e granularidade | Estado real / restrição |
-|---|---|---|
-| PNAE 2024 · previsão | Planilha oficial por UF, entidade executora, ação; `https://www.gov.br/fnde/pt-br/acesso-a-informacao/acoes-e-programas/programas/pnae/consultas/repasses-financeiros-por-entidade-executora` | **Integrado**; coluna `VALOR_PREVISTO`, não confundir com execução ou pagamento |
-| PNAE repasses efetivos | FNDE Plataforma Antonieta de Barros, produto 82: `https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/82` | Produto oficial identificado, arquivo .txt.gz; exportação precisa de rota/contrato validado antes de coletar |
-| PNATE · repasses e alunos | FNDE Plataforma Antonieta de Barros, produtos 55 e 56 | Dados por UF/município catalogados; ainda não descarregados nem reconciliados |
-| Indicadores SIOPE | FNDE Plataforma Antonieta de Barros, produto 54; históricos até 2025, produto 73 | Catálogos oficiais identificados; layout e convenções contábeis pendentes |
-| PDDE por escola | `https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar` | Consulta por ano e código INEP existente, integração automatizada e identificação de valor efetivamente pago pendentes |
-| INEP Data · Catálogo de Escolas | `https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/catalogo-de-escolas/` | Alternativa oficial com filtros e exportação por município/escola, sem endpoint de exportação autenticado ou estável identificado |
-| INEP Data · Estatísticas Censo Escolar | `https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/estatisticas-censo-escolar` | Painéis municipais e históricos disponíveis, interface de BI sem contrato para ETL automático comprovado |
-
-## Recuperações verificadas em 17/10/2026
-- SEDUC/RS (derivado INEP): matrículas/escolas de Canoas 2010–2025 por rede e etapa: https://dados.rs.gov.br/dataset/af11aa7d-0016-4b49-b73b-655f543334f7/resource/9c23921d-bde4-48ed-bbb9-2fe5b5393636/download/dados_acesso_matriculas.xlsx
-- Infraestrutura municipal por rede (% de escolas com recurso): https://dados.rs.gov.br/dataset/5ab85ab2-2f01-44b8-bae0-53b24e74e574/resource/949999fd-9492-44fb-9c8b-128d6a301ba2/download/dados_infraestrutura.xlsx
-- PDDE Info por código INEP e ano: https://www.fnde.gov.br/pddeinfo/pddeinfo/escola/consultar?ano=2025&co_escola=43170102&consultar=Consultar . Extração somente das colunas Valor Pago Total / Data do Pagamento, conferência por TOTAL GERAL, sem CNPJ, agência, conta ou saldos bancários. 82 escolas municipais com pagamentos positivos do catálogo geográfico 2023, R$ 3.769.394,00 nessas respostas.
-- O Censo 2025 estadual por município e rede (196 escolas) difere do mapa 2023 (178 pontos), e não permite atribuir matrículas a cada estabelecimento. Não inferir indicadores escolares por bairro ou escola na ausência de microdados por INEP.
-
-
-## Indicadores oficiais por rede — SEDUC/RS (integrados em outubro/2026)
-Fonte processada do INEP, planilhas no portal dados.rs.gov.br: `dados_fluxo_rendimento.xlsx` (taxas de aprovação, reprovação e abandono, 2010–2025); `dados_afd.xlsx` (adequação de formação docente por grupos 1–5 e etapa, 2013–2025); `dados_complexidade_gestao.xlsx` (níveis de complexidade 1–6, 2013–2025); `dados_inse.xlsx` (INSE somente 2019, 2021 e 2023). Diretório de fontes, URL e hash SHA256 por arquivo em `rs_indicators.json`. Recorte IBGE 4304606, por rede; esses indicadores não podem ser imputados a cada INEP escolar. As coberturas de AFD/INSE/ICG possuem denominadores próprios.
+Mais detalhes em `docs/METODOLOGIA.md`, `public/data/`, `scripts/` e na execução de Actions correspondente.

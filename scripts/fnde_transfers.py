@@ -96,8 +96,38 @@ def pnate(raw:bytes):
        "toPayBRL":out,"totalToPayBRL":float(sum(Decimal(str(v)) for v in out.values()))}
 
 def main():
-    pbytes,pmeta=fetch(82)
-    nbytes,nmeta=fetch(56)
+    try:
+        pbytes,pmeta=fetch(82)
+        nbytes,nmeta=fetch(56)
+    except RuntimeError as exc:
+        # Apenas indisponibilidade de rede/HTTP pode preservar snapshot;
+        # mudança de formato, tamanho ou conteúdo permanece falha real.
+        unavailable=("HTTP Error 404", "HTTP Error 502", "HTTP Error 503", "HTTP Error 504", "timed out", "TimeoutError", "Connection reset", "CERTIFICATE_VERIFY_FAILED", "Name or service not known")
+        if not any(message in str(exc) for message in unavailable):raise
+        # Não apagar dados conciliados por falha de rede do fornecedor.
+        # Snapshot ausente, danificado ou divergente: falhar explicitamente.
+        target=DATA/"fnde_actuals.json"
+        if not target.is_file():raise
+        old=json.loads(target.read_text(encoding="utf-8"))
+        series=old.get("pnae",{}).get("series",[])
+        valid=(old.get("municipalityCode")=="4304606"
+          and old.get("pnae",{}).get("sourceProductId")==82
+          and old.get("pnate",{}).get("sourceProductId")==56
+          and len(series)>=15
+          and any(x.get("year")==2025 and x.get("reportedTransferredBRL")==4439438.0 for x in series)
+          and old.get("pnate",{}).get("totalToPayBRL") is not None)
+        if not valid:raise RuntimeError("Fonte FNDE indisponível e snapshot existente inválido") from exc
+        print(f"::warning::FNDE indisponível ({exc}). Snapshot validado preservado sem atualizar a data de coleta: {old.get('updatedAt','sem data')}",flush=True)
+        return
+    # Mesmos arquivos oficiais: não alterar data nem emitir commit redundante.
+    prior=DATA/"fnde_actuals.json"
+    if prior.is_file():
+        old=json.loads(prior.read_text(encoding="utf-8"))
+        if (old.get("municipalityCode")=="4304606"
+            and old.get("pnae",{}).get("sourceSHA256")==hashlib.sha256(pbytes).hexdigest()
+            and old.get("pnate",{}).get("sourceSHA256")==hashlib.sha256(nbytes).hexdigest()):
+            print("::notice::FNDE sem mudanças nos arquivos de origem; snapshot preservado.",flush=True)
+            return
     series,national=pnae(pbytes)
     pn=pnate(nbytes)
     now=datetime.now(timezone.utc).isoformat()

@@ -51,11 +51,11 @@ export function municipalEducationExtras(){
  const paid2025=transfers?.pnae.series.find(s=>s.year===2025);
  return '<section class="section" aria-label="Qualidade e financiamento municipal">'+
  '<div class="grid two">'+
- panel('Qualidade da educação · IDEB 2025','Rede municipal de Canoas · dados secundários corroborados',
+ panel('Qualidade da educação · IDEB 2025',officialRS?'Rede municipal · SEDUC/RS, resultados oficiais INEP':'Rede municipal · dados secundários corroborados',
   '<div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">'+
   kpi('Anos iniciais',num(latest?.initialMunicipal),'IDEB 2025 · rede municipal')+
   kpi('Anos finais',num(latest?.finalMunicipal),'IDEB 2025 · rede municipal')+
-  '</div><p class="lead">Confirmação cruzada em duas fontes secundárias. As planilhas oficiais do INEP permanecem pendentes de acesso confiável.</p><button class="button light" data-page="quality">Explorar evolução do IDEB e SAEB →</button>')+
+  '</div>'+(officialRS?'<p class="lead">Série oficial do IDEB 2005–2025, publicada pela SEDUC/RS com base nos resultados INEP; valores por estabelecimento são tratados separadamente.</p>':'<p class="lead">Confirmação cruzada em duas fontes secundárias; aguarda validação oficial.</p>')+'<button class="button light" data-page="quality">Explorar evolução do IDEB e SAEB →</button>')+
  panel('Despesa com educação · 2025','Tesouro Nacional / SICONFI · DCA, função 12',
   '<div class="grid finance-summary" style="gap:8px">'+kpi('Despesa empenhada',money(fin?.education.committed),'2025 · valor nominal · função 12')+
   '<button class="button light" data-page="finance">Ver execução financeira e série histórica →</button></div>')+
@@ -153,7 +153,7 @@ export function mountEducationChart(page:'quality'|'finance',isDark:boolean):ech
   {name:'Liquidada',data:finance?.series.map(x=>x.education.liquidated)||[]},
   {name:'Paga',data:finance?.series.map(x=>x.education.paid)||[]}
  ];
- chart.setOption({
+ chart.setOption({animation:!window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   backgroundColor:'transparent',
   legend:{top:0,textStyle:{color:isDark?'#d6e8ee':'#496579'}},
   tooltip:{trigger:'axis'},
@@ -174,7 +174,10 @@ export function trustedEducationSources(){
   ['Fundação Abrinq','Observatório da Criança e do Adolescente','Indicadores territoriais de infância e adolescência, com acesso a metadados e fontes originais; extração municipal pendente.','https://observatoriocrianca.org.br/'],
   ['Fundação Maria Cecilia Souto Vidigal','Primeira Infância em Dados','Mais de 40 indicadores municipais: creches, pré-escola e primeira infância; download condicionado a cadastro não automatizado.','https://fundacaomariacecilia.org.br/o-que-fazemos/portal-primeira-infancia-em-dados/'],
   ['Instituto Unibanco','Observatório de Educação','Análises integradas de fluxo, desempenho e desigualdades, com foco especial no ensino médio.','https://observatoriodeeducacao.institutounibanco.org.br/educacao-em-numeros/analises-integradas'],
-  ['QEdu / ecossistema Fundação Lemann','Painéis com dados oficiais reorganizados','Referência de conferência cruzada de escolas, IDEB e infraestrutura; não substituir INEP ou atribuir granularidade não comprovada.','https://qedu.org.br/']
+  ['QEdu / ecossistema Fundação Lemann','Painéis com dados oficiais reorganizados','Referência de conferência cruzada de escolas, IDEB e infraestrutura; não substituir INEP ou atribuir granularidade não comprovada.','https://qedu.org.br/'],
+  ['INEP · Indicadores Educacionais','Catálogo de indicadores oficiais','Novas séries de distorção idade-série, regularidade e esforço docente, média de alunos por turma e horas-aula. Disponibilidade e granularidade ainda precisam de reconciliação.','https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais'],
+  ['INEP · Censo Escolar','Resultados anuais','Edições e tabelas de matrícula inicial, incluindo 2026. Verificar estágio preliminar/definitivo e nunca misturar com dados de 2025.','https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/censo-escolar/resultados'],
+  ['FNDE · Dados Abertos','Programas e execução financeira','Fontes para FUNDEB, PNATE, PDDE, PNAE, PNLD e infraestrutura escolar; importação apenas após validação de competência, entidade e estágio financeiro.','https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos/o-que-se-pode-acessar']
  ];
  return '<div class="section">'+panel('Organizações e plataformas de apoio','Fontes complementares confiáveis; apenas catalogadas, sem importar informações de crianças ou números não conciliados',
  '<div class="grid" style="gap:12px">'+sources.map(([name,title,note,url])=>'<div class="source"><b>'+esc(name)+' — '+esc(title)+'</b><p>'+esc(note)+'</p>'+link(url,'Visitar fonte e metodologia')+'</div>').join('')+'</div>')+'</div>';

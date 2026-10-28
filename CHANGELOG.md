@@ -1,3 +1,14 @@
+# Changelog
+
+## [1.0.0] — 2026-10-27
+
+- Consolidação da aplicação, do README e da matriz de fontes com os dados efetivamente disponíveis do INEP 2025, IDEB escolar, SEDUC/RS, FNDE, SICONFI e IBGE.
+- Transparência da cobertura: 204 registros escolares no microdado 2025, 196 ativos e coordenadas recuperadas de fonte geográfica SEDUC/RS 2023.
+- Navegação assistiva com salto ao conteúdo, Escape e foco controlado no menu mobile, contraste/legibilidade em telas estreitas e movimento reduzido.
+- Busca escolar responsiva durante digitação, com preservação de foco e contexto espacial por ano de referência.
+- Coletor FNDE conserva snapshots reconciliados em falhas transitórias, sem ocultar divergências de conteúdo ou gerar redeploy sem alterações.
+- Testes Python e Playwright ampliados, com verificações de integridade geoespacial, indicadores por escola e interface.
+
 ## Fonte primária de IDEB e SAEB por rede — 17/10/2026
 - Série 2005–2025 oficial do IDEB para redes municipal/estadual em Canoas substituiu a dependência de sites secundários. IDEB municipal 2025: 5,3 anos iniciais, 4,6 anos finais.
 - SAEB 2025 rede estadual em Canoas validado com planilha da SEDUC/RS; rede municipal ainda não consta como recorte dessa planilha.

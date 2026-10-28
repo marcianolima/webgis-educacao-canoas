@@ -153,7 +153,7 @@ export function mountEducationChart(page:'quality'|'finance',isDark:boolean):ech
   {name:'Liquidada',data:finance?.series.map(x=>x.education.liquidated)||[]},
   {name:'Paga',data:finance?.series.map(x=>x.education.paid)||[]}
  ];
- chart.setOption({
+ chart.setOption({animation:!window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   backgroundColor:'transparent',
   legend:{top:0,textStyle:{color:isDark?'#d6e8ee':'#496579'}},
   tooltip:{trigger:'axis'},

@@ -3,6 +3,8 @@ name: WebGIS Educação | Testar e publicar Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -43,7 +45,7 @@ jobs:
           page=(dist/'index.html').read_text(encoding='utf-8')
           assert 'WebGIS Educação' in page, 'index.html ausente/incorreto'
           assert '/webgis-educacao-canoas/assets/' in page, 'URLs dos assets sem base GitHub Pages'
-          for name in ('summary.json','schools.json','schools.geojson','quality.json','finance.json','pnae.json','ibge_age.json','fnde_actuals.json','rs_censo_municipal.json','pdde_schools.json','rs_indicators.json','rs_quality_official.json'):
+          for name in ('summary.json','schools.json','schools.geojson','quality.json','finance.json','pnae.json','ibge_age.json','fnde_actuals.json','rs_censo_municipal.json','pdde_schools.json','rs_indicators.json','rs_quality_official.json','ideb_schools.json'):
               content=json.loads((dist/'data'/name).read_text(encoding='utf-8'))
               assert content is not None
               print(f'{name}: {(dist/"data"/name).stat().st_size} bytes')
@@ -66,6 +68,8 @@ jobs:
           advanced=json.loads((dist/'data/rs_indicators.json').read_text(encoding='utf-8'))
           assert advanced['municipalityCode']=='4304606'
           assert next(v for v in advanced['schoolFlow']['Municipal'] if v['year']==2025)['aprov_fund']==89.1
+          per_school=json.loads((dist/'data/ideb_schools.json').read_text(encoding='utf-8'))
+          assert per_school['municipalityCode']=='4304606' and per_school['year']==2025
           primary=json.loads((dist/'data/rs_quality_official.json').read_text(encoding='utf-8'))
           assert primary['municipalityCode']=='4304606'
           assert next(r for r in primary['idebByNetwork']['Municipal'] if r['year']==2025)['AI.ideb']==5.3
@@ -104,6 +108,7 @@ jobs:
 
   deploy:
     name: Publicar site
+    if: github.event_name != 'pull_request'
     needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -145,6 +150,8 @@ jobs:
                   assert primary['municipalityCode']=='4304606'
                   rs=json.loads(fetch('data/rs_censo_municipal.json'))
                   pdde=json.loads(fetch('data/pdde_schools.json'))
+                  ideb_schools=json.loads(fetch('data/ideb_schools.json'))
+                  assert ideb_schools['municipalityCode']=='4304606' and ideb_schools['year']==2025
                   assert rs['municipalityCode']=='4304606' and pdde['schoolsWithPublishedPayments']>=70
                   q=json.loads(fetch('data/quality.json'))
                   f=json.loads(fetch('data/finance.json'))

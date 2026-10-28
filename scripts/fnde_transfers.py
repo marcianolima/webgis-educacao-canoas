@@ -100,6 +100,10 @@ def main():
         pbytes,pmeta=fetch(82)
         nbytes,nmeta=fetch(56)
     except RuntimeError as exc:
+        # Apenas indisponibilidade de rede/HTTP pode preservar snapshot;
+        # mudança de formato, tamanho ou conteúdo permanece falha real.
+        unavailable=("HTTP Error 404", "HTTP Error 502", "HTTP Error 503", "HTTP Error 504", "timed out", "TimeoutError", "Connection reset", "CERTIFICATE_VERIFY_FAILED", "Name or service not known")
+        if not any(message in str(exc) for message in unavailable):raise
         # Não apagar dados conciliados por falha de rede do fornecedor.
         # Snapshot ausente, danificado ou divergente: falhar explicitamente.
         target=DATA/"fnde_actuals.json"

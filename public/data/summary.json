@@ -84,19 +84,20 @@
       "reference": "2025",
       "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip",
       "updatedAt": "2026-10-17T18:55:47.740050+00:00",
-      "note": "196 escolas em atividade (total de registros: 204), 214192 linhas nacionais; matrículas: 196/204 escolas com valor; 0 georreferenciadas. Colunas não encontradas: NO_BAIRRO, NO_ENDERECO, NU_ENDERECO, NU_LATITUDE, NU_LONGITUDE."
+      "note": "204 estabelecimentos no arquivo de 2025, dos quais 196 ativos; 68.490 matrículas, 3.567 funções docentes. A coleta original não contém coordenadas; 169 escolas possuem posição complementada pelo cadastro SEDUC/RS de 2023."
     },
     "ideb": {
       "status": "ok",
       "reference": "2005–2025 · rede municipal",
       "url": "https://dados.rs.gov.br/dataset/indice-de-desenvolvimento-da-educacao-basica-ideb-rio-grande-do-sul",
-      "note": "IDEB 2005–2025 por município e rede derivado diretamente das séries oficiais INEP publicadas pela SEDUC/RS, com hashes SHA256. Municipal 2025: anos iniciais 5,3 e anos finais 4,6; estadual ensino médio 4,5. Avaliação por escola ainda requer arquivo específico."
+      "note": "IDEB municipal 2005–2025, séries oficiais SEDUC/RS/INEP com SHA256. Resultados oficiais por escola também integrados em ideb_schools.json, quando publicados e elegíveis."
     },
     "fnde": {
-      "status": "pending",
-      "reference": null,
+      "status": "ok",
+      "reference": "PNAE 2009–2025 por entidade executora; PDDE 2025 por escola; PNATE a pagar",
       "url": "https://www.gov.br/fnde/pt-br/acesso-a-informacao/dados-abertos",
-      "note": "Aguardando integração com granularidade verificada."
+      "note": "PNAE 2025: R$ 4.439.438,00 em campo Valor_Repasse; PDDE 2025: cobertura parcial das escolas municipais; PNATE não representa pagamento efetivo. Último snapshot validado é mantido quando a fonte não responde.",
+      "updatedAt": "2026-10-17T18:45:14Z"
     },
     "seduc": {
       "status": "ok",
@@ -146,7 +147,7 @@
       "status": "ok",
       "reference": "2010–2025 por município e rede",
       "url": "https://dados.rs.gov.br/dataset/acesso-matriculas-e-perfil-dos-estudantes-da-educacao-basica-rio-grande-do-sul",
-      "note": "Censo 2025 via SEDUC/RS/INEP: 196 escolas e 68.490 matrículas, rede municipal 82 escolas e 30.597 matrículas; não são dados de matrículas individuais por código INEP."
+      "note": "Série municipal 2010–2025 por rede; em 2025, 196 escolas ativas e 68.490 matrículas (82 municipais, 30.597 matrículas municipais). Cadastro individual INEP 2025 integrado separadamente."
     },
     "pdde_2025": {
       "status": "partial",

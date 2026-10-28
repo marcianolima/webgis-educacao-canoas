@@ -141,3 +141,25 @@ for(const [device, width, height] of [
   });
  });
 }
+
+
+test('cabeçalho acessível sem cortes em celular compacto 320 px', async ({page})=>{
+ await page.setViewportSize({width:320,height:720});
+ await page.goto('/webgis-educacao-canoas/');
+ await expect(page.getByRole('heading',{name:'Educação em Canoas'})).toBeVisible();
+ const pages=['finance','childhood','sources','quality','teachers'] as const;
+ for(const p of pages){
+   await page.locator('#open-nav').click();
+   const link=page.locator('#mobile-drawer [data-page="'+p+'"]');
+   const group=link.locator('xpath=ancestor::section[contains(@class,"nav-group")]');
+   if(await group.count()&&await group.locator('[data-nav-group]').getAttribute('aria-expanded')==='false')await group.locator('[data-nav-group]').click();
+   await link.click();
+   const title=page.locator('.topbar h1');
+   await expect(title).toBeVisible();
+   const layout=await title.evaluate(el=>({scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,scrollHeight:el.scrollHeight,clientHeight:el.clientHeight,whiteSpace:getComputedStyle(el).whiteSpace}));
+   expect(layout.whiteSpace).not.toBe('nowrap');
+   expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth+1);
+   expect(layout.scrollHeight).toBeLessThanOrEqual(layout.clientHeight+1);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(321);
+ }
+});

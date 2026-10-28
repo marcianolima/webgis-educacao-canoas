@@ -14,7 +14,11 @@ for(const [device, width, height] of [
    const municipal=page.getByText('Escolas no Censo Escolar',{exact:true});
    await expect(municipal).toBeVisible();
    await expect(page.getByText('68.490',{exact:true}).first()).toBeVisible();
+   await expect(page.getByText('Registros de escolas no arquivo')).toBeVisible();
+   await expect(page.getByText('Escolas com coordenadas')).toBeVisible();
 
+   const skip=page.getByRole('link',{name:'Ir ao conteúdo principal'});
+   await expect(skip).toHaveAttribute('href','#main-content');
    const nav=width<940?page.locator('#mobile-drawer'):page.locator('.sidebar');
    const go=async(section:string)=>{
     if(width<940){
@@ -47,7 +51,9 @@ for(const [device, width, height] of [
        await expect(active).toHaveAttribute('aria-current','page');
        await expect(active).toBeVisible();
        await expect(active).toBeInViewport();
-       await page.locator('#close-nav').click();
+       await page.keyboard.press('Escape');
+       await expect(page.locator('#mobile-drawer')).toBeHidden();
+       await expect(page.locator('#open-nav')).toBeFocused();
      }
    }
    await go('schools');
@@ -57,6 +63,12 @@ for(const [device, width, height] of [
    expect(await page.locator('.school-row').count()).toBeGreaterThan(0);
    await page.locator('#stage-select').selectOption({label:'Todas'});
    await expect(page.locator('#size-select')).toBeVisible();
+   // Busca filtra durante digitação e preserva foco ao redesenhar a lista.
+   await page.locator('#school-search').fill('43198910');
+   await expect(page.locator('.school-row')).toHaveCount(1,{timeout:10000});
+   await expect(page.locator('#school-search')).toBeFocused();
+   await page.locator('#school-search').fill('');
+   await expect(page.locator('.school-row').first()).toBeVisible();
    await page.locator('.school-row').first().click();
    await expect(page.locator('#school-detail')).toBeVisible();
    await expect(page.getByText('PDDE 2025').first()).toBeVisible();
@@ -115,6 +127,7 @@ for(const [device, width, height] of [
    await page.screenshot({path:testInfo.outputPath(device+'-financas.png'),fullPage:true});
    await go('sources');
    await expect(page.getByText('Organizações e plataformas de apoio')).toBeVisible();
+   await expect(page.getByText('INEP · Indicadores Educacionais')).toBeVisible();
    if(width<940){
      // Alternar tema refaz o DOM, mas não deve perder o destaque/posição.
      const lastItem=nav.locator('[data-page="sources"]');

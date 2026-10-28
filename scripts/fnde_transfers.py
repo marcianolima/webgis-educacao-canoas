@@ -96,8 +96,25 @@ def pnate(raw:bytes):
        "toPayBRL":out,"totalToPayBRL":float(sum(Decimal(str(v)) for v in out.values()))}
 
 def main():
-    pbytes,pmeta=fetch(82)
-    nbytes,nmeta=fetch(56)
+    try:
+        pbytes,pmeta=fetch(82)
+        nbytes,nmeta=fetch(56)
+    except RuntimeError as exc:
+        # Não apagar dados conciliados por falha de rede do fornecedor.
+        # Snapshot ausente, danificado ou divergente: falhar explicitamente.
+        target=DATA/"fnde_actuals.json"
+        if not target.is_file():raise
+        old=json.loads(target.read_text(encoding="utf-8"))
+        series=old.get("pnae",{}).get("series",[])
+        valid=(old.get("municipalityCode")=="4304606"
+          and old.get("pnae",{}).get("sourceProductId")==82
+          and old.get("pnate",{}).get("sourceProductId")==56
+          and len(series)>=15
+          and any(x.get("year")==2025 and x.get("reportedTransferredBRL")==4439438.0 for x in series)
+          and old.get("pnate",{}).get("totalToPayBRL") is not None)
+        if not valid:raise RuntimeError("Fonte FNDE indisponível e snapshot existente inválido") from exc
+        print(f"::warning::FNDE indisponível ({exc}). Snapshot validado preservado sem atualizar a data de coleta: {old.get('updatedAt','sem data')}",flush=True)
+        return
     series,national=pnae(pbytes)
     pn=pnate(nbytes)
     now=datetime.now(timezone.utc).isoformat()

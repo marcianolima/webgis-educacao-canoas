@@ -1,6 +1,7 @@
 name: WebGIS Educação | FNDE PNAE PNATE
 on:
   push:
+    branches: [main]
     paths: ['scripts/fnde_transfers.py','.github/workflows/refresh-fnde-transfers.yml']
   workflow_dispatch:
   schedule:
